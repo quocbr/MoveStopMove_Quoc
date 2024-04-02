@@ -6,12 +6,12 @@ using UnityEngine;
 public class Player : Character
 {
     [Header("Player")]
-    [SerializeField]private VariableJoystick joystick;
-    [SerializeField]private float moveSpeed;
+    [SerializeField] private VariableJoystick joystick;
+    [SerializeField] private float moveSpeed;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private Rigidbody _rb;
 
-     private Vector3 moveVector;
+    private Vector3 moveVector;
 
     protected override void OnInit()
     {
@@ -21,9 +21,15 @@ public class Player : Character
     protected override void Update()
     {
         base.Update();
+        if (IsDead == true)
+        {
+            ChangeAnim(Anim.DEAD);
+            return;
+        }
+
         Move();
 
-        if (listTargetChar.Contains(targetChar) && timer >= delayAttack)
+        if (targetChar != null && timer >= delayAttack)
         {
             Attack();
             timer = 0;
@@ -39,28 +45,27 @@ public class Player : Character
         moveVector.x = joystick.Horizontal * moveSpeed * Time.deltaTime;
         moveVector.z = joystick.Vertical * moveSpeed * Time.deltaTime;
 
-        if(joystick.Horizontal !=0 || joystick.Vertical != 0) 
+        if (joystick.Horizontal != 0 || joystick.Vertical != 0)
         {
             StopAllCoroutines();
+            if(weapon.activeSelf == false) 
+            {
+                ResetAttack();
+            }
             Vector3 direction = Vector3.RotateTowards(this.transform.forward, moveVector, rotationSpeed * Time.deltaTime, 0.0f);
             this.transform.rotation = Quaternion.LookRotation(direction);
             timer = 0;
             ChangeAnim(Anim.RUN);
-            base.isMove = true;
+
+            isAttack = false;
         }
         else if (joystick.Horizontal == 0 || joystick.Vertical == 0)
         {
-            if (isAttack == true)
-            {
-
-            }
-            else
+            if (isAttack == false)
             {
                 timer += Time.deltaTime;
                 ChangeAnim(Anim.IDLE);
-                base.isMove = false;
             }
-            
         }
 
         _rb.MovePosition(_rb.position + moveVector);

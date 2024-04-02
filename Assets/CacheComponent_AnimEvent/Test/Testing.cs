@@ -7,11 +7,11 @@ public class Testing : MonoBehaviour
     public int time;
     public bool cache;
 
-    public Target GetTarget(Collider other)
+    public Target2 GetTarget(Collider other)
     {
         if (cache == false)
         {
-            return other.GetComponent<Target>();
+            return other.GetComponent<Target2>();
         }
         return TargetCache.Get(other);
     }
@@ -21,8 +21,8 @@ public class Testing : MonoBehaviour
         if (other.CompareTag("Target"))
         {
             Target2 target2 = other.GetComponent<Target2>();
-            Target t1 = TargetCache.Get(target2);
-            Target t2 = TargetCache.Get(other);
+            Target2 t1 = TargetCache.Get(target2);
+            Target2 t2 = TargetCache.Get(other);
             // ...
         }
     }

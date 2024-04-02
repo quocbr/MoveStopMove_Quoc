@@ -75,8 +75,15 @@ public enum PoolType
     None = 0,
 
     Bullet = 1,
-    DashShadow = 2,
+    Hammer = 2,
+    Candy_0 = 3,
+    Candy_1 = 4,
+    Candy_2 = 5,
+    DashShadow = 19,
     HpText = 20,
+
+    Player = 21,
+    Bot = 22,
 }
 
 
