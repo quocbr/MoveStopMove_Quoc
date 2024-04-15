@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : Character
@@ -13,25 +12,38 @@ public class Player : Character
 
     private Vector3 moveVector;
 
-    protected override void OnInit()
+    public override void OnInit()
     {
         base.OnInit();
+        //TODO:
+        joystick = GameManager.Ins.Joystick;
     }
 
     protected override void Update()
     {
         base.Update();
-        if (IsDead == true)
+        if (characterState.Equals(CharacterState.Dead))
         {
             ChangeAnim(Anim.DEAD);
+            GameManager.Ins.Lose();
             return;
+        }
+
+        if (GameManager.Ins.IsState(GameState.Gameplay) == false)
+        {
+            return;
+        }
+        else
+        {
+            joystick = GameManager.Ins.Joystick;
         }
 
         Move();
 
         if (targetChar != null && timer >= delayAttack)
         {
-            Attack();
+            ChangeAnim(Anim.ATTACK);
+            isAttack = true;
             timer = 0;
         }
     }
@@ -48,7 +60,7 @@ public class Player : Character
         if (joystick.Horizontal != 0 || joystick.Vertical != 0)
         {
             StopAllCoroutines();
-            if(weapon.activeSelf == false) 
+            if(currentWeapon.gameObject.activeSelf == false) 
             {
                 ResetAttack();
             }
@@ -66,9 +78,47 @@ public class Player : Character
                 timer += Time.deltaTime;
                 ChangeAnim(Anim.IDLE);
             }
+            else
+            {
+                LookAtTargetDir();
+               
+            }
         }
 
         _rb.MovePosition(_rb.position + moveVector);
     }
 
+    public override void ResetEQ()
+    {
+        currentWeapon.poolType = SaveLoadManager.Ins.UserData.currentWeapon;
+
+        if (SaveLoadManager.Ins.UserData.currentSet != SetType.None)
+        {
+            ChangeSet(SaveLoadManager.Ins.UserData.currentSet);
+            return;
+        }
+        if (SaveLoadManager.Ins.UserData.currentHead != PoolType.None)
+        {
+            ChangeHead(SaveLoadManager.Ins.UserData.currentHead);
+        }
+        if (SaveLoadManager.Ins.UserData.currentPant != PoolType.None)
+        {
+            ChangePant(SaveLoadManager.Ins.UserData.currentPant);
+        }
+        if (SaveLoadManager.Ins.UserData.currentShield != PoolType.None)
+        {
+            ChangeShield(SaveLoadManager.Ins.UserData.currentShield);
+        }
+        if (SaveLoadManager.Ins.UserData.currentTail != PoolType.None)
+        {
+            ChangeTail(SaveLoadManager.Ins.UserData.currentTail);
+        }
+        if (SaveLoadManager.Ins.UserData.currentWing != PoolType.None)
+        {
+            ChangeWing(SaveLoadManager.Ins.UserData.currentWing);
+        }
+        
+
+        //base.ResetEQ();
+    }
 }

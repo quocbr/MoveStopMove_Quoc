@@ -1,0 +1,452 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68a118ad38a9d314b80f9427ca4de5a4, type: 3}
+  m_Name: EquipmentSO
+  m_EditorClassIdentifier: 
+  eWeapon:
+  - id: 1
+    name: Hammer
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 5
+    setType: 0
+    materials: []
+    image: {fileID: 0}
+    value: 20
+    cost: 100
+  - id: 2
+    name: Candy 2
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 6
+    setType: 0
+    materials: []
+    image: {fileID: 0}
+    value: 20
+    cost: 10
+  - id: 3
+    name: Bommerang
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 4
+    setType: 0
+    materials: []
+    image: {fileID: 0}
+    value: 20
+    cost: 50
+  - id: 4
+    name: Axe
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 2
+    setType: 0
+    materials: []
+    image: {fileID: 0}
+    value: 20
+    cost: 0
+  - id: 2
+    name: Knife
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 3
+    setType: 0
+    materials: []
+    image: {fileID: 0}
+    value: 20
+    cost: 0
+  - id: 7
+    name: Candy 0
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 8
+    setType: 0
+    materials: []
+    image: {fileID: 0}
+    value: 20
+    cost: 0
+  eHead:
+  - id: 1
+    name: Cowboy
+    description: Dep
+    equipmenyType: 1
+    poolType: 31
+    setType: 0
+    materials: []
+    image: {fileID: 2800000, guid: e18f18b183a01424f8c20f088905e355, type: 3}
+    value: 10
+    cost: 1
+  - id: 2
+    name: Arrow
+    description: Dep
+    equipmenyType: 1
+    poolType: 30
+    setType: 0
+    materials: []
+    image: {fileID: 2800000, guid: eb69cff6254433d4e9c38084ef04f590, type: 3}
+    value: 10
+    cost: 100
+  - id: 3
+    name: Crown
+    description: Dep
+    equipmenyType: 1
+    poolType: 32
+    setType: 0
+    materials: []
+    image: {fileID: 2800000, guid: 5c06bab390a79764d8d0539b57b1cf45, type: 3}
+    value: 10
+    cost: 100
+  - id: 4
+    name: Ear
+    description: Dep
+    equipmenyType: 1
+    poolType: 33
+    setType: 0
+    materials: []
+    image: {fileID: 2800000, guid: da18f161bc01907449ffa4e6f5b50614, type: 3}
+    value: 10
+    cost: 110
+  - id: 5
+    name: Hat
+    description: Dep
+    equipmenyType: 1
+    poolType: 34
+    setType: 0
+    materials: []
+    image: {fileID: 2800000, guid: 1cbb565e6302e234e82c3d5766667afd, type: 3}
+    value: 10
+    cost: 150
+  - id: 7
+    name: Hat Cap
+    description: Dep
+    equipmenyType: 1
+    poolType: 36
+    setType: 0
+    materials: []
+    image: {fileID: 2800000, guid: 618234528de04654db5493d4d04dbbf2, type: 3}
+    value: 10
+    cost: 200
+  - id: 9
+    name: Hat Yellow
+    description: Dep
+    equipmenyType: 1
+    poolType: 38
+    setType: 0
+    materials: []
+    image: {fileID: 2800000, guid: 578c1840f64bd634bad62c6f60eba249, type: 3}
+    value: 10
+    cost: 300
+  - id: 11
+    name: Hat Phone
+    description: Dep
+    equipmenyType: 1
+    poolType: 40
+    setType: 0
+    materials: []
+    image: {fileID: 2800000, guid: 703801d9a7f60c244a3ee076f49edb23, type: 3}
+    value: 10
+    cost: 200
+  - id: 11
+    name: Horn
+    description: Dep
+    equipmenyType: 1
+    poolType: 41
+    setType: 1
+    materials: []
+    image: {fileID: 2800000, guid: afbe2aeef5262db48ac8ac1124dfd412, type: 3}
+    value: 10
+    cost: 0
+  - id: 11
+    name: Head Angel
+    description: Dep
+    equipmenyType: 1
+    poolType: 39
+    setType: 2
+    materials: []
+    image: {fileID: 21300000, guid: 703801d9a7f60c244a3ee076f49edb23, type: 3}
+    value: 10
+    cost: 0
+  - id: 11
+    name: Hat Witch
+    description: Dep
+    equipmenyType: 1
+    poolType: 37
+    setType: 3
+    materials: []
+    image: {fileID: 21300000, guid: 916eb971e2dc28b419a242fa6950df78, type: 3}
+    value: 10
+    cost: 0
+  - id: 11
+    name: Hat Thor
+    description: Dep
+    equipmenyType: 1
+    poolType: 35
+    setType: 5
+    materials: []
+    image: {fileID: 21300000, guid: 0363a7557b133774f99bf84dcf6fcbed, type: 3}
+    value: 10
+    cost: 0
+  eWing:
+  - id: 1
+    name: Wing_Angel
+    description: 
+    equipmenyType: 3
+    poolType: 300
+    setType: 2
+    materials: []
+    image: {fileID: 0}
+    value: 0
+    cost: 0
+  - id: 2
+    name: Wing_Devil
+    description: 
+    equipmenyType: 3
+    poolType: 301
+    setType: 1
+    materials: []
+    image: {fileID: 0}
+    value: 0
+    cost: 0
+  ePant:
+  - id: 0
+    name: Batman
+    description: 
+    equipmenyType: 2
+    poolType: 400
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 430fb514104c27d429668eec9f9e5457, type: 2}
+    image: {fileID: 2800000, guid: 1f7e9eb236c8768498ad5d8078d2533d, type: 3}
+    value: 0
+    cost: 100
+  - id: 0
+    name: Cham bi
+    description: 
+    equipmenyType: 2
+    poolType: 401
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 195b18787e870804eaabdc6efea37f75, type: 2}
+    image: {fileID: 2800000, guid: 3ddbc9e0f3f883a46b1ba9635f87c222, type: 3}
+    value: 0
+    cost: 100
+  - id: 0
+    name: Comy
+    description: 
+    equipmenyType: 2
+    poolType: 402
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 412b5af210ac68a498bdb7fb8786b369, type: 2}
+    image: {fileID: 2800000, guid: 2652851e5f7772041add8ebe7d548f2b, type: 3}
+    value: 0
+    cost: 100
+  - id: 0
+    name: Da bao
+    description: 
+    equipmenyType: 2
+    poolType: 403
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 83a5ae426c0f7e241ac90fe22a3d5418, type: 2}
+    image: {fileID: 2800000, guid: ae9d58ecee0e3f848b8fedb3f2c67648, type: 3}
+    value: 0
+    cost: 110
+  - id: 0
+    name: Onion
+    description: 
+    equipmenyType: 2
+    poolType: 404
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 6d1acf6c357698645a65123ec8355bd5, type: 2}
+    image: {fileID: 2800000, guid: 5433d4b044040c44487399b59f52e2b4, type: 3}
+    value: 0
+    cost: 150
+  - id: 0
+    name: Pokemon
+    description: 
+    equipmenyType: 2
+    poolType: 405
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 92125267aac0e3e4fa11f4a9dad99f7a, type: 2}
+    image: {fileID: 2800000, guid: ea8161e4ed231be438fe9e968bc8752c, type: 3}
+    value: 0
+    cost: 200
+  - id: 0
+    name: Rainbow
+    description: 
+    equipmenyType: 2
+    poolType: 406
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 45971febe8017dc4bac9ead8264a3d71, type: 2}
+    image: {fileID: 2800000, guid: 4d6b3cb74098a8640b03cd004d1dcdbb, type: 3}
+    value: 0
+    cost: 202
+  - id: 0
+    name: Skull
+    description: 
+    equipmenyType: 2
+    poolType: 407
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 887080aaa454d0742bb7e3b141affffe, type: 2}
+    image: {fileID: 2800000, guid: a39a74b87842b704ab4bc6eec7e6c287, type: 3}
+    value: 0
+    cost: 300
+  - id: 0
+    name: Van Tim
+    description: 
+    equipmenyType: 2
+    poolType: 408
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 9d752b9df5ad735498fa48c7aded57c8, type: 2}
+    image: {fileID: 2800000, guid: 343f00cc518f2c34090d54d64a12c62e, type: 3}
+    value: 0
+    cost: 300
+  - id: 0
+    name: Davil
+    description: 
+    equipmenyType: 2
+    poolType: 409
+    setType: 1
+    materials:
+    - {fileID: 2100000, guid: eda2dc93d956a4147919d3e333f2a001, type: 2}
+    image: {fileID: 21300000, guid: 343f00cc518f2c34090d54d64a12c62e, type: 3}
+    value: 0
+    cost: 0
+  - id: 0
+    name: Angel
+    description: 
+    equipmenyType: 2
+    poolType: 410
+    setType: 2
+    materials:
+    - {fileID: 2100000, guid: bf7d6fadf60d7ee4182cb9272128b9fe, type: 2}
+    image: {fileID: 21300000, guid: 343f00cc518f2c34090d54d64a12c62e, type: 3}
+    value: 0
+    cost: 0
+  eTail:
+  - id: 1
+    name: Tail Devil
+    description: 
+    equipmenyType: 4
+    poolType: 200
+    setType: 1
+    materials: []
+    image: {fileID: 0}
+    value: 0
+    cost: 0
+  eShield:
+  - id: 1
+    name: Blade_Death
+    description: Da
+    equipmenyType: 5
+    poolType: 350
+    setType: 4
+    materials: []
+    image: {fileID: 0}
+    value: 0
+    cost: 400
+  - id: 2
+    name: Book
+    description: Da
+    equipmenyType: 5
+    poolType: 351
+    setType: 3
+    materials: []
+    image: {fileID: 21300000, guid: 06a554ce42709b24d9f440902d9c0de9, type: 3}
+    value: 0
+    cost: 0
+  - id: 3
+    name: Bow Angel
+    description: Da
+    equipmenyType: 5
+    poolType: 352
+    setType: 2
+    materials: []
+    image: {fileID: 0}
+    value: 0
+    cost: 0
+  - id: 4
+    name: Heavy Shield
+    description: Da
+    equipmenyType: 5
+    poolType: 353
+    setType: 0
+    materials: []
+    image: {fileID: 2800000, guid: 5033499010ad59241ad2cbdc6b1f9694, type: 3}
+    value: 0
+    cost: 400
+  - id: 5
+    name: Shield
+    description: Da
+    equipmenyType: 5
+    poolType: 354
+    setType: 0
+    materials: []
+    image: {fileID: 2800000, guid: 3dedbea6f56343249805bb0aee8693f9, type: 3}
+    value: 0
+    cost: 400
+  eSet:
+  - id: 1
+    name: Set 1
+    description: Set 1
+    equipmenyType: 6
+    poolType: 0
+    setType: 1
+    materials: []
+    image: {fileID: 2800000, guid: 591bf6bd34c3a3c4e9143ba55a6c7d7b, type: 3}
+    value: 0
+    cost: 1500
+  - id: 2
+    name: Set 2
+    description: Set 2
+    equipmenyType: 6
+    poolType: 0
+    setType: 2
+    materials: []
+    image: {fileID: 2800000, guid: 9f8e6f5ea0f849447b464193072ab6f3, type: 3}
+    value: 0
+    cost: 1400
+  - id: 3
+    name: Set 3
+    description: Set 3
+    equipmenyType: 6
+    poolType: 0
+    setType: 3
+    materials: []
+    image: {fileID: 2800000, guid: 916eb971e2dc28b419a242fa6950df78, type: 3}
+    value: 0
+    cost: 1000
+  - id: 4
+    name: Set 4
+    description: Set 4
+    equipmenyType: 6
+    poolType: 0
+    setType: 4
+    materials: []
+    image: {fileID: 2800000, guid: 7965f490c2ec6044d854d957fe85186e, type: 3}
+    value: 0
+    cost: 1500
+  - id: 5
+    name: Set 5
+    description: Set 5
+    equipmenyType: 6
+    poolType: 0
+    setType: 5
+    materials: []
+    image: {fileID: 2800000, guid: 0363a7557b133774f99bf84dcf6fcbed, type: 3}
+    value: 0
+    cost: 1500

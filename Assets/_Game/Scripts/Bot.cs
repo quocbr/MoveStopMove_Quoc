@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Bot : Character
 {
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private GameObject targetImage;
-    private IState<Character> currentState;
+    
 
     public float range;
     public Transform centrePoint;
@@ -20,46 +22,36 @@ public class Bot : Character
 
     protected override void Update()
     {
+        base .Update();
         if (IsDead == true)
         {
-            agent.velocity = Vector3.zero;
-            agent.isStopped = true;
-            ChangeAnim(Anim.DEAD);
+            ChangeState(new DeadState());
             return;
         }
 
-        base .Update();
+
         if (currentState != null)
         {
             currentState.OnExecute(this);
         }
     }
 
-    public void ChangeState(IState<Character> state)
+    public override void OnInit()
     {
-        if (currentState != null)
-        {
-            currentState.OnExit(this);
-        }
-
-        currentState = state;
-
-        if (currentState != null)
-        {
-            currentState.OnEnter(this);
-        }
+        base.OnInit();
+        SetActiveTargetImage(false);
     }
 
     public void StopMoving()
     {
-        ChangeAnim("idle");
+        ChangeAnim(Anim.IDLE);
         agent.velocity = Vector3.zero;
         agent.isStopped = true;
     }
 
     public void Moving()
     {
-        ChangeAnim("run");
+        ChangeAnim(Anim.RUN);
         Patrol();
         agent.isStopped = false;
     }
@@ -99,7 +91,7 @@ public class Bot : Character
 
     public bool CheckAttack()
     {
-        return listTargetChar.Count !=0;
+        return listTargetChar.Count != 0;
     }
 
     public void BotAttack()
@@ -108,12 +100,17 @@ public class Bot : Character
         if (isAttack == false)
         {
             timer += Time.deltaTime;
-            ChangeAnim(Anim.IDLE);
+            ChangeState(new IdleState());
+        }
+        else
+        {
+            LookAtTargetDir();
         }
 
         if(listTargetChar.Contains(targetChar) && timer >= delayAttack)
         {
-            Attack();
+            ChangeAnim(Anim.ATTACK);
+            isAttack = true;
             timer = 0;
         }
     }
@@ -124,10 +121,61 @@ public class Bot : Character
         targetImage.SetActive(r);
     }
 
-    public override void DoDead()
+    public void HandleBeginDead()
+    {
+        agent.velocity = Vector3.zero;
+        agent.isStopped = true;
+    }
+
+    public void HandleEndDead()
+    {
+        if (LevelManager.Ins.RemainBot < 1)
+        {
+            HBPool.Despawn(this);
+        }
+        else
+        {
+            LevelManager.Ins.RemainBot -= 1;
+            UIManager.Ins.GetUI<GamePlay>().SetAliveText(LevelManager.Ins.RemainBot);
+            OnInit();
+            ResetEQ1();
+            Vector3 centre = LevelManager.Ins.GetRandomSpawnPos();
+            while (true)
+            {
+                Vector3 point;
+                if (RandomPoint(centre, 8f, out point))
+                {
+                    Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f);
+                    ChangeState(new IdleState());
+                    TF.position = point;
+                    break;
+                }
+
+            }
+        }
+    }
+
+    public override void DoDead(string name)
     {
         this.SetActiveTargetImage(false);
         base.DoDead();
-        
+    }
+
+    private void ResetEQ1()
+    {
+        int randomeq = Random.Range(1, 101);
+
+        if (randomeq <= 3)
+        {
+            ChangeSet(EquipmentController.Ins.GetSet());
+        }
+        else{ 
+            if (Random.Range(1, 101) > 50) ChangeHead(EquipmentController.Ins.GetHead());
+            if (Random.Range(1, 101) > 40) ChangePant(EquipmentController.Ins.GetPant());
+            if (Random.Range(1, 101) > 95) ChangeTail(EquipmentController.Ins.GetTail());
+            if (Random.Range(1, 101) > 70) ChangeShield(EquipmentController.Ins.GetShield());
+            if (Random.Range(1, 101) > 95) ChangeWing(EquipmentController.Ins.GetWing()); 
+        }
+        ChangeWeapon(EquipmentController.Ins.GetWeapon());
     }
 }

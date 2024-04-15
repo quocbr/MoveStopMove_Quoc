@@ -6,45 +6,64 @@ using UnityEngine;
 using UnityEngine.Playables;
 using Random = UnityEngine.Random;
 
+public enum CharacterState { Idle, Run, Attack, Dead, Win };
+
 public class Character : GameUnit
 {
+
     [Header("Charracter")]
     [SerializeField] private Animator anim;
-    [SerializeField] private Weapon currentSkin;
+    
+    [SerializeField] private ColorType currentColor;
+    [SerializeField] private Transform throwPos;
+    [SerializeField] private SkinnedMeshRenderer colorSkin;
+    [SerializeField] private Transform headPos;
+    [SerializeField] private Transform pantPos;
+    [SerializeField] private Transform wingPos;
+    [SerializeField] private Transform tailPos;
+    [SerializeField] private Transform shieldPos;
+    [SerializeField] private Transform weaponPos;
+    [SerializeField] private SkinnedMeshRenderer pantType;
 
-    [SerializeField] protected GameObject weapon;
+    [SerializeField] private AnimationEvent animEvent;
 
+    private int point = 0;
     private string currentAnimName;
+    private Vector3 attackDir;
+    private string nameChar;
+    private string killByName = null;
 
+    protected CharacterState characterState;
     protected List<Character> listTargetChar;
     protected Character targetChar;
     protected float delayAttack = 1f;
     protected float timer = 0;
-    private int point = 0;
 
+    
+    protected GameUnit currentHead;
+    protected PoolType currentPant;
+    protected GameUnit currentWing;
+    protected GameUnit currentTail;
+    protected GameUnit currentShield;
+    protected GameUnit currentWeapon;
+    protected SetType currentSet;
+    
     protected bool isAttack = false;
     protected bool isAttacking = false;
 
     protected bool isDead;
     protected bool isMove;
 
-    public Vector3 attackDir;
-    public Transform throwPos;
+    protected IState<Character> currentState;
 
     public bool IsDead { get => isDead; set => isDead = value; }
     public int Point { get => point; set => point = value; }
-    private void OnDisable()
-    {
-        TF.localScale = Vector3.one;
-        isAttack = false;
-        isAttacking = false;
-        isDead = false;
-        point = 0;
-        timer = 0;
-        targetChar = null;
-        listTargetChar.Clear();
-        ChangeAnim(Anim.IDLE);
-    }
+    public string NameChar { get => nameChar; set => nameChar = value; }
+    public ColorType CurrentColor { get => currentColor; set => currentColor = value; }
+    public Vector3 AttackDir { get => attackDir; set => attackDir = value; }
+    public Transform ThrowPos { get => throwPos; set => throwPos = value; }
+    public SkinnedMeshRenderer ColorSkin { get => colorSkin; set => colorSkin = value; }
+    public string KillByName { get => killByName; set => killByName = value; }
 
     protected virtual void Start()
     {
@@ -53,16 +72,30 @@ public class Character : GameUnit
 
     protected virtual void Update()
     {
-
+        if(GameManager.Ins.IsState(GameState.Gameplay) == false)
+        {
+            return;
+        }
     }
 
-    protected virtual void OnInit()
+    public virtual void OnInit()
     {
         listTargetChar = new List<Character>();
         IsDead = false;
+        currentAnimName = Anim.IDLE;
+        TF.localScale = Vector3.one;
+        isAttack = false;
+        isAttacking = false;
+        isDead = false;
+        point = 0;
+        timer = 0;
+        targetChar = null;
+        listTargetChar.Clear();
+        killByName = null;
+        characterState = CharacterState.Idle;
     }
 
-    protected virtual void ChangeAnim(string animName)
+    public void ChangeAnim(string animName)
     {
         if (currentAnimName != animName)
         {
@@ -74,7 +107,12 @@ public class Character : GameUnit
 
     protected virtual void LookAtTargetDir()
     {
-        this.transform.LookAt(targetChar.TF);
+        if(targetChar != null)
+        {
+            this.transform.LookAt(targetChar.TF);
+            AttackDir = targetChar.TF.position - ThrowPos.position;
+        }
+        
     }
 
     protected virtual void Move()
@@ -82,40 +120,39 @@ public class Character : GameUnit
 
     }
 
+#region Attack
     public virtual void Attack()
     {
-        LookAtTargetDir();
-        ChangeAnim(Anim.ATTACK);
+        
         isAttack = true;
-        attackDir = targetChar.TF.position - throwPos.position;
-        StartCoroutine(IE_Throw());
-    }
-
-    IEnumerator IE_Throw()
-    {
-        yield return new WaitForSeconds(0.1f);
-        isAttacking = true;
-        weapon.SetActive(false);
+        LookAtTargetDir();
         Throw();
-        StartCoroutine(nameof(IE_DeAttack));
+        currentWeapon.gameObject.SetActive(false);
     }
 
-    IEnumerator IE_DeAttack()
-    {
-        yield return new WaitForSeconds(0.6f);
-        weapon.SetActive(true);
-        isAttack = false;
-        isAttacking = false;
-    }
-
-    protected virtual void ResetAttack()
+    public void ResetAttack()
     {
         isAttack = false;
-        isAttacking = false;
-        weapon.SetActive(true);
+        currentWeapon.gameObject.SetActive(true);
     }
 
+    public void Throw()
+    {
+        (currentWeapon as Weapon).Throw(this, OnHitVictim);
+    }
+    // Logic when bullet hit victim
+    protected virtual void OnHitVictim(Character attacker, Character victim)
+    {
+        AddPoint(victim.Point);
+        victim.DoDead(attacker.NameChar);
+        attacker.RemoveTarget(victim);
+    }
 
+    #endregion Attack
+
+    
+
+    #region Target
     public virtual void AddTarget(Character target)
     {
         if (listTargetChar.Count == 0)
@@ -133,7 +170,7 @@ public class Character : GameUnit
     {
         if (this is Player)
         {
-            (target as Bot).SetActiveTargetImage(false);
+                (target as Bot).SetActiveTargetImage(false);
         }
         this.listTargetChar.Remove(target);
         if (listTargetChar.Count == 0)
@@ -150,49 +187,199 @@ public class Character : GameUnit
         }
     }
 
-    public virtual void RemoveCharacter(Character character)
+#endregion
+
+#region Hanlde Dead
+    public virtual void DoDead(string name = null)
     {
-        if (listTargetChar.Contains(character))
-        {
-            listTargetChar.Remove(character);
-        }
-    }
-
-    public virtual void DoDead()
-    {
-
-
         IsDead = true;
-        //TODO:Xu ly khi dead
-        StartCoroutine(nameof(HandleDead));
-
-    }
-
-    protected virtual IEnumerator HandleDead()
-    {
+        characterState = CharacterState.Dead;
+        killByName = name;
+        //TODO:Xu ly khi    
         ChangeAnim(Anim.DEAD);
-        yield return new WaitForSeconds(2f);
-        LevelManager.Ins.RemoveCharacter(this);
-        HBPool.Despawn(this);
+        LevelManager.Ins.HandleCharacterDead(this);
     }
 
-
-    public void Throw()
-    {
-        currentSkin.Throw(this, OnHitVictim);
-    }
-    // Logic when bullet hit victim
-    protected virtual void OnHitVictim(Character attacker, Character victim)
-    {
-        AddPoint(victim.Point);
-        victim.DoDead();
-        attacker.RemoveTarget(victim);
-    }
+#endregion
 
     protected virtual void AddPoint(int point)
     {
         this.Point += point > 0 ? point : 1;
-        TF.localScale = Vector3.one + Vector3.one * this.Point * 0.1f;
+        TF.localScale = Vector3.one + Vector3.one * this.Point * 0.2f;
     }
 
+#region Change Eq
+    public virtual void ChangeColorSkin(Material material)
+    {
+        colorSkin.material = material; 
+    }
+
+    public virtual void ChangeWeapon(PoolType weaponType)
+    {
+        if (currentWeapon != null)
+        {
+            //Destroy(currentWeapon.gameObject);
+            HBPool.Despawn(currentWeapon);
+            currentWeapon = null;
+        }
+        //currentWeapon = Instantiate(weapon);
+        currentWeapon = HBPool.Spawn<GameUnit>(weaponType);
+        currentWeapon.transform.SetParent(weaponPos,false);
+        currentWeapon.TF.localPosition = Vector3.zero;
+        currentWeapon.TF.localRotation = Quaternion.identity;
+        currentWeapon.TF.localScale = Vector3.one;
+    }
+
+    public virtual void ChangeHead(PoolType headType)
+    {
+        if(currentHead != null)
+        {
+            //Destroy(currentHead.gameObject);
+            HBPool.Despawn(currentHead);
+            currentHead = null;
+        }
+
+        if (headType == PoolType.None) return;
+
+        currentHead = HBPool.Spawn<GameUnit>(headType);
+        currentHead.transform.SetParent(headPos, false);
+        currentHead.TF.localPosition = Vector3.zero;
+        currentHead.TF.localRotation = Quaternion.identity;
+    }
+
+    public virtual void ChangePant(Material material)
+    {
+        if (material == null)
+        {
+            pantType.enabled = false;
+        }
+        else
+        {
+            pantType.enabled = true;
+            pantType.material = material;
+        }
+    }
+    
+    public virtual void ChangePant(PoolType poolType)
+    {
+        Material material = EquipmentController.Ins.GetPant(poolType);
+        if (material == null)
+        {
+            pantType.enabled = false;
+            currentPant = PoolType.None;
+        }
+        else
+        {
+            pantType.enabled = true;
+            pantType.material = material;
+            currentPant = poolType;
+        }
+    }
+
+    public virtual void ChangeWing(PoolType wingType)
+    {
+        if (currentWing != null)
+        {
+            //Destroy(currentHead.gameObject);
+            HBPool.Despawn(currentWing);
+            currentWing = null;
+        }
+
+        if (wingType == PoolType.None) return;
+
+        currentWing = HBPool.Spawn<GameUnit>(wingType);
+        currentWing.transform.SetParent(wingPos, false);
+        currentWing.TF.localPosition = Vector3.zero;
+        currentWing.TF.localRotation = Quaternion.identity;
+    }
+
+    public virtual void ChangeTail(PoolType tailType)
+    {
+        if (currentTail != null)
+        {
+            //Destroy(currentHead.gameObject);
+            HBPool.Despawn(currentTail);
+            currentTail = null;
+        }
+
+        if (tailType == PoolType.None) return;
+
+        currentTail = HBPool.Spawn<GameUnit>(tailType);
+        currentTail.transform.SetParent(wingPos, false);
+        currentTail.TF.localPosition = Vector3.zero;
+        currentTail.TF.localRotation = Quaternion.identity;
+    }
+
+    public virtual void ChangeShield(PoolType shieldType)
+    {
+        if (currentShield != null)
+        {
+            //Destroy(currentHead.gameObject);
+            HBPool.Despawn(currentShield);
+            currentShield = null;
+        }
+
+        if (shieldType == PoolType.None) return;
+
+        currentShield = HBPool.Spawn<GameUnit>(shieldType);
+        currentShield.transform.SetParent(shieldPos, false);
+        currentShield.TF.localPosition = Vector3.zero;
+        currentShield.TF.localRotation = Quaternion.identity;
+    }
+
+    public virtual void ChangeSet(SetType setType)
+    {
+        ChangeHead(EquipmentController.Ins.GetHead(setType));
+        ChangePant(EquipmentController.Ins.GetPant(setType));
+        ChangeWing(EquipmentController.Ins.GetWing(setType));
+        ChangeTail(EquipmentController.Ins.GetTail(setType));
+        ChangeShield(EquipmentController.Ins.GetShield(setType));
+
+        ChangeColorSkin(SpawnManager.Ins.GetColorSkinSet(setType));
+
+        currentSet = setType;
+    }
+
+    public virtual void ResetEQ()
+    {
+        ChangeWeapon(currentWeapon.poolType);
+        if(currentSet != SetType.None)
+        {
+            ChangeSet(currentSet);
+        }
+        else
+        {
+            ChangeHead(currentHead.poolType);
+            ChangePant(currentPant);
+            ChangeWing(currentWing.poolType);
+            ChangeTail(currentTail.poolType);
+            ChangeShield(currentShield.poolType);
+        }
+    }
+
+    public virtual void RemoveAllEQ()
+    {
+        ChangeHead(PoolType.None);
+        ChangePant(null);
+        ChangeWing(PoolType.None);
+        ChangeTail(PoolType.None);
+        ChangeShield(PoolType.None);
+    }
+
+    #endregion
+
+    public void ChangeState(IState<Character> state)
+    {
+        if (currentState != null)
+        {
+            currentState.OnExit(this);
+        }
+
+        currentState = state;
+
+        if (currentState != null)
+        {
+            currentState.OnEnter(this);
+        }
+    }
 }

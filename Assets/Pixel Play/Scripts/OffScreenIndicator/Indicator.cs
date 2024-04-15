@@ -61,6 +61,11 @@ public class Indicator : MonoBehaviour
         scoreText.text = value >= 0 ? value.ToString() : "";
     }
 
+    public void SetNameText(string name)
+    {
+        nameText.text = name;
+    }
+
     /// <summary>
     /// Sets the distance text rotation of the indicator.
     /// </summary>

@@ -7,9 +7,9 @@ using UnityEngine;
 public class Bullet : GameUnit
 {
     [SerializeField] protected float rotateSpeed;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float timeLife;
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] protected float moveSpeed;
+    [SerializeField] protected float timeLife;
+    [SerializeField] protected Rigidbody rb;
 
     protected Character attacker;
     protected Action<Character,Character> onHit;
@@ -18,7 +18,8 @@ public class Bullet : GameUnit
     {
         this.attacker = attacker;
         this.onHit = onHit;
-        Vector3 dir = new Vector3(attacker.attackDir.x,0, attacker.attackDir.z);
+        TF.localScale = attacker.TF.localScale;
+        Vector3 dir = new Vector3(attacker.AttackDir.x,0, attacker.AttackDir.z);
         rb.velocity = dir.normalized * moveSpeed;
         Invoke(nameof(OnDespawn), timeLife);
     }
@@ -34,12 +35,12 @@ public class Bullet : GameUnit
         HBPool.Despawn(this);
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(Constant.TAG_CHARACTER))
         {
             Character victim = Cache.GetCharacter(other);
-            if (attacker.Equals(victim))
+            if (attacker.Equals(victim) || victim.IsDead)
             {
                 return;
             }

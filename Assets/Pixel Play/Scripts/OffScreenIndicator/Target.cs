@@ -36,6 +36,10 @@ public class Target : MonoBehaviour
         {
             return targetColor;
         }
+        set
+        {
+            targetColor = value;
+        }
     }
 
     /// <summary>
@@ -104,8 +108,18 @@ public class Target : MonoBehaviour
         return distanceFromCamera;
     }
 
+    public ColorType GetColorInChar()
+    {
+        return target.CurrentColor;
+    }
+
     public int GetPointInChar()
     {
         return target.Point;
+    }
+
+    public string GetNameInChar()
+    {
+        return target.NameChar;
     }
 }

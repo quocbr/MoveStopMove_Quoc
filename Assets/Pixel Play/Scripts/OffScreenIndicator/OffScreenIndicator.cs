@@ -13,6 +13,7 @@ public class OffScreenIndicator : MonoBehaviour
     [Range(0.5f, 0.9f)]
     [Tooltip("Distance offset of the indicators from the centre of the screen")]
     [SerializeField] private float screenBoundOffset = 0.9f;
+    [SerializeField] private ColorSO colorSO;
 
     private Camera mainCamera;
     private Vector3 screenCentre;
@@ -46,6 +47,8 @@ public class OffScreenIndicator : MonoBehaviour
             bool isTargetVisible = OffScreenIndicatorCore.IsTargetVisible(screenPosition);
             //float distanceFromCamera = target.NeedDistanceText ? target.GetDistanceFromCamera(mainCamera.transform.position) : float.MinValue;// Gets the target distance from the camera.
             int pointTarget = target.NeedDistanceText ? target.GetPointInChar() : 0;
+            string nameTarget = target.GetNameInChar();
+            ColorType colorChar = target.GetColorInChar();
             Indicator indicator = null;
 
             if(target.NeedBoxIndicator && isTargetVisible)
@@ -63,9 +66,10 @@ public class OffScreenIndicator : MonoBehaviour
             }
             if(indicator)
             {
-                indicator.SetImageColor(target.TargetColor);// Sets the image color of the indicator.
+                indicator.SetImageColor(colorSO.colorList[(int)colorChar].color); ;// Sets the image color of the indicator.
                 //indicator.SetDistanceText(distanceFromCamera); //Set the distance text for the indicator.
                 indicator.SetPointText(pointTarget); //Set the distance text for the indicator.
+                indicator.SetNameText(nameTarget); //Set the distance text for the indicator.
                 indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
                 indicator.SetTextRotation(Quaternion.identity); // Sets the rotation of the distance text of the indicator.
             }
@@ -121,6 +125,7 @@ public class OffScreenIndicator : MonoBehaviour
             indicator = type == IndicatorType.BOX ? BoxObjectPool.current.GetPooledObject() : ArrowObjectPool.current.GetPooledObject();
             indicator.Activate(true); // Sets the indicator as active.
         }
+
         return indicator;
     }
 

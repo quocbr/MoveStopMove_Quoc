@@ -16,6 +16,17 @@ public class IdleState : IState<Character>
     public void OnExecute(Character t)
     {
         //UNDONE:
+        if((t as Bot).CheckAttack())
+        {
+            (t as Bot).BotAttack();
+            return;
+        }
+
+        if(GameManager.Ins.IsState(GameState.Gameplay) == false)
+        {
+            return;
+        }
+
         if(timer > timeDelay)
         {
             (t as Bot).ChangeState(new PatrolState());

@@ -12,7 +12,8 @@ public class AttackState : IState<Character>
     public void OnExecute(Character t)
     {
         (t as Bot).BotAttack();
-        if(!(t as Bot).CheckAttack())
+
+        if((t as Bot).CheckAttack() == false)
         {
             (t as Bot).ChangeState(new PatrolState());
         }
@@ -20,7 +21,6 @@ public class AttackState : IState<Character>
 
     public void OnExit(Character t)
     {
-
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -12,6 +13,21 @@ public class PoolControler : MonoBehaviour
 
     [Header("Pool")]
     public List<PoolAmount> PoolWithRoot;
+
+    [Header("Head")]
+    public List<GameUnit> PoolHead;
+    
+    [Header("Wing")]
+    public List<GameUnit> PoolWing;
+    
+    [Header("Tail")]
+    public List<GameUnit> PoolTail;
+    
+    [Header("Shield")]
+    public List<GameUnit> PoolShield;
+
+    [Header("Weapon")]
+    public List<GameUnit> PoolWeapon;
 
     [Header("Particle")]
     public ParticleAmount[] Particle;
@@ -27,6 +43,31 @@ public class PoolControler : MonoBehaviour
         for (int i = 0; i < PoolWithRoot.Count; i++)
         {
             HBPool.Preload(PoolWithRoot[i].prefab, PoolWithRoot[i].amount, PoolWithRoot[i].root);
+        }
+
+        for (int i = 0; i < PoolHead.Count; i++)
+        {
+            HBPool.Preload(PoolHead[i], 0, transform);
+        }
+        
+        for (int i = 0; i < PoolTail.Count; i++)
+        {
+            HBPool.Preload(PoolTail[i], 0, transform);
+        }
+        
+        for (int i = 0; i < PoolWing.Count; i++)
+        {
+            HBPool.Preload(PoolWing[i], 0, transform);
+        }
+        
+        for (int i = 0; i < PoolShield.Count; i++)
+        {
+            HBPool.Preload(PoolShield[i], 0, transform);
+        }
+        
+        for (int i = 0; i < PoolWeapon.Count; i++)
+        {
+            HBPool.Preload(PoolWeapon[i], 0, transform);
         }
 
         for (int i = 0; i < Particle.Length; i++)
@@ -63,27 +104,5 @@ public class ParticleAmount
     public int amount;
 }
 
-
-public enum ParticleType
-{
-    BloodExplosionRound = 0,
-    SingleThunder = 10,
-}
-
-public enum PoolType
-{
-    None = 0,
-
-    Bullet = 1,
-    Hammer = 2,
-    Candy_0 = 3,
-    Candy_1 = 4,
-    Candy_2 = 5,
-    DashShadow = 19,
-    HpText = 20,
-
-    Player = 21,
-    Bot = 22,
-}
 
 

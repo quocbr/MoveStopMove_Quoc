@@ -6,7 +6,7 @@ public class DeadState : IState<Character>
 {
     public void OnEnter(Character t)
     {
-        (t as Bot).DoDead();
+        (t as Bot).HandleBeginDead();
     }
 
     public void OnExecute(Character t)

@@ -1,11 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http;
 using UnityEngine;
 
 public class Constant
 {
+    public const string SAVE_FILE_NAME = "savegame.data";
+    public const string SAVE_KEY = "key.data";
+
     public const string TAG_CHARACTER = "Character";
     public const string TAG_BOT = "Bot";
+
+    public const string EQUIP_STRING = "Equip";
+    public const string EQUIPED_STRING = "Equiped";
 }
 
 public class Layer

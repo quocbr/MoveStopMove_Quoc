@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   listLevelItems:
   - levelIndex: 1
-    sprite: {fileID: 21300000, guid: 84487d73ca4b791498332d8f6858417f, type: 3}
-    botCount: 2
+    map: {fileID: 5286696269574756341, guid: 061be3562f7f0494cafe80bc05f8978f, type: 3}
+    navMeshData: {fileID: 23800000, guid: 14ef52b5efe4bfd47ac75d117c8d20a3, type: 2}
+    aliveCount: 50
+    botCount: 6
   - levelIndex: 2
-    sprite: {fileID: 21300000, guid: bfd71187e5f614337ae0b4a9bcfff07f, type: 3}
-    botCount: 4
-  - levelIndex: 3
-    sprite: {fileID: 21300000, guid: bfd71187e5f614337ae0b4a9bcfff07f, type: 3}
-    botCount: 4
+    map: {fileID: 9025497132270776254, guid: feca6a9b4ebc85c45a716c432b40d60d, type: 3}
+    navMeshData: {fileID: 23800000, guid: e0c9ac33b0daf8543a9001adc5f24e28, type: 2}
+    aliveCount: 50
+    botCount: 5

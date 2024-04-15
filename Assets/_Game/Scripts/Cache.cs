@@ -6,6 +6,8 @@ public static class Cache
 {
 
     private static Dictionary<Collider, Character> characters = new Dictionary<Collider, Character>();
+    
+    private static Dictionary<Transform, Spawn> spawns = new Dictionary<Transform, Spawn>();
 
     public static Character GetCharacter(Collider collider)
     {
@@ -15,6 +17,16 @@ public static class Cache
         }
 
         return characters[collider];
+    }
+
+    public static Spawn GetSpawn(Transform transform)
+    {
+        if (!spawns.ContainsKey(transform))
+        {
+            spawns.Add(transform, transform.GetComponent<Spawn>());
+        }
+
+        return spawns[transform];
     }
 }
 

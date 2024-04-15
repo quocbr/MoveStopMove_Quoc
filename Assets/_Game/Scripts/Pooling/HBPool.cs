@@ -52,6 +52,7 @@ public static class HBPool
             return obj;
         }
 
+
         // Return an object to the inactive pool.
         public void Despawn(GameUnit obj)
         {
@@ -75,6 +76,7 @@ public static class HBPool
     }
 
     static Dictionary<PoolType, Pool> poolInstance = new Dictionary<PoolType, Pool>();
+    
 
     public static void Preload(GameUnit prefab, int amount, Transform parent = null)
     {
@@ -83,10 +85,16 @@ public static class HBPool
             poolInstance.Add(prefab.poolType, new Pool(prefab, amount, parent));
         }
     }
+    
 
     public static T Spawn<T>(PoolType poolType, Vector3 pos, Quaternion rot) where T : GameUnit
     {
          return poolInstance[poolType].Spawn(pos, rot) as T;
+    }
+    
+    public static T Spawn<T>(PoolType poolType) where T : GameUnit
+    {
+         return poolInstance[poolType].Spawn(Vector3.zero, Quaternion.identity) as T;
     }
 
     public static void Despawn(GameUnit gameUnit)
@@ -101,4 +109,6 @@ public static class HBPool
             pool.Value.Collect();
         }
     }
+
+    
 }
