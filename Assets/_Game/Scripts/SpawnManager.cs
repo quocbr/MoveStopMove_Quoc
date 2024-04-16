@@ -10,9 +10,6 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public List<Character> InitSpawn(int numBot)
     {
-        //List<Material> colorDatas = Utilities.SortOrder(colorSO.colorList, numBot);
-        //int rand = Random.Range(0, numBot + 1);
-
         List<Character> characters = new List<Character>();
         Player player = HBPool.Spawn<Player>(PoolType.Player, Vector3.zero, Quaternion.identity);
         characters.Add(player);
@@ -54,7 +51,6 @@ public class SpawnManager : Singleton<SpawnManager>
             Bot bot = HBPool.Spawn<Bot>(PoolType.Bot, LevelManager.Ins.L_SpawnPos[i].position,Quaternion.identity);
             bot.CurrentColor = (ColorType)(i);
             bot.NameChar = "Bot " + i;
-            //bot.ChangeWeapon(PoolType.Knife);
             bot.ChangeWeapon(EquipmentController.Ins.GetWeapon());
 
             int randomeq = Random.Range(1, 101);

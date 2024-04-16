@@ -18,7 +18,7 @@ public class IdleState : IState<Character>
         //UNDONE:
         if((t as Bot).CheckAttack())
         {
-            (t as Bot).BotAttack();
+            t.Attack();
             return;
         }
 

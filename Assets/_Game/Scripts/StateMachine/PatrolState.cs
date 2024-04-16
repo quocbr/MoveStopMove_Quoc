@@ -16,7 +16,7 @@ public class PatrolState : IState<Character>
             (t as Bot).ChangeState(new AttackState());
         }
 
-        if((t as Bot).IsFinish()) 
+        if((t as Bot).IsMoveFinish()) 
         {
             (t as Bot).ChangeState(new IdleState());
         }

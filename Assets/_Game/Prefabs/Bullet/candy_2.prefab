@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7912026774332248986}
   - component: {fileID: 7441293761286563243}
-  - component: {fileID: 777469367808629317}
   - component: {fileID: 1347939354902828531}
+  - component: {fileID: 5087733653082000511}
   m_Layer: 0
   m_Name: Candy_2
   m_TagString: Untagged
@@ -52,29 +52,6 @@ MonoBehaviour:
   moveSpeed: 6
   timeLife: 3
   rb: {fileID: 1347939354902828531}
---- !u!136 &777469367808629317
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3041762702819274206}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.18
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: -0.09, z: 0}
 --- !u!54 &1347939354902828531
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -102,6 +79,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &5087733653082000511
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3041762702819274206}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.4, y: 1, z: 3}
+  m_Center: {x: 0, y: -0.1, z: 0}
 --- !u!1 &4671155058144007595
 GameObject:
   m_ObjectHideFlags: 0

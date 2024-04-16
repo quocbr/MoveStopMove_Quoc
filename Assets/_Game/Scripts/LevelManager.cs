@@ -89,8 +89,9 @@ public class LevelManager : Singleton<LevelManager>
         for (int i = 0; i < characters.Count; i++)
         {
             characters[i].ChangeState(null);
-            (characters[i] as Bot).StopMoving();
+            characters[i].StopMoving();
         }
+        offScreenIndicator.gameObject.SetActive(false);
     }
 
     public void OnReset()
@@ -98,6 +99,7 @@ public class LevelManager : Singleton<LevelManager>
         HBPool.CollectAll();
         characters.Clear();
         RemoveCurrentLevel();
+        offScreenIndicator.gameObject.SetActive(false);
     }
 
     internal void OnRetry()

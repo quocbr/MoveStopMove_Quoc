@@ -14,19 +14,18 @@ public class ItemSelectionUi : MonoBehaviour
 
     private void SpawnItem(EquipmentData equipmentData)
     {
-        EqItemUI itemUi = HBPool.Spawn<EqItemUI>(buttonPrefab.poolType);
-        itemUi.transform.SetParent(parentPosition, false);
+        EqItemUI itemUi = Instantiate(buttonPrefab, parentPosition);
+        //HBPool.Spawn<EqItemUI>(buttonPrefab.poolType);
+        //itemUi.transform.SetParent(parentPosition, false);
         itemUi.OnInit(equipmentData, OnItemUIClickHandle);
         listItemUI.Add(itemUi);
     }
 
     private void OnItemUIClickHandle(EquipmentData equipmentData)
     {
-        
         switch(skinShop.SelectionButton)
         {
             case ButtonSelection.Head:
-
                 LevelManager.Ins.Player.ChangeHead(equipmentData.poolType);
                 if (SaveLoadManager.Ins.UserData.listHeadOwn.Contains(equipmentData.poolType))
                 {
@@ -130,7 +129,7 @@ public class ItemSelectionUi : MonoBehaviour
             {
                 SpawnItem(equipmentData[i]);
             }
-            if(listItemUI.Count > 0 && i == 0)
+            if (listItemUI.Count > 0 && i == 0)
             {
                 listItemUI[0].SelectButton.onClick.Invoke();
             }
@@ -141,7 +140,9 @@ public class ItemSelectionUi : MonoBehaviour
     {
         for(int i = 0;i< listItemUI.Count; i++)
         {
-            HBPool.Despawn(listItemUI[i]);
+            //HBPool.Despawn(listItemUI[i]);
+            Destroy(listItemUI[i].gameObject);
         }
+        listItemUI.Clear();
     }
 }

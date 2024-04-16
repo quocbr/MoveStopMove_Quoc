@@ -6,16 +6,16 @@ public class AttackState : IState<Character>
 {
     public void OnEnter(Character t)
     {
-        (t as Bot).StopMoving();
+        t.StopMoving();
     }
 
     public void OnExecute(Character t)
     {
-        (t as Bot).BotAttack();
+        t.Attack();
 
-        if((t as Bot).CheckAttack() == false)
+        if(t.CheckAttack() == false)
         {
-            (t as Bot).ChangeState(new PatrolState());
+            t.ChangeState(new PatrolState());
         }
     }
 

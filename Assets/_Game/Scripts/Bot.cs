@@ -42,21 +42,21 @@ public class Bot : Character
         SetActiveTargetImage(false);
     }
 
-    public void StopMoving()
+    public override void StopMoving()
     {
         ChangeAnim(Anim.IDLE);
         agent.velocity = Vector3.zero;
         agent.isStopped = true;
     }
 
-    public void Moving()
+    public override void Moving()
     {
         ChangeAnim(Anim.RUN);
         Patrol();
         agent.isStopped = false;
     }
 
-    public bool IsFinish()
+    public bool IsMoveFinish()
     {
         return agent.remainingDistance <= 0.1f;
     }
@@ -89,14 +89,9 @@ public class Bot : Character
         return false;
     }
 
-    public bool CheckAttack()
+    public override void Attack()
     {
-        return listTargetChar.Count != 0;
-    }
-
-    public void BotAttack()
-    {
-        
+        base.Attack();
         if (isAttack == false)
         {
             timer += Time.deltaTime;
@@ -105,13 +100,6 @@ public class Bot : Character
         else
         {
             LookAtTargetDir();
-        }
-
-        if(listTargetChar.Contains(targetChar) && timer >= delayAttack)
-        {
-            ChangeAnim(Anim.ATTACK);
-            isAttack = true;
-            timer = 0;
         }
     }
 
@@ -136,7 +124,8 @@ public class Bot : Character
         else
         {
             LevelManager.Ins.RemainBot -= 1;
-            UIManager.Ins.GetUI<GamePlay>().SetAliveText(LevelManager.Ins.RemainBot);
+            LevelManager.Ins.Alive -= 1;
+            UIManager.Ins.GetUI<GamePlay>().SetAliveText(LevelManager.Ins.Alive);
             OnInit();
             ResetEQ1();
             Vector3 centre = LevelManager.Ins.GetRandomSpawnPos();

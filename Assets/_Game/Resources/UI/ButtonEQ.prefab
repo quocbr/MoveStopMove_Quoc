@@ -402,9 +402,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f098d48319ef340a3c41bfdd7d98ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolType: 500
   imageItem: {fileID: 7457377087521085674}
   selectButton: {fileID: 4303666068083383438}
+  iconLock: {fileID: 3010864540510318739}
+  iconUnlock: {fileID: 2567565178602001175}
+  iconEquiped: {fileID: 8455876301676984365}
 --- !u!1 &8455876301676984365
 GameObject:
   m_ObjectHideFlags: 0

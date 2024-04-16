@@ -22,12 +22,6 @@ public class Player : Character
     protected override void Update()
     {
         base.Update();
-        if (characterState.Equals(CharacterState.Dead))
-        {
-            ChangeAnim(Anim.DEAD);
-            GameManager.Ins.Lose();
-            return;
-        }
 
         if (GameManager.Ins.IsState(GameState.Gameplay) == false)
         {
@@ -38,20 +32,15 @@ public class Player : Character
             joystick = GameManager.Ins.Joystick;
         }
 
-        Move();
+        Moving();
 
-        if (targetChar != null && timer >= delayAttack)
-        {
-            ChangeAnim(Anim.ATTACK);
-            isAttack = true;
-            timer = 0;
-        }
+        Attack();
     }
 
 
-    protected override void Move()
+    public override void Moving()
     {
-        base.Move();
+        base.Moving();
 
         moveVector = Vector3.zero;
         moveVector.x = joystick.Horizontal * moveSpeed * Time.deltaTime;
@@ -88,37 +77,19 @@ public class Player : Character
         _rb.MovePosition(_rb.position + moveVector);
     }
 
-    public override void ResetEQ()
+    public void ResetEQ(UserData userData)
     {
-        currentWeapon.poolType = SaveLoadManager.Ins.UserData.currentWeapon;
-
-        if (SaveLoadManager.Ins.UserData.currentSet != SetType.None)
+        if(userData.currentSet != SetType.None)
         {
             ChangeSet(SaveLoadManager.Ins.UserData.currentSet);
-            return;
         }
-        if (SaveLoadManager.Ins.UserData.currentHead != PoolType.None)
+        else
         {
             ChangeHead(SaveLoadManager.Ins.UserData.currentHead);
-        }
-        if (SaveLoadManager.Ins.UserData.currentPant != PoolType.None)
-        {
             ChangePant(SaveLoadManager.Ins.UserData.currentPant);
-        }
-        if (SaveLoadManager.Ins.UserData.currentShield != PoolType.None)
-        {
             ChangeShield(SaveLoadManager.Ins.UserData.currentShield);
-        }
-        if (SaveLoadManager.Ins.UserData.currentTail != PoolType.None)
-        {
             ChangeTail(SaveLoadManager.Ins.UserData.currentTail);
-        }
-        if (SaveLoadManager.Ins.UserData.currentWing != PoolType.None)
-        {
             ChangeWing(SaveLoadManager.Ins.UserData.currentWing);
         }
-        
-
-        //base.ResetEQ();
     }
 }

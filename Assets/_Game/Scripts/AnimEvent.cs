@@ -8,7 +8,7 @@ public class AnimEvent : MonoBehaviour
 
     public void HandleBeginAttack()
     {
-        character.Attack();
+        character.Attacking();
     }
 
     public void HandleEndAttack()

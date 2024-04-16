@@ -38,10 +38,15 @@ public class GameManager : Singleton<GameManager>
         UIManager.Ins.OpenUI<Win>();
 
     }
-
     public void Lose()
     {
         UIManager.Ins.OpenUI<Lose>();
     }
 
+    [ContextMenu("Add Coin")]
+    public void AddCoin()
+    {
+        SaveLoadManager.Ins.UserData.Coin += 100;
+        SaveLoadManager.Ins.Save();
+    }
 }

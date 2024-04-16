@@ -13,7 +13,7 @@ public class Character : GameUnit
 
     [Header("Charracter")]
     [SerializeField] private Animator anim;
-    
+
     [SerializeField] private ColorType currentColor;
     [SerializeField] private Transform throwPos;
     [SerializeField] private SkinnedMeshRenderer colorSkin;
@@ -26,6 +26,8 @@ public class Character : GameUnit
     [SerializeField] private SkinnedMeshRenderer pantType;
 
     [SerializeField] private AnimationEvent animEvent;
+    [SerializeField] private float delayAttack = 0.8f;
+    [SerializeField] private float maxScale = 2.5f;
 
     private int point = 0;
     private string currentAnimName;
@@ -36,10 +38,10 @@ public class Character : GameUnit
     protected CharacterState characterState;
     protected List<Character> listTargetChar;
     protected Character targetChar;
-    protected float delayAttack = 1f;
+    
     protected float timer = 0;
 
-    
+
     protected GameUnit currentHead;
     protected PoolType currentPant;
     protected GameUnit currentWing;
@@ -47,7 +49,7 @@ public class Character : GameUnit
     protected GameUnit currentShield;
     protected GameUnit currentWeapon;
     protected SetType currentSet;
-    
+
     protected bool isAttack = false;
     protected bool isAttacking = false;
 
@@ -72,7 +74,7 @@ public class Character : GameUnit
 
     protected virtual void Update()
     {
-        if(GameManager.Ins.IsState(GameState.Gameplay) == false)
+        if (GameManager.Ins.IsState(GameState.Gameplay) == false)
         {
             return;
         }
@@ -107,23 +109,44 @@ public class Character : GameUnit
 
     protected virtual void LookAtTargetDir()
     {
-        if(targetChar != null)
+        if (targetChar != null)
         {
             this.transform.LookAt(targetChar.TF);
             AttackDir = targetChar.TF.position - ThrowPos.position;
         }
-        
+
     }
 
-    protected virtual void Move()
+    #region Moving
+    public virtual void Moving()
     {
 
     }
 
-#region Attack
+    public virtual void StopMoving()
+    {
+
+    }
+    #endregion
+
+    #region Attack
+    public virtual bool CheckAttack()
+    {
+        return listTargetChar.Count != 0;
+    }
     public virtual void Attack()
     {
-        
+        if (targetChar != null && timer >= delayAttack)
+        {
+            ChangeAnim(Anim.ATTACK);
+            isAttack = true;
+            timer = 0;
+        }
+    }
+
+    public virtual void Attacking()
+    {
+
         isAttack = true;
         LookAtTargetDir();
         Throw();
@@ -150,7 +173,7 @@ public class Character : GameUnit
 
     #endregion Attack
 
-    
+
 
     #region Target
     public virtual void AddTarget(Character target)
@@ -170,7 +193,7 @@ public class Character : GameUnit
     {
         if (this is Player)
         {
-                (target as Bot).SetActiveTargetImage(false);
+            (target as Bot).SetActiveTargetImage(false);
         }
         this.listTargetChar.Remove(target);
         if (listTargetChar.Count == 0)
@@ -187,31 +210,35 @@ public class Character : GameUnit
         }
     }
 
-#endregion
+    #endregion
 
-#region Hanlde Dead
+    #region Hanlde Dead
     public virtual void DoDead(string name = null)
     {
         IsDead = true;
         characterState = CharacterState.Dead;
-        killByName = name;
-        //TODO:Xu ly khi    
         ChangeAnim(Anim.DEAD);
+        killByName = name;
+        if (this is Player)
+        {
+            GameManager.Ins.Lose();
+        }
         LevelManager.Ins.HandleCharacterDead(this);
     }
 
-#endregion
+    #endregion
 
     protected virtual void AddPoint(int point)
     {
         this.Point += point > 0 ? point : 1;
-        TF.localScale = Vector3.one + Vector3.one * this.Point * 0.2f;
+        if (TF.localScale.x > maxScale) return;
+        TF.localScale = Vector3.one + Vector3.one * (this.Point/3)* 0.1f;
     }
 
-#region Change Eq
+    #region Change Eq
     public virtual void ChangeColorSkin(Material material)
     {
-        colorSkin.material = material; 
+        colorSkin.material = material;
     }
 
     public virtual void ChangeWeapon(PoolType weaponType)
@@ -224,7 +251,7 @@ public class Character : GameUnit
         }
         //currentWeapon = Instantiate(weapon);
         currentWeapon = HBPool.Spawn<GameUnit>(weaponType);
-        currentWeapon.transform.SetParent(weaponPos,false);
+        currentWeapon.transform.SetParent(weaponPos, false);
         currentWeapon.TF.localPosition = Vector3.zero;
         currentWeapon.TF.localRotation = Quaternion.identity;
         currentWeapon.TF.localScale = Vector3.one;
@@ -232,7 +259,7 @@ public class Character : GameUnit
 
     public virtual void ChangeHead(PoolType headType)
     {
-        if(currentHead != null)
+        if (currentHead != null)
         {
             //Destroy(currentHead.gameObject);
             HBPool.Despawn(currentHead);
@@ -259,7 +286,7 @@ public class Character : GameUnit
             pantType.material = material;
         }
     }
-    
+
     public virtual void ChangePant(PoolType poolType)
     {
         Material material = EquipmentController.Ins.GetPant(poolType);
@@ -329,6 +356,13 @@ public class Character : GameUnit
 
     public virtual void ChangeSet(SetType setType)
     {
+        if (currentSet == SetType.None)
+        {
+            RemoveAllEQ();
+            currentSet = setType;
+            return;
+        }
+
         ChangeHead(EquipmentController.Ins.GetHead(setType));
         ChangePant(EquipmentController.Ins.GetPant(setType));
         ChangeWing(EquipmentController.Ins.GetWing(setType));
@@ -338,23 +372,6 @@ public class Character : GameUnit
         ChangeColorSkin(SpawnManager.Ins.GetColorSkinSet(setType));
 
         currentSet = setType;
-    }
-
-    public virtual void ResetEQ()
-    {
-        ChangeWeapon(currentWeapon.poolType);
-        if(currentSet != SetType.None)
-        {
-            ChangeSet(currentSet);
-        }
-        else
-        {
-            ChangeHead(currentHead.poolType);
-            ChangePant(currentPant);
-            ChangeWing(currentWing.poolType);
-            ChangeTail(currentTail.poolType);
-            ChangeShield(currentShield.poolType);
-        }
     }
 
     public virtual void RemoveAllEQ()

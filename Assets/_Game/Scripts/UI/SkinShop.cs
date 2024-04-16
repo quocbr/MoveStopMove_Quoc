@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
 
-public enum ButtonSelection{ Head,Pant,Shield,Set}
+public enum ButtonSelection{ None =0 ,Head,Pant,Shield,Set}
 public class SkinShop : UICanvas
 {
     [SerializeField] private Button headButton;
@@ -44,6 +44,10 @@ public class SkinShop : UICanvas
 
     private void OnSetButtonClickhandle()
     {
+        if(selectionButton == ButtonSelection.Set)
+        {
+            return;
+        }
         headButton.image.color = Color.gray;
         pantButton.image.color = Color.gray;
         shieldButton.image.color = Color.gray;
@@ -54,6 +58,10 @@ public class SkinShop : UICanvas
 
     private void OnShieldButtonClickhandle()
     {
+        if (selectionButton == ButtonSelection.Shield)
+        {
+            return;
+        }
         headButton.image.color = Color.gray;
         pantButton.image.color = Color.gray;
         shieldButton.image.color = Color.black;
@@ -64,6 +72,10 @@ public class SkinShop : UICanvas
 
     private void OnPantButtonClickhandle()
     {
+        if (selectionButton == ButtonSelection.Pant)
+        {
+            return;
+        }
         headButton.image.color = Color.gray;
         pantButton.image.color = Color.black;
         shieldButton.image.color = Color.gray;
@@ -74,6 +86,10 @@ public class SkinShop : UICanvas
 
     private void OnHeadButtonClickhandle()
     {
+        if (selectionButton == ButtonSelection.Head)
+        {
+            return;
+        }
         headButton.image.color = Color.black;
         pantButton.image.color = Color.gray;
         shieldButton.image.color = Color.gray;
@@ -96,33 +112,25 @@ public class SkinShop : UICanvas
             currentCoin -= price;
             SetCoinText(currentCoin);
             SaveLoadManager.Ins.UserData.Coin = currentCoin;
-            if (selectionButton == ButtonSelection.Head)
+            switch (selectionButton)
             {
-                SaveLoadManager.Ins.UserData.listHeadOwn.Add(currentEquipmentData.poolType);
-            }
-            if (selectionButton == ButtonSelection.Pant)
-            {
-                SaveLoadManager.Ins.UserData.listPantOwn.Add(currentEquipmentData.poolType);
-            }
-            if (selectionButton == ButtonSelection.Shield)
-            {
-                SaveLoadManager.Ins.UserData.listShieldOwn.Add(currentEquipmentData.poolType);
-
-            }
-            if (selectionButton == ButtonSelection.Set)
-            {
-                SaveLoadManager.Ins.UserData.listSetOwn.Add(currentEquipmentData.setType);
+                case ButtonSelection.Head:
+                    SaveLoadManager.Ins.UserData.listHeadOwn.Add(currentEquipmentData.poolType);
+                    break;
+                case ButtonSelection.Pant:
+                    SaveLoadManager.Ins.UserData.listPantOwn.Add(currentEquipmentData.poolType);
+                    break;
+                case ButtonSelection.Shield:
+                    SaveLoadManager.Ins.UserData.listShieldOwn.Add(currentEquipmentData.poolType);
+                    break;
+                case ButtonSelection.Set:
+                    SaveLoadManager.Ins.UserData.listSetOwn.Add(currentEquipmentData.setType);
+                    break;
             }
             buyButton.gameObject.SetActive(false);
             equipButton.gameObject.SetActive(true);
             SetEquipText(Constant.EQUIP_STRING);
             SaveLoadManager.Ins.Save();
-            Debug.Log(currentEquipmentData.poolType);
-            foreach(var x in SaveLoadManager.Ins.UserData.listHeadOwn)
-            {
-                Debug.Log(x);
-
-            }
         }
     }
 
@@ -152,6 +160,8 @@ public class SkinShop : UICanvas
     private void OnCloseButtonClickHandle()
     {
         UIManager.Ins.OpenUI<MainMenu>();
+        LevelManager.Ins.Player.ResetEQ(SaveLoadManager.Ins.UserData);
+        selectionButton = ButtonSelection.None;
         Close(0);
     }
 
