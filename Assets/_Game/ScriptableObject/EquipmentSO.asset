@@ -19,7 +19,9 @@ MonoBehaviour:
     equipmenyType: 0
     poolType: 5
     setType: 0
-    materials: []
+    materials:
+    - {fileID: 2100000, guid: 56cd60e0555bc444ea3e8dfff06d895c, type: 2}
+    - {fileID: 2100000, guid: 458c4f259dd94d24cb9dad733df8a562, type: 2}
     image: {fileID: 0}
     value: 20
     cost: 100
@@ -29,7 +31,9 @@ MonoBehaviour:
     equipmenyType: 0
     poolType: 6
     setType: 0
-    materials: []
+    materials:
+    - {fileID: 2100000, guid: 54156973c98a8344ebb9a134325edd98, type: 2}
+    - {fileID: 2100000, guid: ccc75aa0bea8a724e8c504faceba1e25, type: 2}
     image: {fileID: 0}
     value: 20
     cost: 10
@@ -39,17 +43,23 @@ MonoBehaviour:
     equipmenyType: 0
     poolType: 4
     setType: 0
-    materials: []
+    materials:
+    - {fileID: 2100000, guid: ec8f8b93276268544ae07bda6c3793bc, type: 2}
+    - {fileID: 2100000, guid: dc4b177504dfba349b8bb9777c9e3911, type: 2}
     image: {fileID: 0}
     value: 20
-    cost: 50
+    cost: 0
   - id: 4
     name: Axe
     description: Ba dao
     equipmenyType: 0
     poolType: 2
     setType: 0
-    materials: []
+    materials:
+    - {fileID: 2100000, guid: 1d95bca77d8c97f4292d889c27735ef1, type: 2}
+    - {fileID: 2100000, guid: 7a8be0861656ac64aa1f18f707c58ed1, type: 2}
+    - {fileID: 2100000, guid: 3b350d61cab570444adbb1e3e3e74a3f, type: 2}
+    - {fileID: 2100000, guid: a8b1963f18d6da04b964ecd9e5f19973, type: 2}
     image: {fileID: 0}
     value: 20
     cost: 0
@@ -59,7 +69,9 @@ MonoBehaviour:
     equipmenyType: 0
     poolType: 3
     setType: 0
-    materials: []
+    materials:
+    - {fileID: 2100000, guid: 5dfd3db96e726eb468fd4419aa19ac89, type: 2}
+    - {fileID: 2100000, guid: abcf4a36e25a3af4fbebbd18df69ffe9, type: 2}
     image: {fileID: 0}
     value: 20
     cost: 0
@@ -69,7 +81,48 @@ MonoBehaviour:
     equipmenyType: 0
     poolType: 8
     setType: 0
-    materials: []
+    materials:
+    - {fileID: 2100000, guid: 3b818c3f692edaf40aa25c60ad076e96, type: 2}
+    - {fileID: 2100000, guid: 1a619f40f894de64eb66dbb9f5480be4, type: 2}
+    image: {fileID: 0}
+    value: 20
+    cost: 0
+  - id: 8
+    name: Candy 4
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 10
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 20cdc54be16796a4fb3a7db9d74082ee, type: 2}
+    - {fileID: 2100000, guid: b1b53fe5c7ca5bd4792fecd0c8175d56, type: 2}
+    image: {fileID: 0}
+    value: 20
+    cost: 0
+  - id: 8
+    name: Candy 1
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 9
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 4c8c169b176f3f548a7fc192d36d9571, type: 2}
+    - {fileID: 2100000, guid: 11b403b458eeb1a43a5c72a887ebcec1, type: 2}
+    - {fileID: 2100000, guid: 87a07de9ec5c1004b8fac0aead93802f, type: 2}
+    - {fileID: 2100000, guid: 6a0e95c786db7d14e9fab002add9022c, type: 2}
+    - {fileID: 2100000, guid: 3742c97a0921f984f8897faffd3a8c4a, type: 2}
+    image: {fileID: 0}
+    value: 20
+    cost: 0
+  - id: 8
+    name: Axe 1
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 11
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 3b350d61cab570444adbb1e3e3e74a3f, type: 2}
+    - {fileID: 2100000, guid: a8b1963f18d6da04b964ecd9e5f19973, type: 2}
     image: {fileID: 0}
     value: 20
     cost: 0

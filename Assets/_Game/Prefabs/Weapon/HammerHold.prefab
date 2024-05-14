@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 5
+  child: {fileID: 6194690419018230668}
   meshRenderer: {fileID: 486864666198227569}
 --- !u!1 &6194690419018230668
 GameObject:
@@ -108,8 +109,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 56cd60e0555bc444ea3e8dfff06d895c, type: 2}
+  - {fileID: 2100000, guid: 56cd60e0555bc444ea3e8dfff06d895c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

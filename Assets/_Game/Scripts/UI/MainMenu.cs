@@ -28,6 +28,7 @@ public class MainMenu : UICanvas
 
     private void OnMyShinShopButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         UIManager.Ins.OpenUI<SkinShop>();
         Close(0);
     }
@@ -36,7 +37,8 @@ public class MainMenu : UICanvas
     {
         base.Open();
         GameManager.Ins.ChangeState(GameState.MainMenu);
-        CameraFollow.Ins.ZoomIn();
+        CameraFollower.Ins.ChangeState(CameraFollower.State.MainMenu);
+        //CameraFollow.Ins.ZoomIn();
 
         //Data
         this.SetCoinText(SaveLoadManager.Ins.UserData.Coin);
@@ -46,13 +48,15 @@ public class MainMenu : UICanvas
     public void OnMyPlayButtonClickHandle()
     {
         LevelManager.Ins.OnStartGame();
-        CameraFollow.Ins.ZoomOut();
+        //CameraFollow.Ins.ZoomOut();
+        CameraFollower.Ins.ChangeState(CameraFollower.State.Gameplay);
         UIManager.Ins.OpenUI<GamePlay>();
         Close(0);
     }
 
     public void OnMyWeaponShopButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         UIManager.Ins.OpenUI<WeaponShop>();
         Close(0);
     }

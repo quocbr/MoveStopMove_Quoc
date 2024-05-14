@@ -19,12 +19,20 @@ public class GamePlay : UICanvas
     {
         base.Open();
         GameManager.Ins.ChangeState(GameState.Gameplay);
+        LevelManager.Ins.SetTargetIndicatorAlpha(1);
         GameManager.Ins.Joystick = joystick;
         SetAliveText(LevelManager.Ins.Alive);
     }
 
+    public override void CloseDirectly()
+    {
+        base.CloseDirectly();
+        LevelManager.Ins.SetTargetIndicatorAlpha(0);
+    }
+
     private void OnMySettingButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         UIManager.Ins.OpenUI<Setting>();
         Close(0);
     }

@@ -432,7 +432,7 @@ Animator:
   m_GameObject: {fileID: 2387381612292670970}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6a9d6a614aa9caa43b06921d0e55ae2f, type: 2}
+  m_Controller: {fileID: 9100000, guid: b3166a342dfaf4e408d610679f681ee1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -530,9 +530,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4017823432610050588}
   - component: {fileID: 8305019003715874586}
-  - component: {fileID: 4328354936058904662}
   - component: {fileID: 1717585576303386767}
-  - component: {fileID: 4591428290950171772}
+  - component: {fileID: 7892545376840095257}
   m_Layer: 7
   m_Name: Player
   m_TagString: Character
@@ -556,6 +555,7 @@ Transform:
   - {fileID: 1666801603061902061}
   - {fileID: 7238508012047135381}
   - {fileID: 4088876906329978780}
+  - {fileID: 4763399069111192629}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8305019003715874586
@@ -582,28 +582,11 @@ MonoBehaviour:
   shieldPos: {fileID: 8638156871867121556}
   weaponPos: {fileID: 7643866541740133274}
   pantType: {fileID: 8162194640028553635}
+  indicatorPoint: {fileID: 4763399069111192629}
   joystick: {fileID: 0}
   moveSpeed: 5
   rotationSpeed: 10
   _rb: {fileID: 1717585576303386767}
---- !u!114 &4328354936058904662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2744511437988409928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fabd168aff936c45ac29d040e8852d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 8305019003715874586}
-  targetColor: {r: 1, g: 0.9538581, b: 0, a: 1}
-  needBoxIndicator: 1
-  needArrowIndicator: 1
-  needDistanceText: 1
-  indicator: {fileID: 0}
 --- !u!54 &1717585576303386767
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -631,8 +614,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &4591428290950171772
-BoxCollider:
+--- !u!136 &7892545376840095257
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -649,9 +632,11 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 2.5, z: 1}
-  m_Center: {x: 0, y: 1.2, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &2824894926114547836
 GameObject:
   m_ObjectHideFlags: 0
@@ -1360,6 +1345,37 @@ Transform:
   - {fileID: 345522025848975616}
   m_Father: {fileID: 6184766703649896395}
   m_LocalEulerAnglesHint: {x: 10.923976, y: 2.4176152, z: 13.906172}
+--- !u!1 &5878177777420522641
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4763399069111192629}
+  m_Layer: 0
+  m_Name: IndicatorPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4763399069111192629
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5878177777420522641}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4017823432610050588}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5958385069504173078
 GameObject:
   m_ObjectHideFlags: 0

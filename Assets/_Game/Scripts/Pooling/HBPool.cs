@@ -74,12 +74,19 @@ public static class HBPool
             }
         }
     }
+    //dict for faster search from pool type to prefab
+    static Dictionary<PoolType, GameUnit> poolTypes = new Dictionary<PoolType, GameUnit>();
 
     static Dictionary<PoolType, Pool> poolInstance = new Dictionary<PoolType, Pool>();
     
 
     public static void Preload(GameUnit prefab, int amount, Transform parent = null)
     {
+        if (!poolTypes.ContainsKey(prefab.poolType))
+        {
+            poolTypes.Add(prefab.poolType, prefab);
+        }
+
         if (prefab != null && !poolInstance.ContainsKey(prefab.poolType))
         {
             poolInstance.Add(prefab.poolType, new Pool(prefab, amount, parent));
@@ -110,5 +117,41 @@ public static class HBPool
         }
     }
 
-    
+    static private bool IsHasPool(GameUnit obj)
+    {
+        return poolInstance.ContainsKey(obj.poolType);
+    }
+
+    static private Pool GetPool(GameUnit obj)
+    {
+        return poolInstance[obj.poolType];
+    }
+
+    public static GameUnit GetPrefabByType(PoolType poolType)
+    {
+        if (!poolTypes.ContainsKey(poolType) || poolTypes[poolType] == null)
+        {
+            GameUnit[] resources = Resources.LoadAll<GameUnit>("Pool");
+
+            for (int i = 0; i < resources.Length; i++)
+            {
+                poolTypes[resources[i].poolType] = resources[i];
+            }
+        }
+
+        return poolTypes[poolType];
+    }
+
+    #region Get List object ACTIVE
+    // get all member is active in game
+    public static List<GameUnit> GetAllUnitIsActive(GameUnit obj)
+    {
+        return IsHasPool(obj) ? GetPool(obj).Active : new List<GameUnit>();
+    }
+    public static List<GameUnit> GetAllUnitIsActive(PoolType poolType)
+    {
+        return GetAllUnitIsActive(GetPrefabByType(poolType));
+    }
+
+    #endregion
 }

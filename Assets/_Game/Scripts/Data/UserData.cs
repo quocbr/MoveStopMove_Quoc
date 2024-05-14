@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using UnityEngine;
 
 [Serializable]
 public class UserData
@@ -7,6 +9,7 @@ public class UserData
     public string userName; 
     public int coin;
     public int currentLevel;
+    public Material currentColor;
     public PoolType currentWeapon;
     public PoolType currentPant;
     public PoolType currentHead;
@@ -27,6 +30,7 @@ public class UserData
         this.userName = "You";
         this.coin = 0;
         this.currentLevel = 0;
+        this.currentColor = null;
         this.currentWeapon = PoolType.Hammer;
         this.currentPant = PoolType.None;
         this.currentHead = PoolType.None;

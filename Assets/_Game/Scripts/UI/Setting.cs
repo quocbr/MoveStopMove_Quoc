@@ -25,38 +25,43 @@ public class Setting : UICanvas
 
     private void OnMyHomeButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         LevelManager.Ins.OnRetry();
-        GameManager.Ins.ChangeState(GameState.MainMenu);
         UIManager.Ins.OpenUI<MainMenu>();
         Close(0);
     }
 
     private void OnMyContinueButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         UIManager.Ins.OpenUI<GamePlay>();
         Close(0);
     }
 
     private void OnSoundOnButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         soundOnButton.gameObject.SetActive(false);
         soundOffButton.gameObject.SetActive(true);
     }
 
     private void OnSoundOffButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         soundOnButton.gameObject.SetActive(true);
         soundOffButton.gameObject.SetActive(false);
     }
 
     private void OnVibOnButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         vibOnButton.gameObject.SetActive(false);
         vibOffButton.gameObject.SetActive(true);
     }
 
     private void OnVibOffButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         vibOnButton.gameObject.SetActive(true);
         vibOffButton.gameObject.SetActive(false);
     }

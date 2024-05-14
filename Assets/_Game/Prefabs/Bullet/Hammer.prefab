@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 664829634883781259}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 39, y: 39, z: 39}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1968765783651737807}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &8804536144108083693
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -61,8 +61,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 56cd60e0555bc444ea3e8dfff06d895c, type: 2}
+  - {fileID: 2100000, guid: 56cd60e0555bc444ea3e8dfff06d895c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -132,10 +132,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 173
-  rotateSpeed: 4
+  meshRenderer: {fileID: 2865267259942525763}
   moveSpeed: 6
-  timeLife: 3
-  rb: {fileID: 5639491197305354562}
+  child: {fileID: 5646673694249485244}
 --- !u!54 &5639491197305354562
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -159,7 +158,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -182,5 +181,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5, y: 1, z: 3}
-  m_Center: {x: 0, y: -0.02, z: 0}
+  m_Size: {x: 0.5, y: 3, z: 1}
+  m_Center: {x: 0, y: 0, z: 0.02}

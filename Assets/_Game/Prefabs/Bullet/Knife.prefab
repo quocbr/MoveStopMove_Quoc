@@ -48,10 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 171
-  rotateSpeed: 0
+  meshRenderer: {fileID: 8005779717954334806}
   moveSpeed: 7
-  timeLife: 2.2
-  rb: {fileID: 3781367057537553535}
+  child: {fileID: 8524390804891085088}
 --- !u!54 &3781367057537553535
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -75,7 +74,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -98,7 +97,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.2, y: 1.14, z: 3}
+  m_Size: {x: 0.2, y: 3, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6730217240997527315
 GameObject:
@@ -126,13 +125,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6730217240997527315}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2380620348274329514}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &3885335034890501993
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -161,8 +160,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 59ba001fa91bea74f834f8c08d869f91, type: 2}
-  - {fileID: 2100000, guid: 59ba001fa91bea74f834f8c08d869f91, type: 2}
+  - {fileID: 2100000, guid: 5dfd3db96e726eb468fd4419aa19ac89, type: 2}
+  - {fileID: 2100000, guid: 5dfd3db96e726eb468fd4419aa19ac89, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

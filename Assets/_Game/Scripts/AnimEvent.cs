@@ -8,20 +8,22 @@ public class AnimEvent : MonoBehaviour
 
     public void HandleBeginAttack()
     {
-        character.Attacking();
+        //character.Attacking();
+        character.CurrentWeapon.gameObject.SetActive(false);
     }
 
     public void HandleEndAttack()
     {
-        character.ResetAttack();
+        //character.ResetAttack();
+        character.CurrentWeapon.gameObject.SetActive(true);
     }
 
     public void HandleBotEndDead()
     {
         if(character is Bot)
         {
-            (character as Bot).ChangeAnim(Anim.IDLE);
-            (character as Bot).HandleEndDead();
+            ///(character as Bot).ChangeAnim(Anim.IDLE);
+            
             
         }
     }

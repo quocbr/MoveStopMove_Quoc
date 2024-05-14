@@ -9,30 +9,13 @@ public class IdleState : IState<Character>
     float timeDelay;
     public void OnEnter(Character t)
     {
-        (t as Bot).StopMoving();
-        timeDelay = Random.Range(1f, 3f);
+        t.StopMoving();
+        (t as Bot).Counter.Start(() => t.ChangeState(new PatrolState()), Random.Range(0f, 2f));
     }
 
     public void OnExecute(Character t)
     {
-        //UNDONE:
-        if((t as Bot).CheckAttack())
-        {
-            t.Attack();
-            return;
-        }
-
-        if(GameManager.Ins.IsState(GameState.Gameplay) == false)
-        {
-            return;
-        }
-
-        if(timer > timeDelay)
-        {
-            (t as Bot).ChangeState(new PatrolState());
-            timer = 0;
-        }
-        timer += Time.deltaTime;
+        (t as Bot).Counter.Execute();
     }
 
     public void OnExit(Character t)

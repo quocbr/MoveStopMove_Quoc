@@ -15,7 +15,7 @@ MonoBehaviour:
   listLevelItems:
   - levelIndex: 1
     map: {fileID: 5286696269574756341, guid: 061be3562f7f0494cafe80bc05f8978f, type: 3}
-    navMeshData: {fileID: 23800000, guid: 14ef52b5efe4bfd47ac75d117c8d20a3, type: 2}
+    navMeshData: {fileID: 0}
     aliveCount: 50
     botCount: 6
   - levelIndex: 2

@@ -1,12 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
-public enum ButtonSelection{ None =0 ,Head,Pant,Shield,Set}
+public enum ButtonSelection { None = 0, Head, Pant, Shield, Set }
 public class SkinShop : UICanvas
 {
     [SerializeField] private Button headButton;
@@ -25,9 +21,9 @@ public class SkinShop : UICanvas
     private ButtonSelection selectionButton;
     private EquipmentData currentEquipmentData;
 
-    public ButtonSelection SelectionButton { get => selectionButton;}
+    public ButtonSelection SelectionButton { get => selectionButton; }
     public Button BuyButton { get => buyButton; }
-    public Button EquipButton { get => equipButton;}
+    public Button EquipButton { get => equipButton; }
     public EquipmentData CurrentEquipmentData { get => currentEquipmentData; set => currentEquipmentData = value; }
 
     private void Awake()
@@ -42,12 +38,20 @@ public class SkinShop : UICanvas
         equipButton.onClick.AddListener(OnEquipButtonClickHandle);
     }
 
+    private void Start()
+    {
+        OnHeadButtonClickhandle();
+    }
+
     private void OnSetButtonClickhandle()
     {
-        if(selectionButton == ButtonSelection.Set)
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
+        if (selectionButton == ButtonSelection.Set)
         {
             return;
         }
+        LevelManager.Ins.Player.ResetEQ(SaveLoadManager.Ins.UserData);
+
         headButton.image.color = Color.gray;
         pantButton.image.color = Color.gray;
         shieldButton.image.color = Color.gray;
@@ -58,10 +62,13 @@ public class SkinShop : UICanvas
 
     private void OnShieldButtonClickhandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         if (selectionButton == ButtonSelection.Shield)
         {
             return;
         }
+        LevelManager.Ins.Player.ResetEQ(SaveLoadManager.Ins.UserData);
+
         headButton.image.color = Color.gray;
         pantButton.image.color = Color.gray;
         shieldButton.image.color = Color.black;
@@ -72,10 +79,13 @@ public class SkinShop : UICanvas
 
     private void OnPantButtonClickhandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         if (selectionButton == ButtonSelection.Pant)
         {
             return;
         }
+        LevelManager.Ins.Player.ResetEQ(SaveLoadManager.Ins.UserData);
+
         headButton.image.color = Color.gray;
         pantButton.image.color = Color.black;
         shieldButton.image.color = Color.gray;
@@ -86,10 +96,13 @@ public class SkinShop : UICanvas
 
     private void OnHeadButtonClickhandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         if (selectionButton == ButtonSelection.Head)
         {
             return;
         }
+        LevelManager.Ins.Player.ResetEQ(SaveLoadManager.Ins.UserData);
+
         headButton.image.color = Color.black;
         pantButton.image.color = Color.gray;
         shieldButton.image.color = Color.gray;
@@ -98,9 +111,12 @@ public class SkinShop : UICanvas
         itemSelectionUi.SpawnItemList(EquipmentType.Head);
     }
 
-    private void Start()
+    private void OnCloseButtonClickHandle()
     {
-        OnHeadButtonClickhandle();
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
+        UIManager.Ins.OpenUI<MainMenu>();
+        LevelManager.Ins.Player.ResetEQ(SaveLoadManager.Ins.UserData);
+        Close(0);
     }
 
     public void OnBuyButtonClickHandle()
@@ -109,6 +125,7 @@ public class SkinShop : UICanvas
         int price = currentEquipmentData.cost;
         if (currentCoin >= price)
         {
+            SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
             currentCoin -= price;
             SetCoinText(currentCoin);
             SaveLoadManager.Ins.UserData.Coin = currentCoin;
@@ -132,17 +149,22 @@ public class SkinShop : UICanvas
             SetEquipText(Constant.EQUIP_STRING);
             SaveLoadManager.Ins.Save();
         }
+        else
+        {
+            SoundManager.Ins.PlaySFX(Constant.SFXSound.DEBUTTON_CLICK);
+        }
     }
 
     public void OnEquipButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         if (selectionButton == ButtonSelection.Head)
         {
             SaveLoadManager.Ins.UserData.currentHead = currentEquipmentData.poolType;
         }
         if (selectionButton == ButtonSelection.Pant)
         {
-            SaveLoadManager.Ins.UserData.currentPant=currentEquipmentData.poolType;
+            SaveLoadManager.Ins.UserData.currentPant = currentEquipmentData.poolType;
         }
         if (selectionButton == ButtonSelection.Shield)
         {
@@ -157,25 +179,18 @@ public class SkinShop : UICanvas
         SaveLoadManager.Ins.Save();
     }
 
-    private void OnCloseButtonClickHandle()
-    {
-        UIManager.Ins.OpenUI<MainMenu>();
-        LevelManager.Ins.Player.ResetEQ(SaveLoadManager.Ins.UserData);
-        selectionButton = ButtonSelection.None;
-        Close(0);
-    }
-
     public override void Open()
     {
         base.Open();
-        CameraFollow.Ins.ZoomInSkinShop();
+        //CameraFollow.Ins.ZoomInSkinShop();
+        CameraFollower.Ins.ChangeState(CameraFollower.State.Shop);
         LevelManager.Ins.Player.ChangeAnim(Anim.DANCE);
         SetCoinText(SaveLoadManager.Ins.UserData.Coin);
     }
 
     public override void Close(float delayTime)
     {
-        
+
         LevelManager.Ins.Player.ChangeAnim(Anim.IDLE);
         base.Close(delayTime);
     }

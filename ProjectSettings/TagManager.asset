@@ -7,6 +7,7 @@ TagManager:
   - Character
   - Target
   - Bullet
+  - ShowWeaponCamera
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Player
   - Bot
   - Map
-  - 
+  - Obtercal
   - 
   - 
   - 

@@ -13,6 +13,19 @@ public class Constant
 
     public const string EQUIP_STRING = "Equip";
     public const string EQUIPED_STRING = "Equiped";
+
+    public const string TAG_BLOCK = "Block";
+
+    public class MusicSound
+    {
+        public const string THEME = "";
+    }
+
+    public class SFXSound
+    {
+        public const string BUTTON_CLICK = "Button Click";
+        public const string DEBUTTON_CLICK = "Button Click2";
+    }
 }
 
 public class Layer
@@ -31,7 +44,7 @@ public class Anim
 {
     public const string IDLE = "idle";
     public const string RUN = "run";
-    public const string DEAD = "dead";
+    public const string DEAD = "die";
     public const string ATTACK = "attack";
     public const string WIN = "win";
     public const string ULTI = "ulti";
@@ -45,5 +58,60 @@ public class PathContant
     public const string FINISHPOINT_PATH = "Level/FinishPoint/FinishPoint";
     public const string MAPDATA_PATCH = "Level/Map/MapData";
     public const string BRICK_PATCH = "Brick";
+}
+
+public enum WeaponType
+{
+    W_Hammer = PoolType.Hammer,
+    W_Axe = PoolType.Axe,
+    W_Axe_1 = PoolType.Axe_1,
+    W_Candy_1 = PoolType.Candy_1,
+    W_Candy_2 = PoolType.Candy_2,
+    W_Candy_0 = PoolType.Candy_0,
+    W_Candy_4 = PoolType.Candy_4,
+    W_Boomerang = PoolType.Boomerang,
+    W_Knife = PoolType.Knife,
+    W_Uzi = PoolType.Uzi,
+}
+
+public enum BulletType
+{
+    B_Hammer = PoolType.B_Hammer,
+    B_Axe = PoolType.B_Axe,
+    B_Axe_1 = PoolType.B_Axe_1,
+    B_Candy_1 = PoolType.B_Candy_1,
+    B_Candy_2 = PoolType.B_Candy_2,
+    B_Candy_0 = PoolType.B_Candy_0,
+    B_Candy_4 = PoolType.B_Candy_4,
+    B_Boomerang = PoolType.B_Boomerang,
+    B_Knife = PoolType.B_Knife,
+    //B_Uzi = PoolType.B_Uzi,
+}
+
+public enum HatType
+{
+    HAT_None = 0,
+    HAT_Arrow = PoolType.Arow,
+    HAT_Cap = PoolType.Hat,
+    HAT_Cowboy = PoolType.Cowboy,
+    HAT_Crown = PoolType.Crown,
+    HAT_Ear = PoolType.Ear,
+    HAT_StrawHat = PoolType.HatYellow,
+    HAT_Headphone = PoolType.Head_Phone,
+    HAT_Horn = PoolType.Horn,
+    HAT_Police = PoolType.HatCap,
+}
+
+public enum PantType
+{
+    Pant_1,
+    Pant_2,
+    Pant_3,
+    Pant_4,
+    Pant_5,
+    Pant_6,
+    Pant_7,
+    Pant_8,
+    Pant_9,
 }
 

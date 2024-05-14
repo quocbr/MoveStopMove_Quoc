@@ -1,24 +1,37 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 public class Knife : Bullet
 {
-    public override void OnInit(Character attacker, Action<Character, Character> onHit)
-    {
-        this.attacker = attacker;
-        this.onHit = onHit;
-        Vector3 dir = new Vector3(attacker.AttackDir.x, 0, attacker.AttackDir.z);
-        Quaternion rotation = Quaternion.LookRotation(dir);
-        TF.rotation = rotation;
-        transform.Rotate(-90f, transform.rotation.y, transform.rotation.z);
-        rb.velocity = dir.normalized * moveSpeed;
-        Invoke(nameof(OnDespawn), timeLife);
+    public const float TIME_ALIVE = 1f;
 
+    //CounterTime counterTime = new CounterTime();
+
+    public override void OnInit(Material material, Character attacker, Action<Character, Character> onHit)
+    {
+
+        base.OnInit(material, attacker, onHit);
+        //transform.Rotate(90f, 0, 0);
+        counterTime.Start(OnDespawn, TIME_ALIVE * attacker.Size);
     }
     protected override void Update()
     {
         base.Update();
+        //transform.Rotate(0, 0, rotateSpeed);
+        counterTime.Execute();
+        if (isRunning)
+        {
+            //TF.Translate(TF.forward * moveSpeed * Time.deltaTime, Space.World);
+            MoveForward();
+        }
+    }
+
+    protected override void OnStop()
+    {
+        base.OnStop();
+        isRunning = false;
     }
 }

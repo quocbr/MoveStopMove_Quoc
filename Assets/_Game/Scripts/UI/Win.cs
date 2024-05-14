@@ -14,8 +14,6 @@ public class Win : UICanvas
         continueButton.onClick.AddListener(OnContinueButtonClick);
     }
 
-    
-
     public override void Open()
     {
         base.Open();
@@ -29,11 +27,12 @@ public class Win : UICanvas
     }
     private void OnContinueButtonClick()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         LevelManager.Ins.OnNextLevel();
         Close(0);
     }
 
-    private void SetCoinText(int coin)
+    public void SetCoinText(int coin)
     {
         coinText.text = coin.ToString();
     }

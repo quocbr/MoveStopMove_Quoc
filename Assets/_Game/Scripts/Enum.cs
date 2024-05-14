@@ -50,6 +50,9 @@ public enum PoolType
     Candy_2,
     Uzi,
     Candy_0,
+    Candy_1,
+    Candy_4,
+    Axe_1,
 
     [InspectorName("=======Head=====")] eq,
     Arow =30,
@@ -80,6 +83,9 @@ public enum PoolType
     B_Hammer,
     B_Candy_2,
     B_Candy_0,
+    B_Candy_1,
+    B_Candy_4,
+    B_Axe_1,
 
     [InspectorName("=======Tail=====")] tail,
     Tail_David = 200,
@@ -110,6 +116,12 @@ public enum PoolType
 
     [InspectorName("======UI========")] uii,
     ItemDataUI = 500,
+
+    [InspectorName("======Fx========")] fx,
+    Temp = 600,
+
+    [InspectorName("======Indir========")] indicater,
+    TargetIndicator = 700,
 }
 
 

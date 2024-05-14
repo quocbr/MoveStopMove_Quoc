@@ -2,65 +2,96 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class Boomerang : Bullet
 {
-    [SerializeField]private float timeBack = 2f;
-    private Vector3 startPoit;
-    private float timer = 0;
-    private bool isBack;
+    public float Time_back = 1f;
+    public enum State { Forward, Backward, Stop }
 
-    private Vector3 moveVector;
-    public override void OnInit(Character attacker, Action<Character, Character> onHit)
+    private State state;
+
+    //[SerializeField] Transform child;
+
+    //CounterTime counterTime = new CounterTime();
+
+    public override void OnInit(Material material, Character attacker, Action<Character, Character> onHit)
     {
-        timeLife = float.MaxValue;
-        base.OnInit(attacker, onHit);
-        transform.Rotate(90f, 0, 0);
-        timer = 0f;
-        startPoit = attacker.TF.position;
-        isBack = false;
+        base.OnInit(material, attacker, onHit);
+        counterTime.Start(Back, Time_back * attacker.Size);
+        state = State.Forward;
     }
     protected override void Update()
     {
         base.Update();
-        transform.Rotate(0, 0, rotateSpeed);
-        BoomerangThrow();
+
+        switch (state)
+        {
+            case State.Forward:
+                //TF.position = Vector3.MoveTowards(TF.position, this.target, moveSpeed * Time.deltaTime);
+                TF.Translate(TF.forward * moveSpeed * Time.deltaTime, Space.World);
+                counterTime.Execute();
+                child.Rotate(Vector3.up * -6, Space.Self);
+                break;
+
+            case State.Backward:
+                TF.position = Vector3.MoveTowards(TF.position, this.attacker.TF.position, moveSpeed * Time.deltaTime);
+                if (attacker.IsDead || Vector3.Distance(TF.position, this.attacker.TF.position) < 0.1f)
+                {
+                    OnDespawn();
+                }
+                child.Rotate(Vector3.up * -6, Space.Self);
+
+                break;
+        }
     }
 
-    protected void BoomerangThrow()
+    private void Back()
     {
-        timer += Time.deltaTime;
-        if(timer > timeBack && isBack == false) 
-        {
-            isBack = true;
-            rb.velocity = Vector3.zero;
-            moveVector = (TF.position - startPoit).normalized;
-        }
-
-        if(isBack == true) 
-        {
-            TF.position = Vector3.MoveTowards(TF.position,startPoit,moveSpeed*Time.deltaTime);
-        }
-
-        if(timer > 2f * timeBack)
-        {
-            OnDespawn();
-        }
-
+        state = State.Backward;
     }
 
-    protected override void OnTriggerEnter(Collider other)
+    protected override void OnStop()
     {
-        if (other.CompareTag(Constant.TAG_CHARACTER))
-        {
-            Character victim = Cache.GetCharacter(other);
-            if (attacker.Equals(victim) && isBack)
-            {
-                OnDespawn();
-                return;
-            }
-            
-        }
-        base.OnTriggerEnter(other);
+        base.OnStop();
+        state = State.Stop;
+        Invoke(nameof(OnDespawn), 2f);
     }
+
+    //protected void BoomerangThrow()
+    //{
+    //    timer += Time.deltaTime;
+    //    if(timer > timeBack && isBack == false) 
+    //    {
+    //        isBack = true;
+    //        rb.velocity = Vector3.zero;
+    //        moveVector = (TF.position - startPoit).normalized;
+    //    }
+
+    //    if(isBack == true) 
+    //    {
+    //        TF.position = Vector3.MoveTowards(TF.position,startPoit,moveSpeed*Time.deltaTime);
+    //    }
+
+    //    if(timer > 2f * timeBack)
+    //    {
+    //        OnDespawn();
+    //    }
+
+    //}
+
+    //protected override void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag(Constant.TAG_CHARACTER))
+    //    {
+    //        Character victim = Cache.GetCharacter(other);
+    //        if (attacker.Equals(victim) && isBack)
+    //        {
+    //            OnDespawn();
+    //            return;
+    //        }
+
+    //    }
+    //    base.OnTriggerEnter(other);
+    //}
 }

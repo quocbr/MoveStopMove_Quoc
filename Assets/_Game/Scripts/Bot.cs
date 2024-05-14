@@ -1,36 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
-using static UnityEngine.EventSystems.EventTrigger;
+using Random = UnityEngine.Random;
+
 
 public class Bot : Character
 {
     [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private GameObject targetImage;
-    
+    [SerializeField] private GameObject mask;
+
+    private CounterTime counter = new CounterTime();
+    public CounterTime Counter => counter;
+
+    private Vector3 destination;
+
 
     public float range;
     public Transform centrePoint;
 
-    protected override void Start()
-    {
-        base.Start();
-        ChangeState(new IdleState());
-    }
+    private bool IsCanRunning => (GameManager.Ins.IsState(GameState.Gameplay) || GameManager.Ins.IsState(GameState.Revive) || GameManager.Ins.IsState(GameState.Setting));
 
     protected override void Update()
     {
-        base .Update();
-        if (IsDead == true)
-        {
-            ChangeState(new DeadState());
-            return;
-        }
-
-
-        if (currentState != null)
+        if (IsCanRunning && currentState != null && !IsDead)
         {
             currentState.OnExecute(this);
         }
@@ -39,26 +33,69 @@ public class Bot : Character
     public override void OnInit()
     {
         base.OnInit();
-        SetActiveTargetImage(false);
+        SetMark(false);
+        ResetAnim();
+
+        NameChar = NameUtilities.GetRandomName();
+        indicator.SetName(NameChar);
+        //indicator.SetColor(SpawnManager.Ins.GetColorSkin(CurrentColor).color);
+    }
+
+    public override void WearClothes()
+    {
+        base.WearClothes();
+        //Tuple<Material, int> color = SpawnManager.Ins.GetColor();
+        //ChangeColorSkin(color.Item1);
+        //this.CurrentColor = (ColorType)color.Item2;
+        //ColorSkin.material = SpawnManager.Ins.GetColor();
+        ChangeWeapon(EquipmentController.Ins.GetWeapon());
+
+        if (Utilities.Chance(3))
+        {
+            ChangeSet(EquipmentController.Ins.GetSet());
+        }
+        else
+        {
+            if (Utilities.Chance(80))ChangeHead(EquipmentController.Ins.GetHead());
+            if (Utilities.Chance(60)) ChangePant(EquipmentController.Ins.GetPant());
+            if (Utilities.Chance(5)) ChangeTail(EquipmentController.Ins.GetTail());
+            if (Utilities.Chance(10)) ChangeShield(EquipmentController.Ins.GetShield());
+            if (Utilities.Chance(3)) ChangeWing(EquipmentController.Ins.GetWing());
+        }
     }
 
     public override void StopMoving()
     {
-        ChangeAnim(Anim.IDLE);
-        agent.velocity = Vector3.zero;
+        base.StopMoving();
+        //agent.enabled = false;
         agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+        ChangeAnim(Anim.IDLE);
     }
 
     public override void Moving()
     {
+        base.Moving();
         ChangeAnim(Anim.RUN);
         Patrol();
+        //agent.enabled = true;
         agent.isStopped = false;
     }
 
-    public bool IsMoveFinish()
+    //public bool IsMoveFinish()
+    //{
+    //    return agent.remainingDistance <= 0.1f;
+    //}
+
+    public bool IsDestination => Vector3.Distance(TF.position, destination) - Mathf.Abs(TF.position.y - destination.y) < 0.1f;
+
+    public void SetDestination(Vector3 point)
     {
-        return agent.remainingDistance <= 0.1f;
+        destination = point;
+        agent.isStopped = false;
+        agent.enabled = true;
+        agent.SetDestination(destination);
+        ChangeAnim(Anim.RUN);
     }
 
     public void Patrol()
@@ -68,7 +105,8 @@ public class Bot : Character
             Vector3 point;
             if (RandomPoint(centrePoint.position, range, out point))
             {
-                Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f);
+                //Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f);
+                destination = point;
                 agent.SetDestination(point);
                 break;
             }
@@ -89,24 +127,20 @@ public class Bot : Character
         return false;
     }
 
-    public override void Attack()
+    public override void AddTarget(Character target)
     {
-        base.Attack();
-        if (isAttack == false)
+        base.AddTarget(target);
+
+        if (!IsDead && Utilities.Chance(80, 100) && IsCanRunning)
         {
-            timer += Time.deltaTime;
-            ChangeState(new IdleState());
-        }
-        else
-        {
-            LookAtTargetDir();
+            ChangeState(new AttackState());
         }
     }
 
     //TODO:
-    public void SetActiveTargetImage(bool r)
+    public void SetMark(bool r)
     {
-        targetImage.SetActive(r);
+        mask.SetActive(r);
     }
 
     public void HandleBeginDead()
@@ -115,40 +149,57 @@ public class Bot : Character
         agent.isStopped = true;
     }
 
-    public void HandleEndDead()
-    {
-        if (LevelManager.Ins.RemainBot < 1)
-        {
-            HBPool.Despawn(this);
-        }
-        else
-        {
-            LevelManager.Ins.RemainBot -= 1;
-            LevelManager.Ins.Alive -= 1;
-            UIManager.Ins.GetUI<GamePlay>().SetAliveText(LevelManager.Ins.Alive);
-            OnInit();
-            ResetEQ1();
-            Vector3 centre = LevelManager.Ins.GetRandomSpawnPos();
-            while (true)
-            {
-                Vector3 point;
-                if (RandomPoint(centre, 8f, out point))
-                {
-                    Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f);
-                    ChangeState(new IdleState());
-                    TF.position = point;
-                    break;
-                }
+    //public void HandleEndDead()
+    //{
+    //    if (LevelManager.Ins.RemainBot < 1)
+    //    {
+    //        HBPool.Despawn(this);
+    //    }
+    //    else
+    //    {
+    //        LevelManager.Ins.RemainBot -= 1;
+    //        LevelManager.Ins.Alive -= 1;
+    //        UIManager.Ins.GetUI<GamePlay>().SetAliveText(LevelManager.Ins.Alive);
+    //        OnInit();
+    //        ResetEQ1();
+    //        Vector3 centre = LevelManager.Ins.GetRandomSpawnPos();
+    //        while (true)
+    //        {
+    //            Vector3 point;
+    //            if (RandomPoint(centre, 8f, out point))
+    //            {
+    //                //Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f);
+    //                ChangeState(new IdleState());
+    //                TF.position = point;
+    //                break;
+    //            }
 
-            }
-        }
+    //        }
+    //    }
+    //}
+
+    public override void OnDespawn()
+    {
+        base.OnDespawn();
+        //SpawnManager.Ins.BackColor(this.ColorSkin.material);
+        HBPool.Despawn(this);
+        CancelInvoke();
     }
 
     public override void DoDead(string name)
     {
-        this.SetActiveTargetImage(false);
+        this.SetMark(false);
+        ChangeState(null);
+        StopMoving();
         base.DoDead();
+        Invoke(nameof(OnDespawn), 2f);
     }
+
+    //public override void AddTarget(Character target)
+    //{
+    //    base.AddTarget(target);
+    //    ChangeState(new AttackState());
+    //}
 
     private void ResetEQ1()
     {

@@ -1,52 +1,87 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class Bullet : GameUnit
 {
-    [SerializeField] protected float rotateSpeed;
+    [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] protected float moveSpeed;
-    [SerializeField] protected float timeLife;
-    [SerializeField] protected Rigidbody rb;
+    [SerializeField] protected Transform child;
+    //[SerializeField] protected Rigidbody rb;
+
+    protected CounterTime counterTime = new CounterTime();
+
+    protected bool isRunning;
 
     protected Character attacker;
-    protected Action<Character,Character> onHit;
+    protected Action<Character, Character> onHit;
     // set bullet data for bullet
-    public virtual void OnInit(Character attacker, Action<Character, Character> onHit)
+    public virtual void OnInit(Material material, Character attacker, Action<Character, Character> onHit)
     {
         this.attacker = attacker;
         this.onHit = onHit;
+        ChangeMaterial(material);
         TF.localScale = attacker.TF.localScale;
-        Vector3 dir = new Vector3(attacker.AttackDir.x,0, attacker.AttackDir.z);
-        rb.velocity = dir.normalized * moveSpeed;
-        Invoke(nameof(OnDespawn), timeLife);
+        TF.forward = attacker.TF.forward;
+        isRunning = true;
     }
 
     protected virtual void Update()
     {
+        //Move();
+    }
 
+    protected virtual void MoveForward()
+    {
+        TF.Translate(TF.forward * moveSpeed * Time.deltaTime, Space.World);
+    }
+
+    protected virtual void MoveRotate()
+    {
+        TF.Translate(TF.forward * moveSpeed * Time.deltaTime, Space.World);
+        child.Rotate(Vector3.forward * -6, Space.Self);
     }
 
     public void OnDespawn()
     {
-        rb.velocity = Vector3.zero;
         HBPool.Despawn(this);
     }
+
+    protected virtual void OnStop() { }
 
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(Constant.TAG_CHARACTER))
         {
             Character victim = Cache.GetCharacter(other);
-            if (attacker.Equals(victim) || victim.IsDead)
-            {
-                return;
-            }
-            onHit?.Invoke(attacker, victim);
-            OnDespawn();
-        }
-    }
 
+            //if (attacker.Equals(victim) || victim.IsDead)
+            //{
+            //    return;
+            //}
+            if (victim != null && victim != attacker)
+            {
+                onHit?.Invoke(attacker, victim);
+                OnDespawn();
+            }
+            //onHit?.Invoke(attacker, victim);
+            //OnDespawn();
+        }
+
+        //if (other.CompareTag(Constant.TAG_BLOCK))
+        //{
+        //    OnStop();
+        //}
+    }
+    protected void ChangeMaterial(Material material)
+    {
+        if (material == null) return;
+
+        Material[] materials = meshRenderer.materials;
+        for (int i = 0; i < this.meshRenderer.materials.Length; i++)
+        {
+            materials[i] = material;
+        }
+        meshRenderer.materials = materials;
+    }
 }

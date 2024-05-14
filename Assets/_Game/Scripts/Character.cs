@@ -12,6 +12,13 @@ public class Character : GameUnit
 {
 
     [Header("Charracter")]
+    public const float TIME_DELAY_THROW = 0.4f;
+
+    public const float ATT_RANGE = 5f;
+
+    public const float MAX_SIZE = 4f;
+    public const float MIN_SIZE = 1f;
+
     [SerializeField] private Animator anim;
 
     [SerializeField] private ColorType currentColor;
@@ -26,19 +33,23 @@ public class Character : GameUnit
     [SerializeField] private SkinnedMeshRenderer pantType;
 
     [SerializeField] private AnimationEvent animEvent;
-    [SerializeField] private float delayAttack = 0.8f;
-    [SerializeField] private float maxScale = 2.5f;
+    //[SerializeField] private float maxScale = 2.5f;
+
+    [SerializeField] Transform indicatorPoint;
+    protected TargetIndicator indicator;
 
     private int point = 0;
     private string currentAnimName;
     private Vector3 attackDir;
     private string nameChar;
     private string killByName = null;
+    protected float size = 1;
 
     protected CharacterState characterState;
-    protected List<Character> listTargetChar;
-    protected Character targetChar;
-    
+    protected List<Character> listTargetChar = new List<Character>();
+    private Character targetChar;
+    protected Vector3 targetPoint;
+
     protected float timer = 0;
 
 
@@ -47,8 +58,9 @@ public class Character : GameUnit
     protected GameUnit currentWing;
     protected GameUnit currentTail;
     protected GameUnit currentShield;
-    protected GameUnit currentWeapon;
+    private GameUnit currentWeapon;
     protected SetType currentSet;
+
 
     protected bool isAttack = false;
     protected bool isAttacking = false;
@@ -66,35 +78,83 @@ public class Character : GameUnit
     public Transform ThrowPos { get => throwPos; set => throwPos = value; }
     public SkinnedMeshRenderer ColorSkin { get => colorSkin; set => colorSkin = value; }
     public string KillByName { get => killByName; set => killByName = value; }
+    public GameUnit CurrentWeapon { get => currentWeapon; set => currentWeapon = value; }
+    public bool IsCanAttack => (currentWeapon as Weapon).IsCanAttack;
+    public float Size { get => size; set => size = value; }
+    public Character TargetChar { get => targetChar; set => targetChar = value; }
+    public Vector3 TargetPoint { get => targetPoint;}
 
     protected virtual void Start()
     {
-        OnInit();
+        //OnInit();
     }
 
     protected virtual void Update()
     {
-        if (GameManager.Ins.IsState(GameState.Gameplay) == false)
+
+    }
+
+    protected virtual void LookAtTargetDir()
+    {
+        if (TargetChar != null)
         {
-            return;
+            this.transform.LookAt(TargetChar.TF);
+            AttackDir = TargetChar.TF.position - ThrowPos.position;
         }
+
+    }
+    // Logic when bullet hit victim
+    protected virtual void OnHitVictim(Character attacker, Character victim)
+    {
+        AddPoint(1);
+        victim.DoDead(attacker.NameChar);
+        attacker.RemoveTarget(victim);
+    }
+    protected virtual void AddPoint(int point = 1)
+    {
+        SetPoint(this.Point + point);
+        //this.Point += point > 0 ? point : 1;
+        //if (TF.localScale.x > maxScale) return;
+        //TF.localScale = Vector3.one + Vector3.one * (this.Point / 3) * 0.1f;
+    }
+    protected virtual void SetSize(float size)
+    {
+        size = Mathf.Clamp(size, MIN_SIZE, MAX_SIZE);
+        this.Size = size;
+        TF.localScale = size * Vector3.one;
+    }
+
+    public void SetPoint(int point)
+    {
+        this.point = point > 0 ? point : 0;
+        indicator.SetScore(this.point);
+        SetSize(1 + this.point * 0.1f);
     }
 
     public virtual void OnInit()
     {
-        listTargetChar = new List<Character>();
-        IsDead = false;
-        currentAnimName = Anim.IDLE;
-        TF.localScale = Vector3.one;
-        isAttack = false;
-        isAttacking = false;
+        listTargetChar.Clear();
+        //currentAnimName = Anim.IDLE;
+        //TF.localScale = Vector3.one;
+        //isAttack = false;
+        //isAttacking = false;
         isDead = false;
         point = 0;
-        timer = 0;
-        targetChar = null;
-        listTargetChar.Clear();
+        //timer = 0;
+        TargetChar = null;
         killByName = null;
         characterState = CharacterState.Idle;
+
+        WearClothes();
+
+        indicator = HBPool.Spawn<TargetIndicator>(PoolType.TargetIndicator);
+        indicator.SetTarget(indicatorPoint);
+        indicator.SetColor(SpawnManager.Ins.GetColorSkin(CurrentColor).color);
+    }
+
+    public virtual void WearClothes()
+    {
+
     }
 
     public void ChangeAnim(string animName)
@@ -107,85 +167,121 @@ public class Character : GameUnit
         }
     }
 
-    protected virtual void LookAtTargetDir()
+    public void ResetAnim()
     {
-        if (targetChar != null)
-        {
-            this.transform.LookAt(targetChar.TF);
-            AttackDir = targetChar.TF.position - ThrowPos.position;
-        }
-
+        currentAnimName = "";
     }
 
     #region Moving
     public virtual void Moving()
     {
-
+        characterState = CharacterState.Run;
     }
 
     public virtual void StopMoving()
     {
-
+        characterState = CharacterState.Idle;
     }
     #endregion
 
     #region Attack
-    public virtual bool CheckAttack()
+    public virtual void OnAttack()
     {
-        return listTargetChar.Count != 0;
-    }
-    public virtual void Attack()
-    {
-        if (targetChar != null && timer >= delayAttack)
+        TargetChar = GetTargetInRange();
+        
+        if (IsCanAttack && TargetChar != null && !TargetChar.IsDead/* && currentSkin.Weapon.IsCanAttack*/)
         {
+            targetPoint = TargetChar.TF.position;
+            targetPoint.y = TF.transform.position.y;
+            if (this is Player)
+            {
+                (TargetChar as Bot).SetMark(true);
+            }
+            
+            //TF.LookAt(TargetChar.TF.position + (TF.position.y - TargetChar.TF.position.y) * Vector3.up);
+            TF.LookAt(targetPoint);
             ChangeAnim(Anim.ATTACK);
-            isAttack = true;
-            timer = 0;
         }
-    }
 
-    public virtual void Attacking()
-    {
-
-        isAttack = true;
-        LookAtTargetDir();
-        Throw();
-        currentWeapon.gameObject.SetActive(false);
     }
+    //public virtual bool CheckAttack()
+    //{
+    //    return listTargetChar.Count != 0;
+    //}
+    //public virtual void Attack()
+    //{
+    //    //if (targetChar != null && timer >= delayAttack)
+    //    //{
+    //    //    ChangeAnim(Anim.ATTACK);
+    //    //    isAttack = true;
+    //    //    timer = 0;
+    //    //}
+        
+    //    if (TargetChar != null && currentWeapon.gameObject.activeSelf == true)
+    //    {
+    //        ChangeAnim(Anim.ATTACK);
+    //        isAttack = true;
+    //        timer = 0;
+    //    }
+    //}
 
-    public void ResetAttack()
-    {
-        isAttack = false;
-        currentWeapon.gameObject.SetActive(true);
-    }
+    //public virtual void Attacking()
+    //{
+    //    if (timer > TIME_DELAY_THROW)
+    //    {
+    //        Throw();
+    //        timer = 0;
+    //    }
+    //    //isAttack = true;
+    //    //LookAtTargetDir();
+    //    //Throw();
+    //    //CurrentWeapon.gameObject.SetActive(false);
+    //}
+
+    //public void ResetAttack()
+    //{
+    //    isAttack = false;
+    //    CurrentWeapon.gameObject.SetActive(true);
+    //}
 
     public void Throw()
     {
-        (currentWeapon as Weapon).Throw(this, OnHitVictim);
+        (CurrentWeapon as Weapon).Throw(this, OnHitVictim);
     }
-    // Logic when bullet hit victim
-    protected virtual void OnHitVictim(Character attacker, Character victim)
+
+    public Character GetTargetInRange()
     {
-        AddPoint(victim.Point);
-        victim.DoDead(attacker.NameChar);
-        attacker.RemoveTarget(victim);
+        Character target = null;
+        float distance = float.PositiveInfinity;
+
+        for (int i = 0; i < listTargetChar.Count; i++)
+        {
+            if (listTargetChar[i] != null && listTargetChar[i] != this && !listTargetChar[i].IsDead && Vector3.Distance(TF.position, listTargetChar[i].TF.position) <= ATT_RANGE * size + listTargetChar[i].size)
+            {
+                float dis = Vector3.Distance(TF.position, listTargetChar[i].TF.position);
+
+                if (dis < distance)
+                {
+                    distance = dis;
+                    target = listTargetChar[i];
+                }
+            }
+        }
+        return target;
     }
-
     #endregion Attack
-
-
 
     #region Target
     public virtual void AddTarget(Character target)
     {
-        if (listTargetChar.Count == 0)
-        {
-            targetChar = target;
-            if (this is Player)
-            {
-                (targetChar as Bot).SetActiveTargetImage(true);
-            }
-        }
+        //if (listTargetChar.Count == 0)
+        //{
+        //    targetChar = target;
+        //    if (this is Player)
+        //    {
+        //        (targetChar as Bot).SetActiveTargetImage(true);
+        //    }
+        //}
         this.listTargetChar.Add(target);
     }
 
@@ -193,19 +289,19 @@ public class Character : GameUnit
     {
         if (this is Player)
         {
-            (target as Bot).SetActiveTargetImage(false);
+            (target as Bot).SetMark(false);
         }
         this.listTargetChar.Remove(target);
         if (listTargetChar.Count == 0)
         {
-            targetChar = null;
+            TargetChar = null;
         }
         else
         {
-            targetChar = listTargetChar[Random.Range(0, listTargetChar.Count)];
+            TargetChar = listTargetChar[Random.Range(0, listTargetChar.Count)];
             if (this is Player)
             {
-                (targetChar as Bot).SetActiveTargetImage(true);
+                (TargetChar as Bot).SetMark(true);
             }
         }
     }
@@ -215,25 +311,30 @@ public class Character : GameUnit
     #region Hanlde Dead
     public virtual void DoDead(string name = null)
     {
-        IsDead = true;
-        characterState = CharacterState.Dead;
-        ChangeAnim(Anim.DEAD);
-        killByName = name;
-        if (this is Player)
+        if (!IsDead)
         {
-            GameManager.Ins.Lose();
+            IsDead = true;
+            characterState = CharacterState.Dead;
+            ChangeAnim(Anim.DEAD);
+            killByName = name;
+            LevelManager.Ins.HandleCharecterDeath(this);
         }
-        LevelManager.Ins.HandleCharacterDead(this);
+        //if (this is Player)
+        //{
+        //    GameManager.Ins.Lose();
+        //}
+    }
+
+    public virtual void OnDespawn()
+    {
+        //tra ve tat ca nhung object pool
+        HBPool.Despawn(indicator);
+        RemoveAllEQ();
     }
 
     #endregion
 
-    protected virtual void AddPoint(int point)
-    {
-        this.Point += point > 0 ? point : 1;
-        if (TF.localScale.x > maxScale) return;
-        TF.localScale = Vector3.one + Vector3.one * (this.Point/3)* 0.1f;
-    }
+
 
     #region Change Eq
     public virtual void ChangeColorSkin(Material material)
@@ -243,18 +344,18 @@ public class Character : GameUnit
 
     public virtual void ChangeWeapon(PoolType weaponType)
     {
-        if (currentWeapon != null)
+        if (CurrentWeapon != null)
         {
             //Destroy(currentWeapon.gameObject);
-            HBPool.Despawn(currentWeapon);
-            currentWeapon = null;
+            HBPool.Despawn(CurrentWeapon);
+            CurrentWeapon = null;
         }
         //currentWeapon = Instantiate(weapon);
-        currentWeapon = HBPool.Spawn<GameUnit>(weaponType);
-        currentWeapon.transform.SetParent(weaponPos, false);
-        currentWeapon.TF.localPosition = Vector3.zero;
-        currentWeapon.TF.localRotation = Quaternion.identity;
-        currentWeapon.TF.localScale = Vector3.one;
+        CurrentWeapon = HBPool.Spawn<GameUnit>(weaponType);
+        CurrentWeapon.transform.SetParent(weaponPos, false);
+        CurrentWeapon.TF.localPosition = Vector3.zero;
+        CurrentWeapon.TF.localRotation = Quaternion.identity;
+        CurrentWeapon.TF.localScale = Vector3.one;
     }
 
     public virtual void ChangeHead(PoolType headType)
@@ -356,7 +457,7 @@ public class Character : GameUnit
 
     public virtual void ChangeSet(SetType setType)
     {
-        if (currentSet == SetType.None)
+        if (setType == SetType.None)
         {
             RemoveAllEQ();
             currentSet = setType;
@@ -381,6 +482,23 @@ public class Character : GameUnit
         ChangeWing(PoolType.None);
         ChangeTail(PoolType.None);
         ChangeShield(PoolType.None);
+    }
+
+    public virtual void ResetEQ(UserData userData)
+    {
+        //if (userData.currentSet != SetType.None)
+        //{
+        //    ChangeSet(SaveLoadManager.Ins.UserData.currentSet);
+        //}
+        //else
+        //{
+        //    ChangeHead(SaveLoadManager.Ins.UserData.currentHead);
+        //    ChangePant(SaveLoadManager.Ins.UserData.currentPant);
+        //    ChangeShield(SaveLoadManager.Ins.UserData.currentShield);
+        //    ChangeTail(SaveLoadManager.Ins.UserData.currentTail);
+        //    ChangeWing(SaveLoadManager.Ins.UserData.currentWing);
+        //    ChangeColorSkin(SaveLoadManager.Ins.UserData.currentColor);
+        //}
     }
 
     #endregion

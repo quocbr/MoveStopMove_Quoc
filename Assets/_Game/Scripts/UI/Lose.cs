@@ -20,6 +20,7 @@ public class Lose : UICanvas
 
     private void OnContinueButtonClick()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         SaveLoadManager.Ins.UserData.Coin += LevelManager.Ins.Player.Point;
         LevelManager.Ins.OnRetry();
         Close(0);
@@ -49,7 +50,7 @@ public class Lose : UICanvas
         nameKillerText.text = nameKiller;
     }
 
-    private void SetCoinText(int coin)
+    public void SetCoinText(int coin)
     {
         coinText.text = coin.ToString();
     } 

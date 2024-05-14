@@ -12,6 +12,14 @@ public class ItemSelectionUi : MonoBehaviour
 
     private List<EqItemUI> listItemUI = new List<EqItemUI>();
 
+    private void OnEnable()
+    {
+        if (listItemUI.Count > 0)
+        {
+            listItemUI[0].SelectButton.onClick.Invoke();
+        }
+    }
+
     private void SpawnItem(EquipmentData equipmentData)
     {
         EqItemUI itemUi = Instantiate(buttonPrefab, parentPosition);
@@ -23,7 +31,8 @@ public class ItemSelectionUi : MonoBehaviour
 
     private void OnItemUIClickHandle(EquipmentData equipmentData)
     {
-        switch(skinShop.SelectionButton)
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
+        switch (skinShop.SelectionButton)
         {
             case ButtonSelection.Head:
                 LevelManager.Ins.Player.ChangeHead(equipmentData.poolType);
@@ -129,10 +138,10 @@ public class ItemSelectionUi : MonoBehaviour
             {
                 SpawnItem(equipmentData[i]);
             }
-            if (listItemUI.Count > 0 && i == 0)
-            {
-                listItemUI[0].SelectButton.onClick.Invoke();
-            }
+        }
+        if(listItemUI.Count > 0)
+        {
+            listItemUI[0].SelectButton.onClick.Invoke();
         }
     }
 
@@ -145,4 +154,5 @@ public class ItemSelectionUi : MonoBehaviour
         }
         listItemUI.Clear();
     }
+
 }
