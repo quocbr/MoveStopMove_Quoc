@@ -15,6 +15,7 @@ public class EquipmentData
     public SetType setType;
     public List<Material> materials;
     public Texture2D image;
+    public EquipBuffType buff;
     public int value;
     public int cost;
 }

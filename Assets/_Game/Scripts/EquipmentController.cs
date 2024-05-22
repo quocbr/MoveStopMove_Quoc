@@ -51,6 +51,19 @@ public class EquipmentController : Singleton<EquipmentController>
         return list.Count > 0 ? list[index].poolType : PoolType.None;
     }
 
+    public EquipmentData GetWeapon(PoolType poolType)
+    {
+        List<EquipmentData> listWeapon = GetEquipment(EquipmentType.Weapon);
+        for (int i = 0; i < listWeapon.Count; i++)
+        {
+            if (listWeapon[i].poolType == poolType)
+            {
+                return listWeapon[i];
+            }
+        }
+        return null;
+    }
+
     public PoolType GetHead()
     {
         List<EquipmentData> listHead = GetEquipment(EquipmentType.Head);
@@ -78,6 +91,19 @@ public class EquipmentController : Singleton<EquipmentController>
             }
         }
         return PoolType.None;
+    }
+
+    public EquipmentData GetHead(PoolType poolType)
+    {
+        List<EquipmentData> listHead = GetEquipment(EquipmentType.Head);
+        for (int i = 0; i < listHead.Count; i++)
+        {
+            if (listHead[i].poolType == poolType)
+            {
+                return listHead[i];
+            }
+        }
+        return null;
     }
 
     public PoolType GetTail()
@@ -168,6 +194,20 @@ public class EquipmentController : Singleton<EquipmentController>
         return PoolType.None;
     }
 
+    public EquipmentData GetShield(PoolType pool)
+    {
+        List<EquipmentData> listHead = GetEquipment(EquipmentType.Shield);
+
+        for (int i = 0; i < listHead.Count; i++)
+        {
+            if (listHead[i].poolType == pool)
+            {
+                return listHead[i];
+            }
+        }
+        return null;
+    }
+
     public Material GetPant() 
     {
         List<EquipmentData> listHead = GetEquipment(EquipmentType.Pant);
@@ -212,6 +252,20 @@ public class EquipmentController : Singleton<EquipmentController>
         return null;
     }
 
+    public EquipmentData GetPant1(PoolType type)
+    {
+        List<EquipmentData> listHead = GetEquipment(EquipmentType.Pant);
+
+        for (int i = 0; i < listHead.Count; i++)
+        {
+            if (listHead[i].poolType == type)
+            {
+                return listHead[i];
+            }
+        }
+        return null;
+    }
+
     public SetType GetSet()
     {
         List<EquipmentData> listHead = GetEquipment(EquipmentType.Set);
@@ -223,5 +277,18 @@ public class EquipmentController : Singleton<EquipmentController>
 
         int index = Random.Range(0, list.Count);
         return list[index].setType;
+    }
+
+    public EquipmentData GetSet(SetType type)
+    {
+        List<EquipmentData> listHead = GetEquipment(EquipmentType.Set);
+        for (int i = 0; i < listHead.Count; i++)
+        {
+            if (listHead[i].setType == type)
+            {
+                return listHead[i];
+            }
+        }
+        return null;
     }
 }

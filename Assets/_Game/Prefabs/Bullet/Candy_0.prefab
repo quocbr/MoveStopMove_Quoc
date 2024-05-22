@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 994615283244389451}
   - component: {fileID: 1174709409949077812}
   - component: {fileID: 7481749603460662690}
-  - component: {fileID: 3890224059334369291}
+  - component: {fileID: 3101296355761944850}
   m_Layer: 0
   m_Name: Candy_0
   m_TagString: Untagged
@@ -78,8 +78,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &3890224059334369291
-BoxCollider:
+--- !u!136 &3101296355761944850
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -96,9 +96,11 @@ BoxCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.5, y: 3, z: 1}
-  m_Center: {x: 0, y: 0, z: 0.12}
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Height: 2.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8969096672000501663
 GameObject:
   m_ObjectHideFlags: 0

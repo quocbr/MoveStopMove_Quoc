@@ -1452,7 +1452,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &101384049750080308
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2764,7 +2764,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &817386847862600372
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3330,7 +3330,7 @@ GameObject:
   - component: {fileID: 1963116750310154473}
   - component: {fileID: 1630432097705593923}
   - component: {fileID: 6221480904705478048}
-  - component: {fileID: 6415167658592007154}
+  - component: {fileID: 2539246709917433826}
   m_Layer: 5
   m_Name: Canvas-MainMenu
   m_TagString: Untagged
@@ -3378,6 +3378,7 @@ MonoBehaviour:
   placeholder: {fileID: 990659415965257572}
   nameText: {fileID: 4420079782445095134}
   inputNameText: {fileID: 718130646803457038}
+  sFXToggle: {fileID: 8212761423308966188}
 --- !u!223 &1963116750310154473
 Canvas:
   m_ObjectHideFlags: 0
@@ -3441,7 +3442,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!95 &6415167658592007154
+--- !u!95 &2539246709917433826
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -3449,9 +3450,9 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8653333744262810469}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 65e9111380215e04a984e7521687a83c, type: 2}
+  m_Controller: {fileID: 9100000, guid: b0f6f06529ffa13408bc6aaf2e5466f3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3549,7 +3550,6 @@ GameObject:
   - component: {fileID: 2744443642539685077}
   - component: {fileID: 8645812480208903594}
   - component: {fileID: 4232250423550377032}
-  - component: {fileID: 3429907637578773062}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -3575,7 +3575,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 336.9115, y: -82.171}
+  m_AnchoredPosition: {x: 465, y: -82.171}
   m_SizeDelta: {x: 836.2021, y: 354.34}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2744443642539685077
@@ -3672,51 +3672,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3429907637578773062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9050818557964909351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UICanvas, Assembly-CSharp
-          m_MethodName: EnableEffectButton
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 4232250423550377032}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UICanvas, Assembly-CSharp
-          m_MethodName: UnEnableEffectButton
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &9138968590191815524
 GameObject:
   m_ObjectHideFlags: 0

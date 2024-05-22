@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,10 +18,14 @@ public class SkinShop : UICanvas
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private TextMeshProUGUI costText;
     [SerializeField] private TextMeshProUGUI equipText;
+    [SerializeField] private TextMeshProUGUI equipBuffText;
+
     [SerializeField] private ItemSelectionUi itemSelectionUi;
 
     private ButtonSelection selectionButton;
     private EquipmentData currentEquipmentData;
+    public EqItemUI currentItem;
+    public EqItemUI itemEquied;
 
     public ButtonSelection SelectionButton { get => selectionButton; }
     public Button BuyButton { get => buyButton; }
@@ -38,13 +44,9 @@ public class SkinShop : UICanvas
         equipButton.onClick.AddListener(OnEquipButtonClickHandle);
     }
 
-    private void Start()
-    {
-        OnHeadButtonClickhandle();
-    }
-
     private void OnSetButtonClickhandle()
     {
+        itemEquied = null;
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         if (selectionButton == ButtonSelection.Set)
         {
@@ -62,6 +64,7 @@ public class SkinShop : UICanvas
 
     private void OnShieldButtonClickhandle()
     {
+        itemEquied = null;
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         if (selectionButton == ButtonSelection.Shield)
         {
@@ -79,6 +82,8 @@ public class SkinShop : UICanvas
 
     private void OnPantButtonClickhandle()
     {
+        itemEquied = null;
+        currentItem = null;
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         if (selectionButton == ButtonSelection.Pant)
         {
@@ -96,6 +101,8 @@ public class SkinShop : UICanvas
 
     private void OnHeadButtonClickhandle()
     {
+        itemEquied = null;
+        currentItem = null;
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         if (selectionButton == ButtonSelection.Head)
         {
@@ -175,7 +182,19 @@ public class SkinShop : UICanvas
         {
             SaveLoadManager.Ins.UserData.currentSet = currentEquipmentData.setType;
         }
+         
+
+        if (itemEquied != null)
+        {
+            itemEquied.ChangeStateEquip(EquipItemState.Unlock);
+        }
+
+        currentItem.ChangeStateEquip(EquipItemState.Equiped);
+        itemEquied = currentItem;
+        //currentItem.SelectButton.onClick.Invoke();
+
         SetEquipText(Constant.EQUIPED_STRING);
+
         SaveLoadManager.Ins.Save();
     }
 
@@ -186,6 +205,8 @@ public class SkinShop : UICanvas
         CameraFollower.Ins.ChangeState(CameraFollower.State.Shop);
         LevelManager.Ins.Player.ChangeAnim(Anim.DANCE);
         SetCoinText(SaveLoadManager.Ins.UserData.Coin);
+
+        OnHeadButtonClickhandle();
     }
 
     public override void Close(float delayTime)
@@ -208,5 +229,29 @@ public class SkinShop : UICanvas
     public void SetCoinText(int coin)
     {
         coinText.text = coin.ToString();
+    }
+
+    public void SetEquipBuffText(EquipBuffType buffType, int value)
+    {
+        if (buffType == EquipBuffType.None) return;
+
+        string nameBuff = "";
+        switch (buffType)
+        {
+            case EquipBuffType.Range:
+                nameBuff = "Range";
+                break;
+            case EquipBuffType.MoveSpeed:
+                nameBuff = "Move Speed";
+                break;
+            case EquipBuffType.Gold:
+                nameBuff = "Gold";
+                break;
+            case EquipBuffType.AttackSpeed:
+                nameBuff = "Attack Speed";
+                break;
+        }
+        //weaponAttribute.text = "+" + attribute.ToString() + nameBuff;
+        equipBuffText.text = $"+{value}% {nameBuff}";
     }
 }

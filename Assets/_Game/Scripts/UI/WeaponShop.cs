@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class WeaponShop : UICanvas
 {
@@ -63,18 +64,22 @@ public class WeaponShop : UICanvas
     {
         if (weaponShow != null)
         {
+            //Debug.Log(weaponShow.poolType);
             HBPool.Despawn(weaponShow);
         }
+        
         dataWeapon = listWeapon[page];
         weaponName.text = dataWeapon.name.ToString();
-        weaponShow = HBPool.Spawn<GameUnit>(dataWeapon.poolType);
-        weaponShow.transform.SetParent(weaponShowPos,false);
-        weaponShow.TF.localPosition = Vector3.zero;
-        weaponShow.TF.localRotation = Quaternion.identity;
+        weaponShow = HBPool.Spawn<GameUnit>(dataWeapon.poolType, Vector3.zero, Quaternion.identity, weaponShowPos);
+        //weaponShow = HBPool.Spawn<GameUnit>(dataWeapon.poolType);
+        //weaponShow.transform.SetParent(weaponShowPos,false);
+        //weaponShow.TF.localPosition = Vector3.zero;
+        //weaponShow.TF.localRotation = Quaternion.identity;
         weaponShow.TF.localScale = Vector3.one*2.5f;
-
+        //Lay gia tien
         SetWeaponPrice(dataWeapon.cost);
-        SetWeaponAttribute(dataWeapon.value);
+        //Lay thuoc tinh buff
+        SetWeaponAttribute(dataWeapon.buff,dataWeapon.value);
 
         SpawnItemList(dataWeapon.poolType, dataWeapon.materials);
 
@@ -84,11 +89,18 @@ public class WeaponShop : UICanvas
             equipButton.gameObject.SetActive(true);
             PanelSkinWeapon.SetActive(true);
             //TODO: Xu ly khi chon mau cho vu khi
+            string nameMaterial = (LevelManager.Ins.Player.CurrentWeapon as Weapon).Material.name;
+            int index = nameMaterial.IndexOf(" (");
+            if (index >= 0)
+            {
+                nameMaterial = nameMaterial.Substring(0, index);
+            }
+
             if (SaveLoadManager.Ins.UserData.CurrentWeapon != dataWeapon.poolType)
             {
                 SetEquipText(Constant.EQUIP_STRING);
             }
-            else if (dataWeapon.materials[0] == (LevelManager.Ins.Player.CurrentWeapon as Weapon).Material)
+            else if (dataWeapon.materials[0].name == nameMaterial)//dataWeapon.materials[0].color == (LevelManager.Ins.Player.CurrentWeapon as Weapon).Material.color)
             {
                 SetEquipText(Constant.EQUIPED_STRING);
             }
@@ -108,9 +120,28 @@ public class WeaponShop : UICanvas
     {
         weaponPrice.text = price.ToString();
     }
-    public void SetWeaponAttribute(int attribute)
+    public void SetWeaponAttribute(EquipBuffType buffType,int value)
     {
-        weaponAttribute.text = "+" + attribute.ToString() + "range";
+        if (buffType == EquipBuffType.None) return;
+
+        string nameBuff = "";
+        switch (buffType)
+        {
+            case EquipBuffType.Range:
+                nameBuff = "Range";
+                break;
+            case EquipBuffType.MoveSpeed:
+                nameBuff = "Move Speed";
+                break;
+            case EquipBuffType.Gold:
+                nameBuff = "Gold";
+                break;
+            case EquipBuffType.AttackSpeed:
+                nameBuff = "Attack Speed";
+                break;
+        }
+        //weaponAttribute.text = "+" + attribute.ToString() + nameBuff;
+        weaponAttribute.text = $"+{value}% {nameBuff}";
     }
 
     public override void Open()
@@ -118,7 +149,9 @@ public class WeaponShop : UICanvas
         base.Open();
         LevelManager.Ins.Player.gameObject.SetActive(false);
         SetCoinText(SaveLoadManager.Ins.UserData.Coin);
+        //page = 0;
         SetPageInformation(page);
+        
     }
 
     public override void Close(float delayTime)

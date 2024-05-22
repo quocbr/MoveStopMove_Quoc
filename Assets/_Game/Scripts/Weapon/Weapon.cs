@@ -9,7 +9,6 @@ public class Weapon : GameUnit
     [SerializeField] GameObject child;
     [SerializeField] private MeshRenderer meshRenderer;
 
-    private bool isActived = true;
     public bool IsCanAttack => child.activeSelf;
 
     private Material material;

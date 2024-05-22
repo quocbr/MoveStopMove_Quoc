@@ -418,6 +418,37 @@ Transform:
   - {fileID: 263035752}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &130704580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 130704581}
+  m_Layer: 0
+  m_Name: VFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &130704581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130704580}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 263035752}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &263035750
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,7 +561,19 @@ MonoBehaviour:
   - {fileID: 6018761086912929891, guid: 19a85d2702248a8409f51f5743f40f00, type: 3}
   - {fileID: 2633548152482236739, guid: 46c7c1f369ab70344a7991dcb62f96ee, type: 3}
   - {fileID: 3897563821459510684, guid: f9c3f749f4e40b1478f3c0803648802a, type: 3}
-  Particle: []
+  Particle:
+  - root: {fileID: 130704581}
+    particleType: 0
+    prefab: {fileID: 198035771847681936, guid: 579365cd679e0ee4993d0f2f33af1f3b, type: 3}
+    amount: 1
+  - root: {fileID: 130704581}
+    particleType: 30
+    prefab: {fileID: 198159141228902236, guid: b63e11287e9014d4ab49131127fd47e1, type: 3}
+    amount: 2
+  - root: {fileID: 130704581}
+    particleType: 50
+    prefab: {fileID: 198238096106216584, guid: 1a25e29df4d2f50428f030f58507e5a3, type: 3}
+    amount: 2
 --- !u!4 &263035752
 Transform:
   m_ObjectHideFlags: 0
@@ -546,6 +589,7 @@ Transform:
   m_Children:
   - {fileID: 1618718960}
   - {fileID: 2059727052}
+  - {fileID: 130704581}
   m_Father: {fileID: 112267916}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &290262672
@@ -594,12 +638,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faad041262eb8ea49af05380b04fa141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settingSO: {fileID: 11400000, guid: 8cacb476534279347bfb523b34fe109d, type: 2}
   listMusicSound:
   - {fileID: 8300000, guid: b0ecab52e9a553142a999ebe0df5bfa6, type: 3}
   - {fileID: 8300000, guid: 6363a9021e31a304ba1b643cb7722f3f, type: 3}
+  - {fileID: 8300000, guid: 43b37eaf05cda0443bb2f5321c802564, type: 3}
   listSFXSound:
   - {fileID: 8300000, guid: 3b6425a632d4cfc4b9eb26a34e55071c, type: 3}
   - {fileID: 8300000, guid: a18134944d03bdd45ae63dc94f834396, type: 3}
+  - {fileID: 8300000, guid: f4e59084b141a76498a865bc81ef9a8a, type: 3}
+  - {fileID: 8300000, guid: e269d0f1215732843b81be1d34760e91, type: 3}
+  - {fileID: 8300000, guid: b064ef2440de6c44799c19af6a6b6232, type: 3}
+  - {fileID: 8300000, guid: 16b52ebdd0399bc4a895304229d1ef43, type: 3}
+  - {fileID: 8300000, guid: 809686151d8c5144e8d66dbb359c1663, type: 3}
+  - {fileID: 8300000, guid: e0c65231d30422b418f75f8e3fed4da4, type: 3}
+  - {fileID: 8300000, guid: bf5200a24b9fd9d4eb4780cb559e509e, type: 3}
   musicSource: {fileID: 545303163}
   sFXSource: {fileID: 42661387}
 --- !u!1 &469284210

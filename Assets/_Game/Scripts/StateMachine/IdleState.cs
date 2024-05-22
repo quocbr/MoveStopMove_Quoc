@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class IdleState : IState<Character>
 {
-    float timer = 0;
-    float timeDelay;
     public void OnEnter(Character t)
     {
         t.StopMoving();

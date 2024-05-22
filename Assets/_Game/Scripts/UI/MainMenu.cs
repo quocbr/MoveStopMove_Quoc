@@ -17,6 +17,8 @@ public class MainMenu : UICanvas
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TMP_InputField inputNameText;
 
+    [SerializeField] private Toggle sFXToggle;
+
     private void Awake()
     {
         playButton.onClick.AddListener(OnMyPlayButtonClickHandle);
@@ -24,6 +26,22 @@ public class MainMenu : UICanvas
         skinShopButton.onClick.AddListener(OnMyShinShopButtonClickHandle);
 
         inputNameText.onEndEdit.AddListener(delegate { ChangeName(); });
+        sFXToggle.onValueChanged.AddListener(delegate {
+            ToggleValueChanged();
+        });
+    }
+
+    private void ToggleValueChanged()
+    {
+        if (sFXToggle.isOn)
+        {
+            SoundManager.Ins.SoundFXOn();
+        }
+        else
+        {
+            SoundManager.Ins.SoundFXOff();
+        }
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
     }
 
     private void OnMyShinShopButtonClickHandle()
@@ -39,10 +57,25 @@ public class MainMenu : UICanvas
         GameManager.Ins.ChangeState(GameState.MainMenu);
         CameraFollower.Ins.ChangeState(CameraFollower.State.MainMenu);
         //CameraFollow.Ins.ZoomIn();
-
+        //Music and sound
+        SoundManager.Ins.PlayMusic(Constant.MusicSound.HOME,true);
+        if (SoundManager.Ins.isMute == true)
+        {
+            sFXToggle.isOn = false;
+        }
+        else
+        {
+            sFXToggle.isOn = true;
+        }
         //Data
         this.SetCoinText(SaveLoadManager.Ins.UserData.Coin);
         placeholder.text = SaveLoadManager.Ins.UserData.UserName;
+    }
+
+    public override void CloseDirectly()
+    {
+        base.CloseDirectly();
+        SoundManager.Ins.StopMusic();
     }
 
     public void OnMyPlayButtonClickHandle()

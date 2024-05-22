@@ -24,6 +24,8 @@ public class Bullet : GameUnit
         TF.localScale = attacker.TF.localScale;
         TF.forward = attacker.TF.forward;
         isRunning = true;
+
+        //moveSpeed += moveSpeed * attacker.Buff.buffAttackSpeed / 100f;
     }
 
     protected virtual void Update()
@@ -59,8 +61,9 @@ public class Bullet : GameUnit
             //{
             //    return;
             //}
-            if (victim != null && victim != attacker)
+            if (victim != null && victim != attacker && !victim.IsDead)
             {
+                ParticlePool.Play(ParticleType.BulletTrigger,this.TF.position,Quaternion.identity);
                 onHit?.Invoke(attacker, victim);
                 OnDespawn();
             }

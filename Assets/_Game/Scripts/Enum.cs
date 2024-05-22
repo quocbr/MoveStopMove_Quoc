@@ -11,6 +11,15 @@ public enum ColorType
     Black = 5,
 }
 
+public enum EquipBuffType
+{
+    None = 0,
+    Range = 1,
+    AttackSpeed = 2,
+    MoveSpeed = 3,
+    Gold = 4,
+}
+
 public enum EquipmentType
 {
     Weapon,
@@ -26,6 +35,10 @@ public enum ParticleType
 {
     BloodExplosionRound = 0,
     SingleThunder = 10,
+
+    BulletTrigger = 30,
+
+    Spawn = 50,
 }
 
 public enum SetType

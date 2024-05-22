@@ -44,7 +44,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         //NavMesh.RemoveAllNavMeshData();
         //NavMesh.AddNavMeshData(currentLevel.navMeshData);
-        isRevive = true;
+        isRevive = false;
 
         Alive = currentLevel.aliveCount;
         NumBot = currentLevel.botCount;
@@ -73,7 +73,8 @@ public class LevelManager : Singleton<LevelManager>
         Destroy(currentMapControler.gameObject);
     }
 
-    private void Victory()
+    [ContextMenu("Win")]
+    public void Victory()
     {
         UIManager.Ins.CloseAll();
         UIManager.Ins.OpenUI<Win>().SetCoinText(player.Point);
@@ -147,6 +148,12 @@ public class LevelManager : Singleton<LevelManager>
         OnReset();
         LoadLevel(levelIndex);
         UIManager.Ins.OpenUI<MainMenu>();
+    }
+
+    public void OnRevive()
+    {
+        player.TF.position = RandomPoint();
+        (player as Player).OnRevive();
     }
 
     internal void OnNextLevel()
@@ -263,7 +270,7 @@ public class LevelManager : Singleton<LevelManager>
             if (!isRevive)
             {
                 isRevive = true;
-                //UIManager.Ins.OpenUI<UIRevive>();
+                UIManager.Ins.OpenUI<Revive>();
             }
             else
             {
@@ -282,8 +289,9 @@ public class LevelManager : Singleton<LevelManager>
             }
             else
             {
-                if (alive > 0)
+                if (remainBot > 0)
                 {
+                    remainBot--;
                     alive--;
                     NewBot(Utilities.Chance(50, 100) ? new IdleState() : new PatrolState(), character);
                 }
@@ -305,10 +313,12 @@ public class LevelManager : Singleton<LevelManager>
     {
         state = new PatrolState();
         //Character bot = HBPool.Spawn<Bot>(PoolType.Bot, GetRandomSpawnPos(), Quaternion.identity);
-        Character bot = HBPool.Spawn<Bot>(PoolType.Bot, RandomPoint(), Quaternion.identity);
+        Vector3 newPos = RandomPoint();
+        Character bot = HBPool.Spawn<Bot>(PoolType.Bot,newPos, Quaternion.identity);
         bot.CurrentColor = chara.CurrentColor;
         bot.ChangeColorSkin(chara.ColorSkin.material);
         bot.OnInit();
+        ParticlePool.Play(ParticleType.Spawn,newPos + Vector3.up,Quaternion.identity);
         bot.ChangeState(state);
         bots.Add(bot);
         bot.SetPoint(player.Point > 0 ? Random.Range(player.Point - 7, player.Point + 7) : 1);

@@ -1,7 +1,8 @@
-using System.Collections;
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
+
 
 public class Player : Character
 {
@@ -10,6 +11,7 @@ public class Player : Character
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private Rigidbody _rb;
+    [SerializeField] private ParticleSystem _particleSystem;
 
     private bool isMoving = false;
     private CounterTime counter = new CounterTime();
@@ -64,6 +66,8 @@ public class Player : Character
         SetSize(MIN_SIZE);
 
         indicator.SetName(NameChar);
+
+        
     }
 
     public override void OnAttack()
@@ -86,6 +90,16 @@ public class Player : Character
             {
                 OnAttack();
             }
+        }
+    }
+
+    public override void SetPoint(int point)
+    {
+        base.SetPoint(point);
+        if (this.Point % 3 == 0)
+        {
+            _particleSystem.Play();
+            SoundManager.Ins.PlaySFX(Constant.SFXSound.SIZE_UP);
         }
     }
 
@@ -112,14 +126,16 @@ public class Player : Character
             ChangeShield(SaveLoadManager.Ins.UserData.CurrentShield);
             ChangeWing(SaveLoadManager.Ins.UserData.CurrentWing);
         }
+
+        Buff.HandleBuff(this);
     }
     public override void Moving()
     {
         //base.Moving();
 
         moveVector = Vector3.zero;
-        moveVector.x = joystick.Horizontal * moveSpeed * Time.deltaTime;
-        moveVector.z = joystick.Vertical * moveSpeed * Time.deltaTime;
+        moveVector.x = joystick.Horizontal * (moveSpeed + moveSpeed*Buff.buffMoveSpeed/100f) * Time.deltaTime;
+        moveVector.z = joystick.Vertical * (moveSpeed + moveSpeed* Buff.buffMoveSpeed / 100f) * Time.deltaTime;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -195,7 +211,7 @@ public class Player : Character
 
     public override void ResetEQ(UserData userData)
     {
-        if(userData.currentSet != SetType.None)
+        if (userData.currentSet != SetType.None)
         {
             ChangeSet(SaveLoadManager.Ins.UserData.currentSet);
         }
@@ -208,5 +224,29 @@ public class Player : Character
             ChangeWing(SaveLoadManager.Ins.UserData.currentWing);
             ChangeColorSkin(SaveLoadManager.Ins.UserData.currentColor);
         }
+        Buff.HandleBuff(this);
+
+    }
+
+    public override void ChangeWeapon(PoolType weaponType)
+    {
+        EquipmentData data;
+        if (CurrentWeapon != null)
+        {
+            data = EquipmentController.Ins.GetWeapon(CurrentWeapon.poolType);
+            Buff.HandleAddBuff(data.buff, -data.value);
+        }
+
+        base.ChangeWeapon(weaponType);
+        data = EquipmentController.Ins.GetWeapon(weaponType);
+        Buff.HandleAddBuff(data.buff, data.value);
+    }
+
+    internal void OnRevive()
+    {
+        ChangeAnim(Anim.IDLE);
+        IsDead = false;
+        listTargetChar.Clear();
+        //reviveVFX.Play();
     }
 }

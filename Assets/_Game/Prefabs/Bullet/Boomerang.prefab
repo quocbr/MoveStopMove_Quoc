@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6241829606126095718}
   - component: {fileID: 1912648386556946068}
   - component: {fileID: 4115498027456026462}
-  - component: {fileID: 4847125077177715151}
+  - component: {fileID: 6205761410669987872}
   m_Layer: 0
   m_Name: Boomerang
   m_TagString: Untagged
@@ -79,8 +79,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &4847125077177715151
-BoxCollider:
+--- !u!136 &6205761410669987872
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -97,9 +97,11 @@ BoxCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.5, y: 3, z: 1}
-  m_Center: {x: 0.24, y: 0, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Height: 2.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5075194765001060365
 GameObject:
   m_ObjectHideFlags: 0

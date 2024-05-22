@@ -6,7 +6,7 @@ namespace VoxelArsenal
     public class VoxelRotation : MonoBehaviour
     {
 
-        [Header("Rotate axises by degrees per second")]
+        [Header("RotateSelf axises by degrees per second")]
         public Vector3 rotateVector = Vector3.zero;
 
         public enum spaceEnum { Local, World };

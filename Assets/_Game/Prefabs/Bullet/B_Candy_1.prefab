@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 4825562678835343653}
   - component: {fileID: 8034568629215889621}
   - component: {fileID: 1684091517300115032}
-  - component: {fileID: 1921904205567096209}
+  - component: {fileID: 3956151592264298705}
   m_Layer: 0
   m_Name: B_Candy_1
   m_TagString: Untagged
@@ -162,8 +162,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &1921904205567096209
-BoxCollider:
+--- !u!136 &3956151592264298705
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -180,6 +180,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.5, y: 3, z: 1}
-  m_Center: {x: -0.2, y: 0, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Height: 2.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

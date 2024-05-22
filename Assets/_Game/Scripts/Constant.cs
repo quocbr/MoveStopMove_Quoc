@@ -19,12 +19,22 @@ public class Constant
     public class MusicSound
     {
         public const string THEME = "";
+        public const string WIN = "Victory";
+        public const string LOSE = "Lose";
+        public const string HOME = "homeTheme";
     }
 
     public class SFXSound
     {
         public const string BUTTON_CLICK = "Button Click";
         public const string DEBUTTON_CLICK = "Button Click2";
+        public const string WEAPON_TRIGGER = "Vu khi va cham 3";
+        public const string WEAPON_THROW = "Nem vui khi";
+        public const string CHARACTER_DIE = "dead4";
+        public const string COUNTDOWN = "count_down";
+        public const string COUNTDOWN_END = "count_down_end";
+
+        public const string SIZE_UP = "size_up5";
     }
 }
 

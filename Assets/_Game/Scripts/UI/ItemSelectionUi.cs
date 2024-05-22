@@ -1,24 +1,16 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Xml.Serialization;
+
 using UnityEngine;
+
 
 public class ItemSelectionUi : MonoBehaviour
 {
     [SerializeField] private SkinShop skinShop;
-    [SerializeField]private EqItemUI buttonPrefab;
+    [SerializeField] private EqItemUI buttonPrefab;
     [SerializeField] private Transform parentPosition;
 
     private List<EqItemUI> listItemUI = new List<EqItemUI>();
-
-    private void OnEnable()
-    {
-        if (listItemUI.Count > 0)
-        {
-            listItemUI[0].SelectButton.onClick.Invoke();
-        }
-    }
 
     private void SpawnItem(EquipmentData equipmentData)
     {
@@ -27,15 +19,92 @@ public class ItemSelectionUi : MonoBehaviour
         //itemUi.transform.SetParent(parentPosition, false);
         itemUi.OnInit(equipmentData, OnItemUIClickHandle);
         listItemUI.Add(itemUi);
+        //Kiem tra xem skin la trang thai gi
+        itemUi.ChangeStateEquip(GetState(equipmentData));
+        if (itemUi.currentState == EquipItemState.Equiped)
+        {
+            itemUi.SelectButton.onClick.Invoke();
+            itemUi.ChangeStateEquip(EquipItemState.Selected);
+            skinShop.itemEquied = itemUi;
+        }
     }
 
-    private void OnItemUIClickHandle(EquipmentData equipmentData)
+    public EquipItemState GetState(EquipmentData equipmentData)
     {
-        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         switch (skinShop.SelectionButton)
         {
             case ButtonSelection.Head:
-                LevelManager.Ins.Player.ChangeHead(equipmentData.poolType);
+                if (SaveLoadManager.Ins.UserData.listHeadOwn.Contains(equipmentData.poolType))
+                {
+                    if (equipmentData.poolType == SaveLoadManager.Ins.UserData.currentHead)
+                    {
+                        return EquipItemState.Equiped;
+                    }
+                    else
+                    {
+                        return EquipItemState.Unlock;
+                    }
+                }
+                break;
+            case ButtonSelection.Pant:
+                if (SaveLoadManager.Ins.UserData.listPantOwn.Contains(equipmentData.poolType))
+                {
+                    if (equipmentData.poolType == SaveLoadManager.Ins.UserData.currentPant)
+                    {
+                        return EquipItemState.Equiped;
+                    }
+                    else
+                    {
+                        return EquipItemState.Unlock;
+                    }
+                }
+                break;
+            case ButtonSelection.Shield:
+                if (SaveLoadManager.Ins.UserData.listShieldOwn.Contains(equipmentData.poolType))
+                {
+
+                    if (equipmentData.poolType == SaveLoadManager.Ins.UserData.currentShield)
+                    {
+                        return EquipItemState.Equiped;
+                    }
+                    else
+                    {
+                        return EquipItemState.Unlock;
+                    }
+                }
+                break;
+            case ButtonSelection.Set:
+                if (SaveLoadManager.Ins.UserData.listSetOwn.Contains(equipmentData.setType))
+                {
+                    if (equipmentData.setType == SaveLoadManager.Ins.UserData.currentSet)
+                    {
+                        return EquipItemState.Equiped;
+                    }
+                    else
+                    {
+                        return EquipItemState.Unlock;
+                    }
+                }
+                break;
+        }
+        return EquipItemState.Lock;
+    }
+
+    private void OnItemUIClickHandle(EquipmentData equipmentData, EqItemUI item)
+    {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
+
+        if (skinShop.currentItem != null)
+        {
+            skinShop.currentItem.ChangeStateEquip(GetState(skinShop.CurrentEquipmentData));
+        }
+
+        skinShop.currentItem = item;
+
+        switch (skinShop.SelectionButton)
+        {
+            case ButtonSelection.Head:
+                LevelManager.Ins.Player.ChangeHead(equipmentData.poolType,true);
                 if (SaveLoadManager.Ins.UserData.listHeadOwn.Contains(equipmentData.poolType))
                 {
                     skinShop.BuyButton.gameObject.SetActive(false);
@@ -56,7 +125,7 @@ public class ItemSelectionUi : MonoBehaviour
                 }
                 break;
             case ButtonSelection.Pant:
-                LevelManager.Ins.Player.ChangePant(equipmentData.poolType);
+                LevelManager.Ins.Player.ChangePant(equipmentData.poolType,true);
                 if (SaveLoadManager.Ins.UserData.listPantOwn.Contains(equipmentData.poolType))
                 {
                     skinShop.BuyButton.gameObject.SetActive(false);
@@ -77,7 +146,7 @@ public class ItemSelectionUi : MonoBehaviour
                 }
                 break;
             case ButtonSelection.Shield:
-                LevelManager.Ins.Player.ChangeShield(equipmentData.poolType);
+                LevelManager.Ins.Player.ChangeShield(equipmentData.poolType, true);
                 if (SaveLoadManager.Ins.UserData.listShieldOwn.Contains(equipmentData.poolType))
                 {
                     skinShop.BuyButton.gameObject.SetActive(false);
@@ -98,7 +167,7 @@ public class ItemSelectionUi : MonoBehaviour
                 }
                 break;
             case ButtonSelection.Set:
-                LevelManager.Ins.Player.ChangeSet(equipmentData.setType);
+                LevelManager.Ins.Player.ChangeSet(equipmentData.setType,true);
                 if (SaveLoadManager.Ins.UserData.listSetOwn.Contains(equipmentData.setType))
                 {
                     skinShop.BuyButton.gameObject.SetActive(false);
@@ -119,7 +188,11 @@ public class ItemSelectionUi : MonoBehaviour
                 }
                 break;
         }
+
         skinShop.SetCostText(equipmentData.cost);
+        skinShop.SetEquipBuffText(equipmentData.buff, equipmentData.value);
+        item.ChangeStateEquip(EquipItemState.Selected);
+
         skinShop.CurrentEquipmentData = equipmentData;
     }
 
@@ -127,27 +200,54 @@ public class ItemSelectionUi : MonoBehaviour
     {
         ResSpawnAllItemData();
         List<EquipmentData> equipmentData = EquipmentController.Ins.GetEquipment(equipmentType);
-        for(int i = 0; i< equipmentData.Count; i++)
+        for (int i = 0; i < equipmentData.Count; i++)
         {
-            if(equipmentType == EquipmentType.Set)
+            if (equipmentType == EquipmentType.Set)
             {
                 SpawnItem(equipmentData[i]);
                 continue;
             }
-            if(equipmentData[i].setType == SetType.None)
+            if (equipmentData[i].setType == SetType.None)
             {
                 SpawnItem(equipmentData[i]);
             }
         }
-        if(listItemUI.Count > 0)
+        //if (listItemUI.Count > 0)
+        //{
+        //    listItemUI[0].SelectButton.onClick.Invoke();
+        //}
+        switch(equipmentType)
         {
-            listItemUI[0].SelectButton.onClick.Invoke();
+            case EquipmentType.Set:
+                if(SaveLoadManager.Ins.UserData.listSetOwn.Count == 0)
+                {
+                    listItemUI[0].SelectButton.onClick.Invoke();
+                }
+                break;
+            case EquipmentType.Pant:
+                if (SaveLoadManager.Ins.UserData.listPantOwn.Count == 0)
+                {
+                    listItemUI[0].SelectButton.onClick.Invoke();
+                }
+                break;
+            case EquipmentType.Shield:
+                if (SaveLoadManager.Ins.UserData.listShieldOwn.Count == 0)
+                {
+                    listItemUI[0].SelectButton.onClick.Invoke();
+                }
+                break;
+            case EquipmentType.Head:
+                if (SaveLoadManager.Ins.UserData.listHeadOwn.Count == 0)
+                {
+                    listItemUI[0].SelectButton.onClick.Invoke();
+                }
+                break;
         }
     }
 
     public void ResSpawnAllItemData()
     {
-        for(int i = 0;i< listItemUI.Count; i++)
+        for (int i = 0; i < listItemUI.Count; i++)
         {
             //HBPool.Despawn(listItemUI[i]);
             Destroy(listItemUI[i].gameObject);

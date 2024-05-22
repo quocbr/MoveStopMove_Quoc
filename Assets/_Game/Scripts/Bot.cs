@@ -35,6 +35,7 @@ public class Bot : Character
         base.OnInit();
         SetMark(false);
         ResetAnim();
+        TF.localScale = Vector3.one;
 
         NameChar = NameUtilities.GetRandomName();
         indicator.SetName(NameChar);
@@ -193,6 +194,15 @@ public class Bot : Character
         StopMoving();
         base.DoDead();
         Invoke(nameof(OnDespawn), 2f);
+    }
+
+    protected override void PlaySFX(string nameSFX)
+    {
+        if(Vector3.Distance(TF.position,LevelManager.Ins.Player.TF.position) > ATT_RANGE * size + LevelManager.Ins.Player.Size + 1f)
+        {
+            return;
+        }
+        base.PlaySFX(nameSFX);
     }
 
     //public override void AddTarget(Character target)

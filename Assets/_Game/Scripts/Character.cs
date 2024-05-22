@@ -32,11 +32,17 @@ public class Character : GameUnit
     [SerializeField] private Transform weaponPos;
     [SerializeField] private SkinnedMeshRenderer pantType;
 
+    
+
+    [SerializeField] private AudioSource sFXSource;
+
     [SerializeField] private AnimationEvent animEvent;
     //[SerializeField] private float maxScale = 2.5f;
 
     [SerializeField] Transform indicatorPoint;
     protected TargetIndicator indicator;
+
+    [SerializeField] private AttributeBuff buff;
 
     private int point = 0;
     private string currentAnimName;
@@ -53,13 +59,14 @@ public class Character : GameUnit
     protected float timer = 0;
 
 
-    protected GameUnit currentHead;
-    protected PoolType currentPant;
-    protected GameUnit currentWing;
-    protected GameUnit currentTail;
-    protected GameUnit currentShield;
+    private GameUnit currentHead;
+    private PoolType currentPant;
+    private GameUnit currentWing;
+    private GameUnit currentTail;
+    private GameUnit currentShield;
+    private SetType currentSet;
+
     private GameUnit currentWeapon;
-    protected SetType currentSet;
 
 
     protected bool isAttack = false;
@@ -82,7 +89,15 @@ public class Character : GameUnit
     public bool IsCanAttack => (currentWeapon as Weapon).IsCanAttack;
     public float Size { get => size; set => size = value; }
     public Character TargetChar { get => targetChar; set => targetChar = value; }
-    public Vector3 TargetPoint { get => targetPoint;}
+    public Vector3 TargetPoint { get => targetPoint; }
+    public AudioSource SFXSource { get => sFXSource; set => sFXSource = value; }
+    public GameUnit CurrentHead { get => currentHead; set => currentHead = value; }
+    public PoolType CurrentPant { get => currentPant; set => currentPant = value; }
+    public GameUnit CurrentWing { get => currentWing; set => currentWing = value; }
+    public GameUnit CurrentTail { get => currentTail; set => currentTail = value; }
+    public GameUnit CurrentShield { get => currentShield; set => currentShield = value; }
+    public SetType CurrentSet { get => currentSet; set => currentSet = value; }
+    public AttributeBuff Buff { get => buff; set => buff = value; }
 
     protected virtual void Start()
     {
@@ -124,7 +139,7 @@ public class Character : GameUnit
         TF.localScale = size * Vector3.one;
     }
 
-    public void SetPoint(int point)
+    public virtual void SetPoint(int point)
     {
         this.point = point > 0 ? point : 0;
         indicator.SetScore(this.point);
@@ -138,6 +153,7 @@ public class Character : GameUnit
         //TF.localScale = Vector3.one;
         //isAttack = false;
         //isAttacking = false;
+        SFXSource.clip = null;
         isDead = false;
         point = 0;
         //timer = 0;
@@ -188,7 +204,7 @@ public class Character : GameUnit
     public virtual void OnAttack()
     {
         TargetChar = GetTargetInRange();
-        
+
         if (IsCanAttack && TargetChar != null && !TargetChar.IsDead/* && currentSkin.Weapon.IsCanAttack*/)
         {
             targetPoint = TargetChar.TF.position;
@@ -197,7 +213,7 @@ public class Character : GameUnit
             {
                 (TargetChar as Bot).SetMark(true);
             }
-            
+
             //TF.LookAt(TargetChar.TF.position + (TF.position.y - TargetChar.TF.position.y) * Vector3.up);
             TF.LookAt(targetPoint);
             ChangeAnim(Anim.ATTACK);
@@ -216,7 +232,7 @@ public class Character : GameUnit
     //    //    isAttack = true;
     //    //    timer = 0;
     //    //}
-        
+
     //    if (TargetChar != null && currentWeapon.gameObject.activeSelf == true)
     //    {
     //        ChangeAnim(Anim.ATTACK);
@@ -244,8 +260,9 @@ public class Character : GameUnit
     //    CurrentWeapon.gameObject.SetActive(true);
     //}
 
-    public void Throw()
+    public virtual void Throw()
     {
+        PlaySFX(Constant.SFXSound.WEAPON_THROW);
         (CurrentWeapon as Weapon).Throw(this, OnHitVictim);
     }
 
@@ -315,8 +332,10 @@ public class Character : GameUnit
         {
             IsDead = true;
             characterState = CharacterState.Dead;
+            PlaySFX(Constant.SFXSound.CHARACTER_DIE);
             ChangeAnim(Anim.DEAD);
             killByName = name;
+            HBPool.Despawn(indicator);
             LevelManager.Ins.HandleCharecterDeath(this);
         }
         //if (this is Player)
@@ -328,7 +347,6 @@ public class Character : GameUnit
     public virtual void OnDespawn()
     {
         //tra ve tat ca nhung object pool
-        HBPool.Despawn(indicator);
         RemoveAllEQ();
     }
 
@@ -358,24 +376,23 @@ public class Character : GameUnit
         CurrentWeapon.TF.localScale = Vector3.one;
     }
 
-    public virtual void ChangeHead(PoolType headType)
+    public virtual void ChangeHead(PoolType headType, bool isTry = false)
     {
-        if (currentHead != null)
+        if (CurrentHead != null)
         {
             //Destroy(currentHead.gameObject);
-            HBPool.Despawn(currentHead);
-            currentHead = null;
+            HBPool.Despawn(CurrentHead);
+            CurrentHead = null;
         }
 
         if (headType == PoolType.None) return;
-
-        currentHead = HBPool.Spawn<GameUnit>(headType);
-        currentHead.transform.SetParent(headPos, false);
-        currentHead.TF.localPosition = Vector3.zero;
-        currentHead.TF.localRotation = Quaternion.identity;
+        CurrentHead = HBPool.Spawn<GameUnit>(headType);
+        CurrentHead.transform.SetParent(headPos, false);
+        CurrentHead.TF.localPosition = Vector3.zero;
+        CurrentHead.TF.localRotation = Quaternion.identity;
     }
 
-    public virtual void ChangePant(Material material)
+    public virtual void ChangePant(Material material, bool isTry = false)
     {
         if (material == null)
         {
@@ -388,79 +405,79 @@ public class Character : GameUnit
         }
     }
 
-    public virtual void ChangePant(PoolType poolType)
+    public virtual void ChangePant(PoolType poolType, bool isTry = false)
     {
         Material material = EquipmentController.Ins.GetPant(poolType);
         if (material == null)
         {
+
             pantType.enabled = false;
-            currentPant = PoolType.None;
+            CurrentPant = PoolType.None;
         }
         else
         {
             pantType.enabled = true;
             pantType.material = material;
-            currentPant = poolType;
+            CurrentPant = poolType;
         }
     }
 
     public virtual void ChangeWing(PoolType wingType)
     {
-        if (currentWing != null)
+        if (CurrentWing != null)
         {
             //Destroy(currentHead.gameObject);
-            HBPool.Despawn(currentWing);
-            currentWing = null;
+            HBPool.Despawn(CurrentWing);
+            CurrentWing = null;
         }
 
         if (wingType == PoolType.None) return;
 
-        currentWing = HBPool.Spawn<GameUnit>(wingType);
-        currentWing.transform.SetParent(wingPos, false);
-        currentWing.TF.localPosition = Vector3.zero;
-        currentWing.TF.localRotation = Quaternion.identity;
+        CurrentWing = HBPool.Spawn<GameUnit>(wingType);
+        CurrentWing.transform.SetParent(wingPos, false);
+        CurrentWing.TF.localPosition = Vector3.zero;
+        CurrentWing.TF.localRotation = Quaternion.identity;
     }
 
     public virtual void ChangeTail(PoolType tailType)
     {
-        if (currentTail != null)
+        if (CurrentTail != null)
         {
             //Destroy(currentHead.gameObject);
-            HBPool.Despawn(currentTail);
-            currentTail = null;
+            HBPool.Despawn(CurrentTail);
+            CurrentTail = null;
         }
 
         if (tailType == PoolType.None) return;
 
-        currentTail = HBPool.Spawn<GameUnit>(tailType);
-        currentTail.transform.SetParent(wingPos, false);
-        currentTail.TF.localPosition = Vector3.zero;
-        currentTail.TF.localRotation = Quaternion.identity;
+        CurrentTail = HBPool.Spawn<GameUnit>(tailType);
+        CurrentTail.transform.SetParent(wingPos, false);
+        CurrentTail.TF.localPosition = Vector3.zero;
+        CurrentTail.TF.localRotation = Quaternion.identity;
     }
 
-    public virtual void ChangeShield(PoolType shieldType)
+    public virtual void ChangeShield(PoolType shieldType, bool isTry = false)
     {
-        if (currentShield != null)
+        if (CurrentShield != null)
         {
             //Destroy(currentHead.gameObject);
-            HBPool.Despawn(currentShield);
-            currentShield = null;
+            HBPool.Despawn(CurrentShield);
+            CurrentShield = null;
         }
 
         if (shieldType == PoolType.None) return;
-
-        currentShield = HBPool.Spawn<GameUnit>(shieldType);
-        currentShield.transform.SetParent(shieldPos, false);
-        currentShield.TF.localPosition = Vector3.zero;
-        currentShield.TF.localRotation = Quaternion.identity;
+        CurrentShield = HBPool.Spawn<GameUnit>(shieldType);
+        CurrentShield.transform.SetParent(shieldPos, false);
+        CurrentShield.TF.localPosition = Vector3.zero;
+        CurrentShield.TF.localRotation = Quaternion.identity;
     }
 
-    public virtual void ChangeSet(SetType setType)
+    public virtual void ChangeSet(SetType setType, bool isTry = false)
     {
         if (setType == SetType.None)
         {
             RemoveAllEQ();
-            currentSet = setType;
+            CurrentSet = setType;
             return;
         }
 
@@ -472,7 +489,7 @@ public class Character : GameUnit
 
         ChangeColorSkin(SpawnManager.Ins.GetColorSkinSet(setType));
 
-        currentSet = setType;
+        CurrentSet = setType;
     }
 
     public virtual void RemoveAllEQ()
@@ -501,7 +518,25 @@ public class Character : GameUnit
         //}
     }
 
+
+   
+
     #endregion
+
+
+    protected virtual void PlaySFX(string nameSFX)
+    {
+        if (SoundManager.Ins.isMute == true) return;
+        try
+        {
+            SFXSource.clip = SoundManager.Ins.GetSFX(nameSFX);
+            SFXSource.Play();
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("Character Sound ERROR: " + e);
+        }
+    }
 
     public void ChangeState(IState<Character> state)
     {
