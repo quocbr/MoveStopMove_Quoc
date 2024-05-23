@@ -81,8 +81,14 @@ public class LevelManager : Singleton<LevelManager>
         player.ChangeAnim(Anim.WIN);
     }
 
-    public void Fail()
+    public void Fail(float timeDeley = 0f)
     {
+        StartCoroutine(OnFail(timeDeley));
+    }
+
+    IEnumerator OnFail(float time)
+    {
+        yield return new WaitForSeconds(time);
         UIManager.Ins.CloseAll();
         UIManager.Ins.OpenUI<Lose>().SetCoinText(player.Point);
     }
@@ -166,56 +172,56 @@ public class LevelManager : Singleton<LevelManager>
         UIManager.Ins.OpenUI<MainMenu>();
     }
 
-    [MethodImpl(MethodImplOptions.Synchronized)]
-    public Vector3 GetRandomSpawnPos()
-    {
-        List<Vector3> l_Spawn = new List<Vector3>();
-        for (int i = 0; i < L_SpawnPos.Count; i++)
-        {
-            if (Cache.GetSpawn(L_SpawnPos[i]).IsSpawn())
-            {
-                l_Spawn.Add(L_SpawnPos[i].position);
-            }
-        }
+    //[MethodImpl(MethodImplOptions.Synchronized)]
+    //public Vector3 GetRandomSpawnPos()
+    //{
+    //    List<Vector3> l_Spawn = new List<Vector3>();
+    //    for (int i = 0; i < L_SpawnPos.Count; i++)
+    //    {
+    //        if (Cache.GetSpawn(L_SpawnPos[i]).IsSpawn())
+    //        {
+    //            l_Spawn.Add(L_SpawnPos[i].position);
+    //        }
+    //    }
 
-        Vector3 randPoint = Vector3.zero;
+    //    Vector3 randPoint = Vector3.zero;
         
         
         
-        float size = Character.ATT_RANGE + Character.MAX_SIZE + 1f;
+    //    float size = Character.ATT_RANGE + Character.MAX_SIZE + 1f;
 
-        for (int t = 0; t < 50; t++)
-        {
-            if (l_Spawn.Count > 0)
-                randPoint = l_Spawn[Random.Range(0, l_Spawn.Count)];
-            else
-            {
-                randPoint = L_SpawnPos[Random.Range(0, L_SpawnPos.Count)].position;
-            }
-            //randPoint = currentMapControler.RandomPoint();
-            if (Vector3.Distance(randPoint, player.TF.position) < size)
-            {
-                continue;
-            }
+    //    for (int t = 0; t < 50; t++)
+    //    {
+    //        if (l_Spawn.Count > 0)
+    //            randPoint = l_Spawn[Random.Range(0, l_Spawn.Count)];
+    //        else
+    //        {
+    //            randPoint = L_SpawnPos[Random.Range(0, L_SpawnPos.Count)].position;
+    //        }
+    //        //randPoint = currentMapControler.RandomPoint();
+    //        if (Vector3.Distance(randPoint, player.TF.position) < size)
+    //        {
+    //            continue;
+    //        }
 
-            for (int j = 0; j < 20; j++)
-            {
-                for (int i = 0; i < bots.Count; i++)
-                {
-                    if (Vector3.Distance(randPoint, bots[i].TF.position) < size)
-                    {
-                        break;
-                    }
-                }
+    //        for (int j = 0; j < 20; j++)
+    //        {
+    //            for (int i = 0; i < bots.Count; i++)
+    //            {
+    //                if (Vector3.Distance(randPoint, bots[i].TF.position) < size)
+    //                {
+    //                    break;
+    //                }
+    //            }
 
-                if (j == 19)
-                {
-                    return randPoint;
-                }
-            }
-        }
-        return randPoint;
-    }
+    //            if (j == 19)
+    //            {
+    //                return randPoint;
+    //            }
+    //        }
+    //    }
+    //    return randPoint;
+    //}
 
     public Vector3 RandomPoint()
     {
@@ -274,7 +280,7 @@ public class LevelManager : Singleton<LevelManager>
             }
             else
             {
-                Fail();
+                Fail(2f);
             }
         }
         else

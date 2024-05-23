@@ -39,6 +39,8 @@ public enum ParticleType
     BulletTrigger = 30,
 
     Spawn = 50,
+
+    Gift_Buff = 60,
 }
 
 public enum SetType
@@ -135,6 +137,9 @@ public enum PoolType
 
     [InspectorName("======Indir========")] indicater,
     TargetIndicator = 700,
+
+    [InspectorName("======Box========")] b,
+    Gift_Box = 750,
 }
 
 

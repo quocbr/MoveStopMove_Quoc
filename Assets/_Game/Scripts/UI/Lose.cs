@@ -8,11 +8,12 @@ using UnityEngine.UI;
 
 public class Lose : UICanvas
 {
-    [SerializeField] private RectTransform levelFail, panelLose, buttonContinue;
-    private Vector3 pos_levelFail, pos_panelLose;
-    private Vector3 sca_levelFail, sca_buttoncontinue;
+    [SerializeField] private RectTransform levelFail, panelLose,coin;
+    private Vector3 pos_levelFail, pos_panelLose,pos_Coin;
+    private Vector3 sca_levelFail;
 
     [SerializeField] private Button continueButton;
+    [SerializeField] private Button rewardAdsButton;
 
     [SerializeField] private TextMeshProUGUI textRank;
     [SerializeField] private TextMeshProUGUI nameKillerText;
@@ -21,6 +22,7 @@ public class Lose : UICanvas
     private void Awake()
     {
         continueButton.onClick.AddListener(OnContinueButtonClick);
+        rewardAdsButton.onClick.AddListener(OnRewardAdsButtonClick);
     }
 
     protected override void OnInit()
@@ -31,17 +33,29 @@ public class Lose : UICanvas
 
         pos_panelLose = panelLose.localPosition;
 
-        sca_buttoncontinue = buttonContinue.localPosition;
-        
+        pos_Coin = coin.localPosition;
     }
 
     private void OnContinueButtonClick()
     {
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         //SaveLoadManager.Ins.UserData.Coin += LevelManager.Ins.Player.Point;
+        SaveLoadManager.Ins.Save();
         LevelManager.Ins.OnRetry();
         ResetAll();
         Close(0);
+    }
+
+    private void OnRewardAdsButtonClick()
+    {
+        AdsManager.Ins.onUserEarnedRewardCallback = () => {
+            SaveLoadManager.Ins.UserData.Coin += LevelManager.Ins.Player.Point;
+            SetCoinText(LevelManager.Ins.Player.Point * 2);
+
+            rewardAdsButton.gameObject.SetActive(false);
+            coin.DOAnchorPosX(0, 0.7f).SetDelay(0.5f).SetEase(Ease.OutCirc);
+        };
+        AdsManager.Ins.ShowRewardedAd();
     }
 
     public override void Open()
@@ -61,18 +75,11 @@ public class Lose : UICanvas
         LevelManager.Ins.Player.Point += LevelManager.Ins.Player.Point * LevelManager.Ins.Player.Buff.buffGold / 100;
         SetCoinText(LevelManager.Ins.Player.Point);
         SaveLoadManager.Ins.UserData.Coin += LevelManager.Ins.Player.Point;
-        SaveLoadManager.Ins.Save();
 
         //Music
         SoundManager.Ins.PlayMusic(Constant.MusicSound.LOSE);
 
         UIManager.Ins.GetUI<GamePlay>().Close(0);
-    }
-
-    public override void Close(float delayTime)
-    {
-        base.Close(delayTime);
-        DOTween.Kill(buttonContinue);
     }
 
     private void SetTextRank(int rank)
@@ -93,10 +100,6 @@ public class Lose : UICanvas
     private void LevelComplete()
     {
         panelLose.DOAnchorPos(new Vector3(0, 0f, 0f), 0.7f).SetDelay(0.5f).SetEase(Ease.OutCirc);
-
-        buttonContinue.DOScale(new Vector3(1, 1, 1), 2f).SetDelay(0.6f).SetEase(Ease.OutCirc);
-
-        buttonContinue.DOScale(new Vector3(1.3f, 1.3f, 1.3f), 2f).SetDelay(2f).SetEase(Ease.OutCirc).SetLoops(100000, LoopType.Yoyo);
     }
 
     private void ResetAll()
@@ -106,6 +109,8 @@ public class Lose : UICanvas
 
         panelLose.localPosition = pos_panelLose;
 
-        buttonContinue.localScale = sca_buttoncontinue;
+        coin.localPosition = pos_Coin;
+
+        rewardAdsButton.gameObject.SetActive(true);
     }
 }

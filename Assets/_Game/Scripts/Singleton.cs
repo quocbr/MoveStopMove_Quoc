@@ -22,9 +22,9 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                     var singletonObject = new GameObject();
                     m_Ins = singletonObject.AddComponent<T>();
                     singletonObject.name = typeof(T).ToString() + " (Singleton)";
-
+                    
                 }
-
+                DontDestroyOnLoad(m_Ins.gameObject);
             }
             return m_Ins;
         }

@@ -5,6 +5,17 @@ using UnityEngine;
 public class CharacterSight : MonoBehaviour
 {
     [SerializeField] Character character;
+    private Vector3 originScale;
+
+    private void Awake()
+    {
+        originScale = transform.localScale;
+    }
+
+    public void SetRange(int range)
+    {
+        this.transform.localScale = originScale + originScale * range / 100f; 
+    }
 
     private void OnTriggerEnter(Collider other)
     {

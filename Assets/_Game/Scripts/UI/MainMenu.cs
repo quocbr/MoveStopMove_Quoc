@@ -17,6 +17,8 @@ public class MainMenu : UICanvas
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TMP_InputField inputNameText;
 
+    [SerializeField] private TextMeshProUGUI test;
+
     [SerializeField] private Toggle sFXToggle;
 
     private void Awake()
@@ -25,23 +27,22 @@ public class MainMenu : UICanvas
         weaponShopButton.onClick.AddListener(OnMyWeaponShopButtonClickHandle);
         skinShopButton.onClick.AddListener(OnMyShinShopButtonClickHandle);
 
-        inputNameText.onEndEdit.AddListener(delegate { ChangeName(); });
-        sFXToggle.onValueChanged.AddListener(delegate {
-            ToggleValueChanged();
-        });
+        inputNameText.onEndEdit.AddListener(ChangeName);
+        sFXToggle.onValueChanged.AddListener(ToggleValueChanged);
     }
 
-    private void ToggleValueChanged()
+    private void ToggleValueChanged(bool isOn)
     {
-        if (sFXToggle.isOn)
+        if (isOn)
         {
             SoundManager.Ins.SoundFXOn();
+            //SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         }
         else
         {
             SoundManager.Ins.SoundFXOff();
         }
-        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
+        
     }
 
     private void OnMyShinShopButtonClickHandle()
@@ -99,12 +100,12 @@ public class MainMenu : UICanvas
         cointText.text = coin.ToString();
     }
 
-    public void ChangeName()
+    public void ChangeName(string name)
     {
-        nameText.text = inputNameText.text;
+        nameText.text = name;
         placeholder.text = nameText.text;
         SaveLoadManager.Ins.UserData.UserName = nameText.text;
-        LevelManager.Ins.Player.NameChar = nameText.text;
+        LevelManager.Ins.Player.SetNameChar(nameText.text);
         SaveLoadManager.Ins.Save();
     }
 }

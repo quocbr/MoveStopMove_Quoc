@@ -1,5 +1,4 @@
 
-#if UNITY_EDITOR
 
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +6,9 @@ using UnityEngine;
 
 public class FPS : MonoBehaviour
 {
+    [Header("Frame Seetings")]
+    public int TargetFrameRate = 60;
+
     public float updateInterval = 0.5f;
 
     float accum = 0;
@@ -15,6 +17,13 @@ public class FPS : MonoBehaviour
     float fps = 0;
 
     GUIStyle textStyle = new GUIStyle();
+
+    private void Awake()
+    {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = TargetFrameRate;
+
+    }
 
     private void Start()
     {
@@ -44,6 +53,6 @@ public class FPS : MonoBehaviour
     {
         GUI.Label(new Rect(5, 5, 100, 25), fps.ToString("F2") + " FPS", textStyle);
     }
+
 }
 
-#endif

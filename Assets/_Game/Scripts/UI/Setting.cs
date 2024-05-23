@@ -28,13 +28,15 @@ public class Setting : UICanvas
     public override void Open()
     {
         base.Open();
-        if (SoundManager.Ins.isMute == false)
+        if (SoundManager.Ins.isMute == true)
         {
-            soundOffButton.onClick.Invoke();
+            soundOnButton.gameObject.SetActive(true);
+            soundOffButton.gameObject.SetActive(false);
         }
         else 
         {
-            soundOnButton.onClick.Invoke();
+            soundOnButton.gameObject.SetActive(false);
+            soundOffButton.gameObject.SetActive(true);
         } 
     }
 
@@ -74,7 +76,7 @@ public class Setting : UICanvas
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         vibOnButton.gameObject.SetActive(false);
         vibOffButton.gameObject.SetActive(true);
-        Handheld.Vibrate();
+        //Handheld.Vibrate();
     }
 
     private void OnVibOffButtonClickHandle()

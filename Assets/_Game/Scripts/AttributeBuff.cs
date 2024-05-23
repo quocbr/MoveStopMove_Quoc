@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AttributeBuff : MonoBehaviour
 {
+    [SerializeField] private CharacterSight characterSight;
     public int buffAttackRange = 0;
     public int buffAttackSpeed = 0;
     public int buffMoveSpeed = 0;
@@ -47,6 +48,7 @@ public class AttributeBuff : MonoBehaviour
         {
             case EquipBuffType.Range:
                 this.buffAttackRange += value;
+                characterSight.SetRange(buffAttackRange);
                 break;
             case EquipBuffType.AttackSpeed:
                 this.buffAttackSpeed += value;

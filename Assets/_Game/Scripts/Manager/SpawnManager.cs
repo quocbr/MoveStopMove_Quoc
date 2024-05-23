@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class SpawnManager : Singleton<SpawnManager>
     [SerializeField] private ColorSO colorSO;
     public Dictionary<string,bool> dicColor = new Dictionary<string, bool>();
     public Material playerColor;
+
+    private Coroutine coroutine;
 
     private void Awake()
     {
@@ -115,6 +118,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
             characters.Add(bot);
         }
+
+        HanldeSpawnGiftBox();
+
         return characters;
     }
     public Material GetColorSkin(ColorType colorType)
@@ -125,6 +131,18 @@ public class SpawnManager : Singleton<SpawnManager>
     public Material GetColorSkinSet(SetType setType)
     {
         return colorSO.colorSet[(int)setType - 1];
+    }
+
+    public void HanldeSpawnGiftBox()
+    {
+       coroutine = StartCoroutine(SpawnGiftBox(Utilities.RandIntNumber(5,10)));
+    }
+
+    IEnumerator SpawnGiftBox(float timeDelay)
+    {
+        yield return new WaitForSeconds(timeDelay);
+        HBPool.Spawn<GameUnit>(PoolType.Gift_Box,LevelManager.Ins.RandomPoint(),Quaternion.identity);
+        StopCoroutine(coroutine);
     }
 
     //public Tuple<Material,int> GetColor()
@@ -139,7 +157,7 @@ public class SpawnManager : Singleton<SpawnManager>
     //    }
     //    return null;
     //}
-    
+
     //public void BackColor(Material material)
     //{
     //    dicColor[material.name] = false;

@@ -31,7 +31,7 @@ public class Character : GameUnit
     [SerializeField] private Transform shieldPos;
     [SerializeField] private Transform weaponPos;
     [SerializeField] private SkinnedMeshRenderer pantType;
-
+    [SerializeField]protected ParticleSystem buffGiftParticleSystem;
     
 
     [SerializeField] private AudioSource sFXSource;
@@ -68,12 +68,16 @@ public class Character : GameUnit
 
     private GameUnit currentWeapon;
 
+    //Effec
+    
 
     protected bool isAttack = false;
     protected bool isAttacking = false;
 
     protected bool isDead;
     protected bool isMove;
+
+    public bool EatedGiftBox = false;
 
     protected IState<Character> currentState;
 
@@ -264,6 +268,10 @@ public class Character : GameUnit
     {
         PlaySFX(Constant.SFXSound.WEAPON_THROW);
         (CurrentWeapon as Weapon).Throw(this, OnHitVictim);
+        if(EatedGiftBox == true)
+        {
+            HandleEndEatGiftBox();
+        }
     }
 
     public Character GetTargetInRange()
@@ -523,6 +531,11 @@ public class Character : GameUnit
 
     #endregion
 
+    public virtual void SetNameChar(string name)
+    {
+        nameChar = name;
+        indicator.SetName(name);
+    }
 
     protected virtual void PlaySFX(string nameSFX)
     {
@@ -536,6 +549,20 @@ public class Character : GameUnit
         {
             Debug.LogWarning("Character Sound ERROR: " + e);
         }
+    }
+
+    public virtual void HandleEatGiftBox()
+    {
+        EatedGiftBox = true;
+        buffGiftParticleSystem.Play();
+        TF.localScale += Vector3.one*0.5f;
+    }
+
+    protected virtual void HandleEndEatGiftBox()
+    {
+        TF.localScale -= Vector3.one * 0.5f;
+        buffGiftParticleSystem.Stop();
+        EatedGiftBox = false;
     }
 
     public void ChangeState(IState<Character> state)

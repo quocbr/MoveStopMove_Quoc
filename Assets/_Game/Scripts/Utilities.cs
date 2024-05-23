@@ -16,6 +16,15 @@ public static class Utilities
     {
         return UnityEngine.Random.Range(0, max) < rand;
     }
+    //lay ket qua random trong khoang
+    public static float RandFloatNumber(float begin, float end)
+    {
+        return UnityEngine.Random.Range(begin, end);
+    }
+    public static int RandIntNumber(int begin, int end)
+    {
+        return UnityEngine.Random.Range(begin, end);
+    }
 
     //random gia enum trong mot kieu enum
     private static System.Random random = new System.Random();
@@ -30,4 +39,5 @@ public static class Utilities
     {
         return ts[UnityEngine.Random.Range(0, ts.Length)];
     }
+
 }

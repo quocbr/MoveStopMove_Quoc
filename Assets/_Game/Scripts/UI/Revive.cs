@@ -30,24 +30,24 @@ public class Revive : UICanvas
         counter = 5;
     }
 
-    private void Update()
-    {
-        //if (counter > 0)
-        //{
-        //    counter -= Time.deltaTime;
-        //    counterTxt.SetText(counter.ToString("F0"));
+    //private void Update()
+    //{
+    //    //if (counter > 0)
+    //    //{
+    //    //    counter -= Time.deltaTime;
+    //    //    counterTxt.SetText(counter.ToString("F0"));
 
-        //    if (counter <= 0)
-        //    {
-        //        CloseButton();
-        //        SoundManager.Ins.PlaySFX(Constant.SFXSound.COUNTDOWN_END);
-        //    }
-        //    else
-        //    {
-        //        SoundManager.Ins.PlaySFX(Constant.SFXSound.COUNTDOWN);
-        //    }
-        //}
-    }
+    //    //    if (counter <= 0)
+    //    //    {
+    //    //        CloseButton();
+    //    //        SoundManager.Ins.PlaySFX(Constant.SFXSound.COUNTDOWN_END);
+    //    //    }
+    //    //    else
+    //    //    {
+    //    //        SoundManager.Ins.PlaySFX(Constant.SFXSound.COUNTDOWN);
+    //    //    }
+    //    //}
+    //}
 
     IEnumerator CountDown()
     {
@@ -68,15 +68,18 @@ public class Revive : UICanvas
 
     public void OnMyReviveButtonHandleClick()
     {
-        GameManager.Ins.ChangeState(GameState.Gameplay);
-        Close(0);
-        LevelManager.Ins.OnRevive();
-        UIManager.Ins.OpenUI<GamePlay>();
+        AdsManager.Ins.onUserEarnedRewardCallback = () => {
+            GameManager.Ins.ChangeState(GameState.Gameplay);
+            Close(0);
+            LevelManager.Ins.OnRevive();
+            UIManager.Ins.OpenUI<GamePlay>();
+        };
+        AdsManager.Ins.ShowRewardedAd();
     }
 
     public void CloseButton()
     {
         Close(0);
-        LevelManager.Ins.Fail();
+        LevelManager.Ins.Fail(0.2f);
     }
 }

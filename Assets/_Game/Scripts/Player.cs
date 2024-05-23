@@ -247,6 +247,7 @@ public class Player : Character
         ChangeAnim(Anim.IDLE);
         IsDead = false;
         listTargetChar.Clear();
+        TargetChar = null;
         //reviveVFX.Play();
     }
 }

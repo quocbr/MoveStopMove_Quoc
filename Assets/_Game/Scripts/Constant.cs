@@ -59,6 +59,10 @@ public class Anim
     public const string WIN = "win";
     public const string ULTI = "ulti";
     public const string DANCE = "dance";
+
+    public const string GIFT_OPEN = "open";
+
+
 }
 
 public class PathContant
