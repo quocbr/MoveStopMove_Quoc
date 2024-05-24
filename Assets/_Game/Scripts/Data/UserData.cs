@@ -7,6 +7,9 @@ using UnityEngine;
 [Serializable]
 public class UserData
 {
+    public string email;
+    public string userID;
+
     public string userName; 
     public int coin;
     public int currentLevel;

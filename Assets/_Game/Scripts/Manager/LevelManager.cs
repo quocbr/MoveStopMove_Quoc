@@ -35,8 +35,16 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Start()
     {
+        //levelIndex = SaveLoadManager.Ins.UserData.CurrentLevel;
+        //LoadLevel(levelIndex);
+        //UIManager.Ins.OpenUI<MainMenu>();
+    }
+
+    public void Init()
+    {
         levelIndex = SaveLoadManager.Ins.UserData.CurrentLevel;
         LoadLevel(levelIndex);
+        CameraFollowe.Ins.Init();
         UIManager.Ins.OpenUI<MainMenu>();
     }
 
@@ -167,7 +175,7 @@ public class LevelManager : Singleton<LevelManager>
         OnReset();
         levelIndex++;
         SaveLoadManager.Ins.UserData.CurrentLevel = levelIndex;
-        SaveLoadManager.Ins.Save();
+        SaveLoadManager.Ins.SaveTofile();
         LoadLevel(levelIndex);
         UIManager.Ins.OpenUI<MainMenu>();
     }

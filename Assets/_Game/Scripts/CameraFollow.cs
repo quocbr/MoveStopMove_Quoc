@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollower : Singleton<CameraFollower>
+public class CameraFollowe : Singleton<CameraFollowe>
 {
     public enum State { MainMenu, Gameplay, Shop }
 
@@ -31,7 +31,12 @@ public class CameraFollower : Singleton<CameraFollower>
     {
         Camera = Camera.main;
     }
-    private void Start()
+    //private void Start()
+    //{
+        
+    //}
+
+    public void Init()
     {
         if(target == null)
         {
@@ -41,9 +46,13 @@ public class CameraFollower : Singleton<CameraFollower>
 
     private void LateUpdate()
     {
-        offset = Vector3.Lerp(offset, targetOffset, Time.deltaTime * moveSpeed);
-        TF.rotation = Quaternion.Lerp(TF.rotation, targetRotate, Time.deltaTime * moveSpeed);
-        TF.position = Vector3.Lerp(TF.position, target.position + targetOffset, Time.deltaTime * moveSpeed);
+        if(target != null)
+        {
+            offset = Vector3.Lerp(offset, targetOffset, Time.deltaTime * moveSpeed);
+            TF.rotation = Quaternion.Lerp(TF.rotation, targetRotate, Time.deltaTime * moveSpeed);
+            TF.position = Vector3.Lerp(TF.position, target.position + targetOffset, Time.deltaTime * moveSpeed);
+        }
+        
     }
 
     //rate

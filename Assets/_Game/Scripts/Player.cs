@@ -55,7 +55,7 @@ public class Player : Character
     protected override void SetSize(float size)
     {
         base.SetSize(size);
-        CameraFollower.Ins.SetRateOffset((this.size - MIN_SIZE) / (MAX_SIZE - MIN_SIZE));
+        CameraFollowe.Ins.SetRateOffset((this.size - MIN_SIZE) / (MAX_SIZE - MIN_SIZE));
     }
 
     public override void OnInit()

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "511448456712",
+    "project_id": "alalys",
+    "storage_bucket": "alalys.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511448456712:android:8fa875c07716d7c299bbbd",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.MoveStopMove_Quoc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfoXcAHt_5OGYaikiUA_JoGPVWl5suF-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

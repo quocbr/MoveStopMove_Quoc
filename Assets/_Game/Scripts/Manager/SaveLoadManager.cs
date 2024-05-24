@@ -5,6 +5,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using UnityEngine;
+using Firebase;
+using Proyecto26;
+using System.Threading.Tasks;
 
 public class SaveLoadManager : Singleton<SaveLoadManager>
 {
@@ -15,6 +18,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     private string saveKey = Constant.SAVE_KEY;
     private string saveFilePath;
     private BinaryFormatter formatter;
+    private string access_token = "";
 
     public UserData UserData { get => userData; set => userData = value; }
 
@@ -80,12 +84,16 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     public void OnInit()
     {
-        saveFilePath = Path.Combine(Application.persistentDataPath, saveFileName);
-        formatter = new BinaryFormatter();
-        if (loadOnStart)
-        {
-            Load();
-        }
+        //access_token = SaveSystem.GetString("access_token");
+        access_token = PlayerPrefs.GetString("access_token");
+        FireBaseSetting.Ins.GetToDatabase(access_token);
+        //saveFilePath = Path.Combine(Application.persistentDataPath, saveFileName);
+        //formatter = new BinaryFormatter();
+        //if (loadOnStart)
+        //{
+        //    Load();
+        //}
+       
     }
 
     public void Load1()
@@ -102,14 +110,14 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             {
                 Debug.Log(ex.Message);
                 file.Close();
-                Save();
+                SaveTofile();
             }
             file.Close();
         }
         catch (Exception ex)
         {
             Debug.Log(ex.Message);
-            Save();
+            SaveTofile();
         }
     }
 
@@ -131,7 +139,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         }
     }
 
-    public void Save()
+    public void Save2()
     {
         if (userData == null)
         {
@@ -154,7 +162,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         }
     }
 
-    public void Load()
+    public void Load2()
     {
 
         try
@@ -170,7 +178,22 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         }
         catch
         {
-            Save();
+            SaveTofile();
         }
+    }
+
+    public void SaveTofile()
+    {
+        FireBaseSetting.Ins.PutToDatabase(userData);
+    }
+
+    //public void SaveToFile()
+    //{
+        
+    //}
+
+    public void LoadToFile(UserData userData)
+    {
+        this.userData = userData;
     }
 }

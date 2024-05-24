@@ -1069,7 +1069,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3281152436312230559}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &879996928
@@ -1236,7 +1237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a79da42a8f567498c32e9e53d53a1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appId: ca-app-pub-3362649707060650~1825170561
+  appId: ca-app-pub-5251055349840940~7424518586
 --- !u!4 &1088708996
 Transform:
   m_ObjectHideFlags: 0
@@ -1502,6 +1503,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 263035752}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1655759189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1655759191}
+  - component: {fileID: 1655759190}
+  m_Layer: 0
+  m_Name: FirebaseManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1655759190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655759189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5e8ef248833ab840ae52ea7569251f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fieBaseLink: https://alalys-default-rtdb.asia-southeast1.firebasedatabase.app/
+--- !u!4 &1655759191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655759189}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1771063315
 GameObject:
   m_ObjectHideFlags: 0
@@ -1687,12 +1733,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7357860991908482506}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 879996927}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3851996969529502879
 MonoBehaviour:
@@ -1796,7 +1842,6 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 8305465659431672967}
   - {fileID: 1505683597}
-  - {fileID: 3281152436312230559}
   - {fileID: 469284211}
   - {fileID: 601568923}
   - {fileID: 47621494}
@@ -1805,6 +1850,7 @@ SceneRoots:
   - {fileID: 101330107}
   - {fileID: 89420760}
   - {fileID: 290262673}
+  - {fileID: 1655759191}
   - {fileID: 112267916}
   - {fileID: 263035752}
   - {fileID: 1575829335}

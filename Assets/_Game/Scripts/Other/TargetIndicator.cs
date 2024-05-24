@@ -24,7 +24,7 @@ public class TargetIndicator : GameUnit
     Vector2 viewPointInCameraX = new Vector2(0.075f, 0.925f);
     Vector2 viewPointInCameraY = new Vector2(0.05f, 0.95f);
 
-    Camera Camera => CameraFollower.Ins.Camera;
+    Camera Camera => CameraFollowe.Ins.Camera;
 
     private bool IsInCamera => viewPoint.x > viewPointInCameraX.x && viewPoint.x < viewPointInCameraX.y && viewPoint.y > viewPointInCameraY.x && viewPoint.y < viewPointInCameraY.y;
 

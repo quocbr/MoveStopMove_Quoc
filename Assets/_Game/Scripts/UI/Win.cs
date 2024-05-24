@@ -56,7 +56,7 @@ public class Win : UICanvas
     }
     private void OnContinueButtonClick()
     {
-        SaveLoadManager.Ins.Save();
+        SaveLoadManager.Ins.SaveTofile();
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         LevelManager.Ins.OnNextLevel();
         ResetAll();

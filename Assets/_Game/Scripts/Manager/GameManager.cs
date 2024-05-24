@@ -45,6 +45,6 @@ public class GameManager : Singleton<GameManager>
     public void AddCoin()
     {
         SaveLoadManager.Ins.UserData.Coin += 100;
-        SaveLoadManager.Ins.Save();
+        SaveLoadManager.Ins.SaveTofile();
     }
 }

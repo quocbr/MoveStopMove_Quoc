@@ -40,7 +40,7 @@ public class Lose : UICanvas
     {
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         //SaveLoadManager.Ins.UserData.Coin += LevelManager.Ins.Player.Point;
-        SaveLoadManager.Ins.Save();
+        SaveLoadManager.Ins.SaveTofile();
         LevelManager.Ins.OnRetry();
         ResetAll();
         Close(0);

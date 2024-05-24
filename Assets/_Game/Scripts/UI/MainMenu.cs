@@ -56,7 +56,7 @@ public class MainMenu : UICanvas
     {
         base.Open();
         GameManager.Ins.ChangeState(GameState.MainMenu);
-        CameraFollower.Ins.ChangeState(CameraFollower.State.MainMenu);
+        CameraFollowe.Ins.ChangeState(CameraFollowe.State.MainMenu);
         //CameraFollow.Ins.ZoomIn();
         //Music and sound
         SoundManager.Ins.PlayMusic(Constant.MusicSound.HOME,true);
@@ -83,7 +83,7 @@ public class MainMenu : UICanvas
     {
         LevelManager.Ins.OnStartGame();
         //CameraFollow.Ins.ZoomOut();
-        CameraFollower.Ins.ChangeState(CameraFollower.State.Gameplay);
+        CameraFollowe.Ins.ChangeState(CameraFollowe.State.Gameplay);
         UIManager.Ins.OpenUI<GamePlay>();
         Close(0);
     }
@@ -106,6 +106,6 @@ public class MainMenu : UICanvas
         placeholder.text = nameText.text;
         SaveLoadManager.Ins.UserData.UserName = nameText.text;
         LevelManager.Ins.Player.SetNameChar(nameText.text);
-        SaveLoadManager.Ins.Save();
+        SaveLoadManager.Ins.SaveTofile();
     }
 }

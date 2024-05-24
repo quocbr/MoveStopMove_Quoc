@@ -149,7 +149,7 @@ public class WeaponShop : UICanvas
         base.Open();
         LevelManager.Ins.Player.gameObject.SetActive(false);
         SetCoinText(SaveLoadManager.Ins.UserData.Coin);
-        //page = 0;
+        page = 0;
         SetPageInformation(page);
         
     }
@@ -180,7 +180,7 @@ public class WeaponShop : UICanvas
             LevelManager.Ins.Player.ChangeWeapon(dataWeapon.poolType);
             (LevelManager.Ins.Player.CurrentWeapon as Weapon).ChangeMaterial(cuurentMaterial);
             SetEquipText(Constant.EQUIPED_STRING);
-            SaveLoadManager.Ins.Save();
+            SaveLoadManager.Ins.SaveTofile();
             UIManager.Ins.OpenUI<MainMenu>();
             Close(0);
         }
@@ -198,7 +198,7 @@ public class WeaponShop : UICanvas
             SetCoinText(SaveLoadManager.Ins.UserData.Coin);
             SaveLoadManager.Ins.UserData.ListWeaponOwn.Add(dataWeapon.poolType); 
             SetEquipText(Constant.EQUIP_STRING);
-            SaveLoadManager.Ins.Save();
+            SaveLoadManager.Ins.SaveTofile();
         }
         else
         {

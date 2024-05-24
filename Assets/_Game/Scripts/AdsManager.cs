@@ -9,7 +9,7 @@ public class AdsManager : Singleton<AdsManager>
 {
     public Action onUserEarnedRewardCallback;
 
-    public string appId = "ca-app-pub-3362649707060650~9733217223";// "ca-app-pub-3940256099942544~3347511713";//Real app id
+    public string appId = "ca-app-pub-5251055349840940~7424518586";// "ca-app-pub-3940256099942544~3347511713";//Real app id
 
 
 #if UNITY_ANDROID

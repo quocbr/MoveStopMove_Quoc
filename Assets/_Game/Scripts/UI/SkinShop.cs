@@ -154,7 +154,7 @@ public class SkinShop : UICanvas
             buyButton.gameObject.SetActive(false);
             equipButton.gameObject.SetActive(true);
             SetEquipText(Constant.EQUIP_STRING);
-            SaveLoadManager.Ins.Save();
+            SaveLoadManager.Ins.SaveTofile();
         }
         else
         {
@@ -195,14 +195,14 @@ public class SkinShop : UICanvas
 
         SetEquipText(Constant.EQUIPED_STRING);
 
-        SaveLoadManager.Ins.Save();
+        SaveLoadManager.Ins.SaveTofile();
     }
 
     public override void Open()
     {
         base.Open();
         //CameraFollow.Ins.ZoomInSkinShop();
-        CameraFollower.Ins.ChangeState(CameraFollower.State.Shop);
+        CameraFollowe.Ins.ChangeState(CameraFollowe.State.Shop);
         LevelManager.Ins.Player.ChangeAnim(Anim.DANCE);
         SetCoinText(SaveLoadManager.Ins.UserData.Coin);
 
