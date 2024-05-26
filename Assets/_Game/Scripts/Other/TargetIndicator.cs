@@ -76,6 +76,14 @@ public class TargetIndicator : GameUnit
 
     public void SetAlpha(float alpha)
     {
-        canvasGroup.alpha = alpha;
+        try
+        {
+            canvasGroup.alpha = alpha;
+        }
+        catch
+        {
+
+        }
+        
     }
 }

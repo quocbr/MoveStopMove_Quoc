@@ -484,7 +484,11 @@ public class Character : GameUnit
     {
         if (setType == SetType.None)
         {
-            RemoveAllEQ();
+            if (CurrentSet != SetType.None)
+            {
+                RemoveAllEQ();
+                
+            }
             CurrentSet = setType;
             return;
         }

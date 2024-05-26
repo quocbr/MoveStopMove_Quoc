@@ -493,6 +493,17 @@ MonoBehaviour:
     value: 0
     cost: 400
   eSet:
+  - id: 0
+    name: Set None
+    description: Set none
+    equipmenyType: 6
+    poolType: 0
+    setType: 0
+    materials: []
+    image: {fileID: 2800000, guid: 5a372bbeec787a54d92c4a484eda34b4, type: 3}
+    buff: 0
+    value: 0
+    cost: 0
   - id: 1
     name: Set 1
     description: Set 1
@@ -500,7 +511,7 @@ MonoBehaviour:
     poolType: 0
     setType: 1
     materials: []
-    image: {fileID: 2800000, guid: 591bf6bd34c3a3c4e9143ba55a6c7d7b, type: 3}
+    image: {fileID: 2800000, guid: 10f805f9a39668441b0d858a53a90087, type: 3}
     buff: 0
     value: 0
     cost: 1500
@@ -511,7 +522,7 @@ MonoBehaviour:
     poolType: 0
     setType: 2
     materials: []
-    image: {fileID: 2800000, guid: 9f8e6f5ea0f849447b464193072ab6f3, type: 3}
+    image: {fileID: 2800000, guid: 47489d63e5926ef478fda009b5f7b683, type: 3}
     buff: 0
     value: 0
     cost: 1400
@@ -522,7 +533,7 @@ MonoBehaviour:
     poolType: 0
     setType: 3
     materials: []
-    image: {fileID: 2800000, guid: 916eb971e2dc28b419a242fa6950df78, type: 3}
+    image: {fileID: 2800000, guid: cf2c2f0409a120d4084268be4362625f, type: 3}
     buff: 0
     value: 0
     cost: 1000
@@ -533,7 +544,7 @@ MonoBehaviour:
     poolType: 0
     setType: 4
     materials: []
-    image: {fileID: 2800000, guid: 7965f490c2ec6044d854d957fe85186e, type: 3}
+    image: {fileID: 2800000, guid: 8f00f4e5c6662634d9d6fb1e2e2b01ce, type: 3}
     buff: 0
     value: 0
     cost: 1500
@@ -544,7 +555,7 @@ MonoBehaviour:
     poolType: 0
     setType: 5
     materials: []
-    image: {fileID: 2800000, guid: 0363a7557b133774f99bf84dcf6fcbed, type: 3}
+    image: {fileID: 2800000, guid: 74f22cae5f11d6049b5ad45d2c791d6d, type: 3}
     buff: 0
     value: 0
     cost: 1500

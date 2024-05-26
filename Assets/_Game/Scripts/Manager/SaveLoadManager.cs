@@ -22,6 +22,11 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     public UserData UserData { get => userData; set => userData = value; }
 
+    private void Awake()
+    {
+          DontDestroyOnLoad(gameObject);
+    }
+
     private static string Generate256BitKey()
     {
         using (Aes aesAlg = Aes.Create())
@@ -85,15 +90,17 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     public void OnInit()
     {
         //access_token = SaveSystem.GetString("access_token");
-        access_token = PlayerPrefs.GetString("access_token");
-        FireBaseSetting.Ins.GetToDatabase(access_token);
+        
         //saveFilePath = Path.Combine(Application.persistentDataPath, saveFileName);
         //formatter = new BinaryFormatter();
         //if (loadOnStart)
         //{
         //    Load();
         //}
-       
+
+
+       //access_token = PlayerPrefs.GetString(Constant.ACCESS_TOKEN);
+       // FireBaseSetting.Ins.GetToDatabase(access_token);
     }
 
     public void Load1()

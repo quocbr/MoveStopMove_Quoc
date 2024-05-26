@@ -70,6 +70,10 @@ public class Bullet : GameUnit
             {
                 ParticlePool.Play(ParticleType.BulletTrigger,this.TF.position,Quaternion.identity);
                 onHit?.Invoke(attacker, victim);
+                if(attacker is Player)
+                {
+                    SaveLoadManager.Ins.UserData.countKill += 1;
+                }
                 OnDespawn();
             }
             //onHit?.Invoke(attacker, victim);

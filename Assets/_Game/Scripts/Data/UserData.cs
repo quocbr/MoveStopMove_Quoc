@@ -13,6 +13,7 @@ public class UserData
     public string userName; 
     public int coin;
     public int currentLevel;
+    public int countKill;
     public Material currentColor;
     public PoolType currentWeapon;
     public PoolType currentPant;
@@ -34,6 +35,7 @@ public class UserData
         this.userName = "You";
         this.coin = 0;
         this.currentLevel = 0;
+        this.countKill = 0;
         this.currentColor = null;
         this.currentWeapon = PoolType.Hammer;
         this.currentPant = PoolType.None;
@@ -48,7 +50,7 @@ public class UserData
         this.listShieldOwn = new List<PoolType>();
         this.listWingOwn = new List<PoolType>();
         this.listTailOwn = new List<PoolType>();
-        this.listSetOwn = new List<SetType>();
+        this.listSetOwn = new List<SetType>() { SetType.None};
     }
 
     public string UserName { get => userName; set => userName = value; }

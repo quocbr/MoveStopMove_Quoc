@@ -168,19 +168,26 @@ public class SkinShop : UICanvas
         if (selectionButton == ButtonSelection.Head)
         {
             SaveLoadManager.Ins.UserData.currentHead = currentEquipmentData.poolType;
+            SaveLoadManager.Ins.UserData.currentSet = SetType.None;
         }
         if (selectionButton == ButtonSelection.Pant)
         {
             SaveLoadManager.Ins.UserData.currentPant = currentEquipmentData.poolType;
+            SaveLoadManager.Ins.UserData.currentSet = SetType.None;
         }
         if (selectionButton == ButtonSelection.Shield)
         {
             SaveLoadManager.Ins.UserData.currentShield = currentEquipmentData.poolType;
+            SaveLoadManager.Ins.UserData.currentSet = SetType.None;
 
         }
         if (selectionButton == ButtonSelection.Set)
         {
             SaveLoadManager.Ins.UserData.currentSet = currentEquipmentData.setType;
+            SaveLoadManager.Ins.UserData.currentHead = PoolType.None;
+            SaveLoadManager.Ins.UserData.currentPant = PoolType.None;
+            SaveLoadManager.Ins.UserData.currentShield = PoolType.None;
+
         }
          
 

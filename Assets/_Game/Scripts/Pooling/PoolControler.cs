@@ -75,6 +75,8 @@ public class PoolControler : MonoBehaviour
             ParticlePool.Preload(Particle[i].prefab, Particle[i].amount, Particle[i].root);
             ParticlePool.Shortcut(Particle[i].particleType, Particle[i].prefab);
         }
+
+        //DontDestroyOnLoad(gameObject);
     }
 }
 

@@ -1,6 +1,9 @@
+using Firebase.Database;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,13 +14,19 @@ public class MainMenu : UICanvas
     [SerializeField] private Button playButton;
     [SerializeField] private Button weaponShopButton;
     [SerializeField] private Button skinShopButton;
+    [SerializeField] private Button addFreeCoinButton;
+    [SerializeField] private Button rankButton;
+    [SerializeField] private Button logoutButton;
 
     [SerializeField] private TextMeshProUGUI cointText;
     [SerializeField] private TextMeshProUGUI placeholder;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TMP_InputField inputNameText;
 
-    [SerializeField] private TextMeshProUGUI test;
+    [SerializeField] private TextMeshProUGUI emailName;
+    [SerializeField] private TextMeshProUGUI countKill;
+    [SerializeField] private TextMeshProUGUI currentLevel;
+
 
     [SerializeField] private Toggle sFXToggle;
 
@@ -26,6 +35,9 @@ public class MainMenu : UICanvas
         playButton.onClick.AddListener(OnMyPlayButtonClickHandle);
         weaponShopButton.onClick.AddListener(OnMyWeaponShopButtonClickHandle);
         skinShopButton.onClick.AddListener(OnMyShinShopButtonClickHandle);
+        addFreeCoinButton.onClick.AddListener(OnMyAddFreeCoinButtonClickHandle);
+        rankButton.onClick.AddListener(OnMyScoreboardButtonClickHandle);
+        logoutButton.onClick.AddListener(OnMyLogoutButtonClickHandle);
 
         inputNameText.onEndEdit.AddListener(ChangeName);
         sFXToggle.onValueChanged.AddListener(ToggleValueChanged);
@@ -51,6 +63,16 @@ public class MainMenu : UICanvas
         UIManager.Ins.OpenUI<SkinShop>();
         Close(0);
     }
+    
+    private void OnMyAddFreeCoinButtonClickHandle()
+    {
+        AdsManager.Ins.onUserEarnedRewardCallback = () => {
+            SaveLoadManager.Ins.UserData.Coin += 20;
+            this.SetCoinText(SaveLoadManager.Ins.UserData.Coin);
+            SaveLoadManager.Ins.SaveTofile();
+        };
+        AdsManager.Ins.ShowRewardedAd();
+    }
 
     public override void Open()
     {
@@ -70,6 +92,9 @@ public class MainMenu : UICanvas
         }
         //Data
         this.SetCoinText(SaveLoadManager.Ins.UserData.Coin);
+        this.SetEmail(SaveLoadManager.Ins.UserData.email);
+        this.SetCurrentLevel(SaveLoadManager.Ins.UserData.currentLevel + 1);
+        this.SetCountKill(SaveLoadManager.Ins.UserData.countKill);
         placeholder.text = SaveLoadManager.Ins.UserData.UserName;
     }
 
@@ -95,9 +120,37 @@ public class MainMenu : UICanvas
         Close(0);
     }
 
+    private void OnMyScoreboardButtonClickHandle()
+    {
+        UIManager.Ins.OpenUI<Ranking>();
+        Close(0);
+    }
+
+    private void OnMyLogoutButtonClickHandle()
+    {
+        AuthFirebase.Ins.LogOut();
+
+        //LoadingMenuManager.Ins.SwitchToScene(0);
+    }
+
     public void SetCoinText(int coin)
     {
         cointText.text = coin.ToString();
+    }
+
+    public void SetEmail(string email)
+    {
+        emailName.text = email;
+    }
+
+    public void SetCountKill(int kill)
+    {
+        countKill.text = kill.ToString();
+    }
+
+    public void SetCurrentLevel(int level)
+    {
+        currentLevel.text = $"Current Level: {level}";
     }
 
     public void ChangeName(string name)

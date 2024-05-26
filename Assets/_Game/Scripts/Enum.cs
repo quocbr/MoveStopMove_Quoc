@@ -45,6 +45,7 @@ public enum ParticleType
 
 public enum SetType
 {
+    
     None = 0,
     Set_1 = 1,
     Set_2 = 2,

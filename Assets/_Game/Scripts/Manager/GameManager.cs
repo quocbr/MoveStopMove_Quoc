@@ -13,7 +13,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
-        SaveLoadManager.Ins.OnInit();
+        //SaveLoadManager.Ins.OnInit();
+        
     }
 
     private void Start()

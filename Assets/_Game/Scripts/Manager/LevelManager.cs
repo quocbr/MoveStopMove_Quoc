@@ -108,7 +108,6 @@ public class LevelManager : Singleton<LevelManager>
         {
             currentLevel = null;
         }
-
         if (level < levelSO.listLevelItems.Count)
         {
             currentLevel = levelSO.listLevelItems[level];

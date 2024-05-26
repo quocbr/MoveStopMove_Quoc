@@ -16,6 +16,8 @@ public class Constant
 
     public const string TAG_BLOCK = "Block";
 
+    public static string ACCESS_TOKEN = "access_token";
+
     public class MusicSound
     {
         public const string THEME = "";

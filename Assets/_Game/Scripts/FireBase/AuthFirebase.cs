@@ -1,71 +1,54 @@
-using Firebase.Auth;
+﻿using Firebase.Auth;
 using Firebase;
+using Firebase.Database;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using System;
+using System.Linq;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class AuthFirebase : MonoBehaviour
+public class AuthFirebase : Singleton<AuthFirebase>
 {
     //Firebase variables
     [Header("Firebase")]
     public DependencyStatus dependencyStatus;
     public FirebaseAuth auth;
     public FirebaseUser User;
+    public DatabaseReference DBreference;
 
-    //Login variables
-    [Header("Login")]
-    public GameObject LoginPanel;
-    public TMP_InputField emailLoginField;
-    public TMP_InputField passwordLoginField;
-    public TMP_Text warningLoginText;
-    public TMP_Text confirmLoginText;
 
-    //Register variables
-    [Header("Register")]
-    public GameObject RegisterPanel;
-    public TMP_InputField usernameRegisterField;
-    public TMP_InputField emailRegisterField;
-    public TMP_InputField passwordRegisterField;
-    public TMP_InputField passwordRegisterVerifyField;
-    public TMP_Text warningRegisterText;
-
-    [Header("Forget Password")]
-    public GameObject ForgetPasswordPanel;
-    public TMP_InputField emailForgetPassword;
-    public GameObject infor;
-    public TMP_Text warForgetPasswordText;
-    public TMP_Text comForgetPasswordText;
-
-    [Header("Send Email")]
-    public GameObject SendEmailPanel;
-    public TMP_Text tileText;
-    public TMP_Text inforText;
-
-    void Awake()
+    private void Awake()
     {
-        try
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    private void Start()
+    {
+        StartCoroutine(CheckAndFixDependenciesAsync());
+    }
+
+    private IEnumerator CheckAndFixDependenciesAsync()
+    {
+        var dependencyTask = FirebaseApp.CheckAndFixDependenciesAsync();
+
+        yield return new WaitUntil(() => dependencyTask.IsCompleted);
+
+        dependencyStatus = dependencyTask.Result;
+        if (dependencyStatus == DependencyStatus.Available)
         {
-            //Check that all of the necessary dependencies for Firebase are present on the system
-            FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
-            {
-                dependencyStatus = task.Result;
-                if (dependencyStatus == DependencyStatus.Available)
-                {
-                    //If they are avalible Initialize Firebase
-                    InitializeFirebase();
-                }
-                else
-                {
-                    Debug.LogError("Could not resolve all Firebase dependencies: " + dependencyStatus);
-                }
-            });
+            //If they are avalible Initialize Firebase
+            InitializeFirebase();
+
+            yield return new WaitForEndOfFrame();
+            StartCoroutine(CheckForAutoLogin());
         }
-        catch (Exception e)
+        else
         {
-            Debug.Log(e);
+            Debug.LogError("Could not resolve all Firebase dependencies: " + dependencyStatus);
         }
     }
 
@@ -74,92 +57,127 @@ public class AuthFirebase : MonoBehaviour
         Debug.Log("Setting up Firebase Auth");
         //Set the authentication instance object
         auth = FirebaseAuth.DefaultInstance;
+        DBreference = FirebaseDatabase.DefaultInstance.RootReference;
+
+        auth.StateChanged += AuthStateChanged;
+        AuthStateChanged(this, null);
     }
 
-    private void ResetAttibutes()
+    void OnDestroy()
     {
-        emailLoginField.text = "";
-        passwordLoginField.text = "";
-        warningLoginText.text = "";
-        confirmLoginText.text = "";
-        usernameRegisterField.text = "";
-        emailRegisterField.text = "";
-        passwordRegisterField.text = "";
-        passwordRegisterVerifyField.text = "";
-        warningRegisterText.text = "";
-        emailForgetPassword.text = "";
-        warForgetPasswordText.text = "";
-        comForgetPasswordText.text = "";
-        infor.SetActive(false);
+        auth.StateChanged -= AuthStateChanged;
+        auth = null;
     }
 
-    //Function for the login button
+    private IEnumerator CheckForAutoLogin()
+    {
+        if(User != null)
+        {
+            var reloadUserTask = User.ReloadAsync();
+            yield return new WaitUntil(()=>reloadUserTask.IsCompleted);
+
+            AutoLogin();
+        }
+        else{
+            //LoginBackButton();
+            UILogin.Ins.LoginBackButton();
+        }
+    }
+
+    private void AutoLogin()
+    {
+        if(User != null)
+        {
+            if(User.IsEmailVerified)
+            {
+                UILogin.Ins.OpenGamePanel(User.Email);
+                FireBaseSetting.Ins.GetToDatabase(User.UserId);
+            }
+            else
+            {
+                SendEmailVerification();
+            }
+            
+        }
+        else
+        {
+            UILogin.Ins.LoginBackButton();
+        }
+    }
+
+    void AuthStateChanged(object state, System.EventArgs eventArgs)
+    {
+        if (auth.CurrentUser != null) 
+        {
+            bool singnedIn = User != auth.CurrentUser && auth.CurrentUser != null;
+            if(!singnedIn && User != null)
+            {
+                Debug.Log("Sign out" + User.UserId);
+                UILogin.Ins.LoginBackButton();
+            }
+
+            User = auth.CurrentUser;
+
+            if(singnedIn )
+            {
+                Debug.Log("Sign In" + User.UserId);
+            }
+        }
+    }
+
     public void LoginButton()
     {
         //Call the login coroutine passing the email and password
-        StartCoroutine(Login(emailLoginField.text, passwordLoginField.text));
+        StartCoroutine(Login(UILogin.Ins.emailLoginField.text, UILogin.Ins.passwordLoginField.text));
     }
 
-    public void LoginBackButton()
-    {
-        ResetAttibutes();
-        SendEmailPanel.SetActive(false);
-        RegisterPanel.SetActive(false);
-        ForgetPasswordPanel.SetActive(false);
-        LoginPanel.SetActive(true);
-        
-    }
-
-    //Function for the register button
     public void RegisterButton()
     {
         //Call the register coroutine passing the email, password, and username
-        StartCoroutine(Register(emailRegisterField.text, passwordRegisterField.text, usernameRegisterField.text));
-    }
-
-    public void RegisterBackButton()
-    {
-        ResetAttibutes();
-        LoginPanel.SetActive(false);
-        SendEmailPanel.SetActive(false);
-        ForgetPasswordPanel.SetActive(false);
-        RegisterPanel.SetActive(true);
+        StartCoroutine(Register(UILogin.Ins.emailRegisterField.text, UILogin.Ins.passwordRegisterField.text, UILogin.Ins.usernameRegisterField.text));
     }
 
     public void ForgetButton()
     {
         //Call the register coroutine passing the email, password, and username
-        StartCoroutine(ForgetPassword(emailForgetPassword.text));
-    }
-
-    public void ForgetBackButton()
-    {
-        ResetAttibutes();
-        LoginPanel.SetActive(false);
-        RegisterPanel.SetActive(false);
-        SendEmailPanel.SetActive(false);
-        ForgetPasswordPanel.SetActive(true);
+        StartCoroutine(ForgetPassword(UILogin.Ins.emailForgetPassword.text));
     }
 
     public void OnShowEmail(bool isVer, string email, string error)
     {
         if (isVer)
         {
-            tileText.text = "Please Verify Your Email.";
-            inforText.text = $"Please verify your email address \n Verification email has been sent to {email}";
+            UILogin.Ins.tileText.text = "Please Verify Your Email.";
+
+            UILogin.Ins.inforText.text = $"Please verify your email address \n Verification email has been sent to {email}";
         }
         else
         {
-            tileText.text = "Don't Sent To Your Email!";
-            inforText.text = $"Couldn't sent email : {error}";
+
+            UILogin.Ins.tileText.text = "Don't Sent To Your Email!";
+
+            UILogin.Ins.inforText.text = $"Couldn't sent email : {error}";
         }
-        SendEmailPanel.SetActive(true);
+
+        UILogin.Ins.SendEmailPanel.SetActive(true);
     }
 
-    public void OffShowEmail()
+
+    public void ScoreboardButton()
     {
-        SendEmailPanel.SetActive(false);
+        StartCoroutine(LoadScoreboardData());
     }
+
+    public void LogOut()
+    {
+        if(auth != null && User!=null)
+        {
+            auth.SignOut();
+            SceneManager.LoadScene(0);
+            //LoadingMenuManager.Ins.SwitchToScene(0);
+        }
+    }
+
 
     private IEnumerator Login(string _email, string _password)
     {
@@ -194,7 +212,7 @@ public class AuthFirebase : MonoBehaviour
                     message = "Account does not exist";
                     break;
             }
-            warningLoginText.text = message;
+            UILogin.Ins.warningLoginText.text = message;
         }
         else
         {
@@ -205,14 +223,17 @@ public class AuthFirebase : MonoBehaviour
             if (User.IsEmailVerified)
             {
                 Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
-                warningLoginText.text = "";
-                confirmLoginText.text = "Logged In";
+                UILogin.Ins.warningLoginText.text = "";
+                UILogin.Ins.confirmLoginText.text = "Logged In";
 
                 //SaveSystem.SetString("access_token",User.UserId);
-                PlayerPrefs.SetString("access_token", User.UserId);
+                //PlayerPrefs.SetString(Constant.ACCESS_TOKEN, User.UserId);
 
                 //SceneManager.LoadScene("SampleScene");
-                LoadingMenuManager.Ins.SwitchToScene(1);
+                FireBaseSetting.Ins.GetToDatabase(User.UserId);
+                //LoadingMenuManager.Ins.SwitchToScene(1);
+                //OpenGamePanel();
+                UILogin.Ins.OpenGamePanel(User.Email);
             }
             else{
                 SendEmailVerification();
@@ -226,12 +247,12 @@ public class AuthFirebase : MonoBehaviour
         if (_username == "")
         {
             //If the username field is blank show a warning
-            warningRegisterText.text = "Missing Username";
+            UILogin.Ins.warningRegisterText.text = "Missing Username";
         }
-        else if (passwordRegisterField.text != passwordRegisterVerifyField.text)
+        else if (UILogin.Ins.passwordRegisterField.text != UILogin.Ins.passwordRegisterVerifyField.text)
         {
             //If the password does not match show a warning
-            warningRegisterText.text = "Password Does Not Match!";
+            UILogin.Ins.warningRegisterText.text = "Password Does Not Match!";
         }
         else
         {
@@ -263,7 +284,7 @@ public class AuthFirebase : MonoBehaviour
                         message = "Email Already In Use";
                         break;
                 }
-                warningRegisterText.text = message;
+                UILogin.Ins.warningRegisterText.text = message;
             }
             else
             {
@@ -287,11 +308,11 @@ public class AuthFirebase : MonoBehaviour
                         Debug.LogWarning(message: $"Failed to register task with {ProfileTask.Exception}");
                         FirebaseException firebaseEx = ProfileTask.Exception.GetBaseException() as FirebaseException;
                         AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
-                        warningRegisterText.text = "Username Set Failed!";
+                        UILogin.Ins.warningRegisterText.text = "Username Set Failed!";
                     }
                     else
                     {
-                        warningRegisterText.text = "";
+                        UILogin.Ins.warningRegisterText.text = "";
                         UserData x = new UserData();
                         x.email = User.Email;
                         x.userID = User.UserId;
@@ -300,7 +321,8 @@ public class AuthFirebase : MonoBehaviour
                         //StartCoroutine(Login(_email, _password));
                         if (User.IsEmailVerified)
                         {
-                            LoginBackButton();
+                            //LoginBackButton();
+                            UILogin.Ins.LoginBackButton();
                         }
                         else
                         {
@@ -375,10 +397,10 @@ public class AuthFirebase : MonoBehaviour
 
         // Wait until the task completes
         yield return new WaitUntil(() => ForgetPasswordTask.IsCompleted);
-        infor.SetActive(true);
+        UILogin.Ins.infor.SetActive(true);
         if (ForgetPasswordTask.IsFaulted)
         {
-            warForgetPasswordText.text = "Password reset email sending failed.";
+            UILogin.Ins.warForgetPasswordText.text = "Password reset email sending failed.";
             foreach (var exception in ForgetPasswordTask.Exception.Flatten().InnerExceptions)
             {
                 Debug.LogError("Error message: " + exception.Message);
@@ -386,11 +408,52 @@ public class AuthFirebase : MonoBehaviour
         }
         else if (ForgetPasswordTask.IsCanceled)
         {
-            warForgetPasswordText.text = "Password reset email sending was canceled.";
+            UILogin.Ins.warForgetPasswordText.text = "Password reset email sending was canceled.";
         }
         else
         {
-            comForgetPasswordText.text = "Password reset email sent successfully.";
+            UILogin.Ins.warForgetPasswordText.text = "";
+            UILogin.Ins.comForgetPasswordText.text = "Password reset email sent successfully.";
         }
+    }
+
+    private IEnumerator LoadScoreboardData()
+    {
+        //Get all the users data ordered by kills amount
+        Task<DataSnapshot> DBTask = DBreference.Child("email").OrderByChild("countKill").GetValueAsync();
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+        if (DBTask.Exception != null)
+        {
+            Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+        }
+        else
+        {
+            //Data has been retrieved
+            DataSnapshot snapshot = DBTask.Result;
+
+            //Loop through every users UID
+            foreach (DataSnapshot childSnapshot in snapshot.Children.Reverse<DataSnapshot>())
+            {
+                string email = childSnapshot.Child("email").Value.ToString();
+                int kills = int.Parse(childSnapshot.Child("countKill").Value.ToString());
+                int currentLevel = int.Parse(childSnapshot.Child("currentLevel").Value.ToString());
+
+                //Instantiate new scoreboard elements
+                //GameObject scoreboardElement = Instantiate(scoreElement, scoreboardContent);
+                //scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(username, kills, deaths, xp);
+                Debug.Log($"{email} {kills} {currentLevel}");
+            }
+
+            //Go to scoareboard screen
+            //UIManager.Ins.ScoreboardScreen();
+        }
+    }
+
+    public void OpenGameScene()
+    {
+        LoadingMenuManager.Ins.SwitchToScene(1);
+        UILogin.Ins.ResetUI();
     }
 }

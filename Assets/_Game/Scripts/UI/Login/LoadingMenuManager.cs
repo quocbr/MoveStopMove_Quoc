@@ -23,6 +23,10 @@ public class LoadingMenuManager : Singleton<LoadingMenuManager>
         text.text = "0%";
         StartCoroutine(SwitchToSceneAsyc(id));
     }
+    public void HideLoadingMenu()
+    {
+        m_loadingScreenObj.SetActive(false);
+    }
 
     IEnumerator SwitchToSceneAsyc(int id)
     {
@@ -35,6 +39,10 @@ public class LoadingMenuManager : Singleton<LoadingMenuManager>
         }
 
         yield return new WaitForSeconds(0.2f);
-        //m_loadingScreenObj.SetActive(false);
+        if (id == 1)
+        {
+            LevelManager.Ins.Init();
+        }
+        LoadingMenuManager.Ins.HideLoadingMenu();
     }
 }

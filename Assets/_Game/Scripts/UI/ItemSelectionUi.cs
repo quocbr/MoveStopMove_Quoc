@@ -104,6 +104,7 @@ public class ItemSelectionUi : MonoBehaviour
         switch (skinShop.SelectionButton)
         {
             case ButtonSelection.Head:
+                LevelManager.Ins.Player.ChangeSet(SetType.None);
                 LevelManager.Ins.Player.ChangeHead(equipmentData.poolType,true);
                 if (SaveLoadManager.Ins.UserData.listHeadOwn.Contains(equipmentData.poolType))
                 {
@@ -125,6 +126,7 @@ public class ItemSelectionUi : MonoBehaviour
                 }
                 break;
             case ButtonSelection.Pant:
+                LevelManager.Ins.Player.ChangeSet(SetType.None);
                 LevelManager.Ins.Player.ChangePant(equipmentData.poolType,true);
                 if (SaveLoadManager.Ins.UserData.listPantOwn.Contains(equipmentData.poolType))
                 {
@@ -146,6 +148,7 @@ public class ItemSelectionUi : MonoBehaviour
                 }
                 break;
             case ButtonSelection.Shield:
+                LevelManager.Ins.Player.ChangeSet(SetType.None);
                 LevelManager.Ins.Player.ChangeShield(equipmentData.poolType, true);
                 if (SaveLoadManager.Ins.UserData.listShieldOwn.Contains(equipmentData.poolType))
                 {

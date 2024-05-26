@@ -12,6 +12,10 @@ public class FireBaseSetting : Singleton<FireBaseSetting>
 {
     [SerializeField] private string fieBaseLink = "https://alalys-default-rtdb.asia-southeast1.firebasedatabase.app/";
     private FirebaseApp app;
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     void Start()
     {
         //try
@@ -99,7 +103,8 @@ public class FireBaseSetting : Singleton<FireBaseSetting>
         {
             //UserData userData = getUserDataTask.Result;
             //SaveLoadManager.Ins.LoadToFile(userData);
-            LevelManager.Ins.Init();
+            //LevelManager.Ins.Init();
+            
         }
     }
 

@@ -222,10 +222,22 @@ public class Player : Character
             ChangeShield(SaveLoadManager.Ins.UserData.currentShield);
             ChangeTail(SaveLoadManager.Ins.UserData.currentTail);
             ChangeWing(SaveLoadManager.Ins.UserData.currentWing);
+            if(userData.currentSet == SetType.None)
+            {
+                SaveLoadManager.Ins.UserData.currentColor = SpawnManager.Ins.playerColor;
+            }
             ChangeColorSkin(SaveLoadManager.Ins.UserData.currentColor);
+            
         }
         Buff.HandleBuff(this);
 
+    }
+
+    public override void RemoveAllEQ()
+    {
+        base.RemoveAllEQ();
+        SaveLoadManager.Ins.UserData.currentColor = SpawnManager.Ins.playerColor;
+        ChangeColorSkin(SaveLoadManager.Ins.UserData.currentColor);
     }
 
     public override void ChangeWeapon(PoolType weaponType)
