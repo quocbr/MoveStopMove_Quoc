@@ -132,7 +132,7 @@ public class Bot : Character
     {
         base.AddTarget(target);
 
-        if (!IsDead && Utilities.Chance(80, 100) && IsCanRunning)
+        if (!IsDead && Utilities.Chance(90, 100) && IsCanRunning)
         {
             ChangeState(new AttackState());
         }
@@ -210,6 +210,12 @@ public class Bot : Character
     //    base.AddTarget(target);
     //    ChangeState(new AttackState());
     //}
+
+    public override void OnAttack()
+    {
+        TargetChar = listTargetChar.Count == 0 ? null : listTargetChar[0];
+        base.OnAttack();
+    }
 
     private void ResetEQ1()
     {

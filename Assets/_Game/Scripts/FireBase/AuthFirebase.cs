@@ -173,8 +173,8 @@ public class AuthFirebase : Singleton<AuthFirebase>
         if(auth != null && User!=null)
         {
             auth.SignOut();
-            SceneManager.LoadScene(0);
-            //LoadingMenuManager.Ins.SwitchToScene(0);
+            //SceneManager.LoadScene(0);
+            LoadingMenuManager.Ins.SwitchToScene(0);
         }
     }
 

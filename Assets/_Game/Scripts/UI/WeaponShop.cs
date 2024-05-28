@@ -81,29 +81,29 @@ public class WeaponShop : UICanvas
         //Lay thuoc tinh buff
         SetWeaponAttribute(dataWeapon.buff,dataWeapon.value);
 
-        SpawnItemList(dataWeapon.poolType, dataWeapon.materials);
+        //SpawnItemList(dataWeapon.poolType, dataWeapon.materials);
 
         if (SaveLoadManager.Ins.UserData.ListWeaponOwn.Contains(dataWeapon.poolType)) 
         {
             buyButton.gameObject.SetActive(false);
             equipButton.gameObject.SetActive(true);
-            PanelSkinWeapon.SetActive(true);
+            //PanelSkinWeapon.SetActive(true);
             //TODO: Xu ly khi chon mau cho vu khi
-            string nameMaterial = (LevelManager.Ins.Player.CurrentWeapon as Weapon).Material.name;
-            int index = nameMaterial.IndexOf(" (");
-            if (index >= 0)
-            {
-                nameMaterial = nameMaterial.Substring(0, index);
-            }
+            //string nameMaterial = (LevelManager.Ins.Player.CurrentWeapon as Weapon).Material.name;
+            //int index = nameMaterial.IndexOf(" (");
+            //if (index >= 0)
+            //{
+            //    nameMaterial = nameMaterial.Substring(0, index);
+            //}
 
             if (SaveLoadManager.Ins.UserData.CurrentWeapon != dataWeapon.poolType)
             {
                 SetEquipText(Constant.EQUIP_STRING);
             }
-            else if (dataWeapon.materials[0].name == nameMaterial)//dataWeapon.materials[0].color == (LevelManager.Ins.Player.CurrentWeapon as Weapon).Material.color)
-            {
-                SetEquipText(Constant.EQUIPED_STRING);
-            }
+            //else if (dataWeapon.materials[0].name == nameMaterial)//dataWeapon.materials[0].color == (LevelManager.Ins.Player.CurrentWeapon as Weapon).Material.color)
+            //{
+            //    SetEquipText(Constant.EQUIPED_STRING);
+            //}
             else
             {
                 SetEquipText(Constant.EQUIP_STRING);
@@ -113,7 +113,7 @@ public class WeaponShop : UICanvas
         {
             buyButton.gameObject.SetActive(true);
             equipButton.gameObject.SetActive(false);
-            PanelSkinWeapon.SetActive(false);
+            //PanelSkinWeapon.SetActive(false);
         }
     }
     public void SetWeaponPrice(int price)
@@ -178,7 +178,7 @@ public class WeaponShop : UICanvas
         {
             SaveLoadManager.Ins.UserData.CurrentWeapon = dataWeapon.poolType;
             LevelManager.Ins.Player.ChangeWeapon(dataWeapon.poolType);
-            (LevelManager.Ins.Player.CurrentWeapon as Weapon).ChangeMaterial(cuurentMaterial);
+            //(LevelManager.Ins.Player.CurrentWeapon as Weapon).ChangeMaterial(cuurentMaterial);
             SetEquipText(Constant.EQUIPED_STRING);
             SaveLoadManager.Ins.SaveTofile();
             UIManager.Ins.OpenUI<MainMenu>();
@@ -193,7 +193,7 @@ public class WeaponShop : UICanvas
             SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
             buyButton.gameObject.SetActive(false);
             equipButton.gameObject.SetActive(true);
-            PanelSkinWeapon.SetActive(true);
+            //PanelSkinWeapon.SetActive(true);
             SaveLoadManager.Ins.UserData.Coin -= dataWeapon.cost;
             SetCoinText(SaveLoadManager.Ins.UserData.Coin);
             SaveLoadManager.Ins.UserData.ListWeaponOwn.Add(dataWeapon.poolType); 

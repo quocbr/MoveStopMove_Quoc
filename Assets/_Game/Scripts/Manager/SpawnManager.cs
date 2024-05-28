@@ -84,12 +84,17 @@ public class SpawnManager : Singleton<SpawnManager>
         for (int i = 0; i < numBot; i++)
         {
 
-            if (i >= LevelManager.Ins.L_SpawnPos.Count)
+            //if (i >= LevelManager.Ins.L_SpawnPos.Count)
+            //{
+            //    break;
+            //}
+            if (i >= colorSO.colorList.Count - 1)
             {
                 break;
             }
-            
-            Bot bot = HBPool.Spawn<Bot>(PoolType.Bot, LevelManager.Ins.L_SpawnPos[i].position,Quaternion.identity);
+
+            //Bot bot = HBPool.Spawn<Bot>(PoolType.Bot, LevelManager.Ins.L_SpawnPos[i].position,Quaternion.identity);
+            Bot bot = HBPool.Spawn<Bot>(PoolType.Bot, LevelManager.Ins.RandomPoint(),Quaternion.identity);
             bot.CurrentColor = (ColorType)(i + 1);
             bot.ChangeColorSkin(colorSO.colorList[i + 1]);
             //bot.NameChar = "Bot " + i;

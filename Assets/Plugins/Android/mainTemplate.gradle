@@ -15,8 +15,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-common:21.0.0' // Assets/Firebase/Editor/AppDependencies.xml:13
     implementation 'com.google.firebase:firebase-database:21.0.0' // Assets/Firebase/Editor/DatabaseDependencies.xml:13
     implementation 'com.google.firebase:firebase-database-unity:12.0.0' // Assets/Firebase/Editor/DatabaseDependencies.xml:22
+    implementation 'com.google.firebase:firebase-iid:21.1.0' // Assets/Firebase/Editor/MessagingDependencies.xml:17
+    implementation 'com.google.firebase:firebase-messaging:24.0.0' // Assets/Firebase/Editor/MessagingDependencies.xml:13
+    implementation 'com.google.firebase:firebase-messaging-unity:12.0.0' // Assets/Firebase/Editor/MessagingDependencies.xml:24
     implementation 'com.google.firebase:firebase-storage:21.0.0' // Assets/Firebase/Editor/StorageDependencies.xml:13
     implementation 'com.google.firebase:firebase-storage-unity:12.0.0' // Assets/Firebase/Editor/StorageDependencies.xml:20
+    implementation 'com.google.flatbuffers:flatbuffers-java:1.12.0' // Assets/Firebase/Editor/MessagingDependencies.xml:19
 // Android Resolver Dependencies End
 **DEPS**}
 

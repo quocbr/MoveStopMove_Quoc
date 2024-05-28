@@ -5,11 +5,11 @@ using UnityEngine.AI;
 
 public class MapControler : MonoBehaviour
 {
-    [SerializeField] private List<Transform> l_SpawnPos;
+    //[SerializeField] private List<Transform> l_SpawnPos;
     
     [SerializeField] Transform minPoint, maxPoint;
 
-    public List<Transform> L_SpawnPos { get => l_SpawnPos;}
+    //public List<Transform> L_SpawnPos { get => l_SpawnPos;}
 
     public Vector3 RandomPoint()
     {

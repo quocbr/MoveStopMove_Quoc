@@ -14,7 +14,8 @@ public class Player : Character
     [SerializeField] private ParticleSystem _particleSystem;
 
     private bool isMoving = false;
-    private CounterTime counter = new CounterTime();
+    private CounterTime counter = new CounterTime(); 
+    private CounterTime counter1 = new CounterTime();
 
     private bool IsCanUpdate => GameManager.Ins.IsState(GameState.Gameplay) || GameManager.Ins.IsState(GameState.Setting);
 
@@ -140,6 +141,7 @@ public class Player : Character
         if (Input.GetMouseButtonDown(0))
         {
             counter.Cancel();
+            counter1.Cancel();
         }
 
         if (Input.GetMouseButton(0) && (joystick.Horizontal != 0 || joystick.Vertical != 0))
@@ -165,7 +167,7 @@ public class Player : Character
         else
         {
             counter.Execute();
-
+            counter1.Execute();
         }
         //else if (joystick.Horizontal == 0 || joystick.Vertical == 0)
         //{
@@ -186,7 +188,18 @@ public class Player : Character
         {
             isMoving = false;
             StopMoving();
-            OnAttack();
+            //OnAttack();
+            counter1.Start(OnAttack,0.1f,true,1.5f);
+        }
+
+        if(characterState == CharacterState.Idle) 
+        {
+            //counter1.Start(OnAttack, 1f, true, 1f);
+            if(TargetChar == null)
+            {
+                GetAttack();
+            }
+            
         }
 
         //if (Input.GetMouseButtonUp(0) && characterState != CharacterState.Idle)
@@ -256,10 +269,15 @@ public class Player : Character
 
     internal void OnRevive()
     {
+        characterState = CharacterState.Idle;
         ChangeAnim(Anim.IDLE);
         IsDead = false;
         listTargetChar.Clear();
         TargetChar = null;
+        indicator = HBPool.Spawn<TargetIndicator>(PoolType.TargetIndicator);
+        indicator.SetTarget(indicatorPoint);
+        indicator.SetColor(SpawnManager.Ins.GetColorSkin(CurrentColor).color);
+        indicator.SetName(NameChar);
         //reviveVFX.Play();
     }
 }

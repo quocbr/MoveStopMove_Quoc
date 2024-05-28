@@ -9,8 +9,9 @@ using Firebase;
 using Proyecto26;
 using System.Threading.Tasks;
 
-public class SaveLoadManager : Singleton<SaveLoadManager>
+public class SaveLoadManager : MonoBehaviour//Singleton<SaveLoadManager>
 {
+    public static SaveLoadManager Ins;
     [SerializeField] private bool loadOnStart = true;
 
     private UserData userData;
@@ -24,7 +25,16 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     private void Awake()
     {
-          DontDestroyOnLoad(gameObject);
+        if(Ins != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Ins = this;
+DontDestroyOnLoad(gameObject);
+        }
+          
     }
 
     private static string Generate256BitKey()

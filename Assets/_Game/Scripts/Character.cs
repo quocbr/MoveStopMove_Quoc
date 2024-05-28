@@ -39,7 +39,7 @@ public class Character : GameUnit
     [SerializeField] private AnimationEvent animEvent;
     //[SerializeField] private float maxScale = 2.5f;
 
-    [SerializeField] Transform indicatorPoint;
+    [SerializeField]protected Transform indicatorPoint;
     protected TargetIndicator indicator;
 
     [SerializeField] private AttributeBuff buff;
@@ -81,6 +81,7 @@ public class Character : GameUnit
 
     protected IState<Character> currentState;
 
+    #region GETER_SETER
     public bool IsDead { get => isDead; set => isDead = value; }
     public int Point { get => point; set => point = value; }
     public string NameChar { get => nameChar; set => nameChar = value; }
@@ -102,6 +103,8 @@ public class Character : GameUnit
     public GameUnit CurrentShield { get => currentShield; set => currentShield = value; }
     public SetType CurrentSet { get => currentSet; set => currentSet = value; }
     public AttributeBuff Buff { get => buff; set => buff = value; }
+
+    #endregion
 
     protected virtual void Start()
     {
@@ -205,9 +208,15 @@ public class Character : GameUnit
     #endregion
 
     #region Attack
+
+    public virtual void GetAttack()
+    {
+        TargetChar = listTargetChar.Count == 0 ? null : listTargetChar[0];
+    }
     public virtual void OnAttack()
     {
-        TargetChar = GetTargetInRange();
+        //TargetChar = GetTargetInRange();
+        //TargetChar = listTargetChar.Count == 0? null: listTargetChar[0];
 
         if (IsCanAttack && TargetChar != null && !TargetChar.IsDead/* && currentSkin.Weapon.IsCanAttack*/)
         {
@@ -221,6 +230,7 @@ public class Character : GameUnit
             //TF.LookAt(TargetChar.TF.position + (TF.position.y - TargetChar.TF.position.y) * Vector3.up);
             TF.LookAt(targetPoint);
             ChangeAnim(Anim.ATTACK);
+            characterState = CharacterState.Attack;
         }
 
     }
@@ -323,7 +333,8 @@ public class Character : GameUnit
         }
         else
         {
-            TargetChar = listTargetChar[Random.Range(0, listTargetChar.Count)];
+            //TargetChar = listTargetChar[Random.Range(0, listTargetChar.Count)];
+            TargetChar = listTargetChar[0];
             if (this is Player)
             {
                 (TargetChar as Bot).SetMark(true);

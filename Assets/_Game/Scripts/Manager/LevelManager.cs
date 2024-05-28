@@ -22,12 +22,12 @@ public class LevelManager : Singleton<LevelManager>
     private int numBot;
     private int remainBot;
     private MapControler currentMapControler;
-    private List<Transform> l_SpawnPos = new List<Transform>();
+    //private List<Transform> l_SpawnPos = new List<Transform>();
     private int levelIndex;
 
     private bool isRevive;
 
-    public List<Transform> L_SpawnPos { get => l_SpawnPos; set => l_SpawnPos = value; }
+    //public List<Transform> L_SpawnPos { get => l_SpawnPos; set => l_SpawnPos = value; }
     public int Alive { get => alive; set => alive = value; }
     public int NumBot { get => numBot; set => numBot = value; }
     public int RemainBot { get => remainBot; set => remainBot = value; }
@@ -73,7 +73,7 @@ public class LevelManager : Singleton<LevelManager>
         //navMeshSurface.BuildNavMesh();
         //navMeshSurface.navMeshData = navMeshData;
 
-        l_SpawnPos = currentMapControler.L_SpawnPos;
+        //l_SpawnPos = currentMapControler.L_SpawnPos;
     }
 
     private void RemoveCurrentLevel()
@@ -268,6 +268,7 @@ public class LevelManager : Singleton<LevelManager>
     }
     public void HandleCharecterDeath(Character character)
     {
+        
         for (int i = 0; i < bots.Count; i++)
         {
             if (bots[i].Equals(character)) continue;
@@ -293,7 +294,9 @@ public class LevelManager : Singleton<LevelManager>
         else
         if (character is Bot)
         {
-
+            alive--;
+            //
+            player.RemoveTarget(character);
             bots.Remove(character);
 
             if (GameManager.Ins.IsState(GameState.Revive) || GameManager.Ins.IsState(GameState.Setting))
@@ -305,7 +308,6 @@ public class LevelManager : Singleton<LevelManager>
                 if (remainBot > 0)
                 {
                     remainBot--;
-                    alive--;
                     NewBot(Utilities.Chance(50, 100) ? new IdleState() : new PatrolState(), character);
                 }
 

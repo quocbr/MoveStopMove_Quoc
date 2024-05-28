@@ -43,6 +43,6 @@ public class LoadingMenuManager : Singleton<LoadingMenuManager>
         {
             LevelManager.Ins.Init();
         }
-        LoadingMenuManager.Ins.HideLoadingMenu();
+        HideLoadingMenu();
     }
 }

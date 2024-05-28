@@ -25,7 +25,7 @@ public class AttackState : IState<Character>
                     }, Character.TIME_DELAY_THROW
                 );
             }
-        },Random.Range(0.2f,0.75f)
+        }, Random.Range(0.2f, 0.75f)
         );
     }
 

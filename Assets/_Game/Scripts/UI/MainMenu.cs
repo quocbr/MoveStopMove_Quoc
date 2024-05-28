@@ -27,6 +27,11 @@ public class MainMenu : UICanvas
     [SerializeField] private TextMeshProUGUI countKill;
     [SerializeField] private TextMeshProUGUI currentLevel;
 
+    [Header("Panel LogOut")]
+    [SerializeField] private GameObject panelLogout;
+    [SerializeField] private Button yesButton;
+    [SerializeField] private Button noButton;
+
 
     [SerializeField] private Toggle sFXToggle;
 
@@ -38,9 +43,21 @@ public class MainMenu : UICanvas
         addFreeCoinButton.onClick.AddListener(OnMyAddFreeCoinButtonClickHandle);
         rankButton.onClick.AddListener(OnMyScoreboardButtonClickHandle);
         logoutButton.onClick.AddListener(OnMyLogoutButtonClickHandle);
-
+        
         inputNameText.onEndEdit.AddListener(ChangeName);
         sFXToggle.onValueChanged.AddListener(ToggleValueChanged);
+        
+        yesButton.onClick.AddListener(() =>
+        {
+            panelLogout.SetActive(false);
+            AuthFirebase.Ins.LogOut();
+        });
+        noButton.onClick.AddListener(() =>
+        {
+            panelLogout.SetActive(false);
+        });
+
+
     }
 
     private void ToggleValueChanged(bool isOn)
@@ -54,7 +71,7 @@ public class MainMenu : UICanvas
         {
             SoundManager.Ins.SoundFXOff();
         }
-        
+
     }
 
     private void OnMyShinShopButtonClickHandle()
@@ -63,10 +80,11 @@ public class MainMenu : UICanvas
         UIManager.Ins.OpenUI<SkinShop>();
         Close(0);
     }
-    
+
     private void OnMyAddFreeCoinButtonClickHandle()
     {
-        AdsManager.Ins.onUserEarnedRewardCallback = () => {
+        AdsManager.Ins.onUserEarnedRewardCallback = () =>
+        {
             SaveLoadManager.Ins.UserData.Coin += 20;
             this.SetCoinText(SaveLoadManager.Ins.UserData.Coin);
             SaveLoadManager.Ins.SaveTofile();
@@ -81,7 +99,7 @@ public class MainMenu : UICanvas
         CameraFollowe.Ins.ChangeState(CameraFollowe.State.MainMenu);
         //CameraFollow.Ins.ZoomIn();
         //Music and sound
-        SoundManager.Ins.PlayMusic(Constant.MusicSound.HOME,true);
+        SoundManager.Ins.PlayMusic(Constant.MusicSound.HOME, true);
         if (SoundManager.Ins.isMute == true)
         {
             sFXToggle.isOn = false;
@@ -93,9 +111,9 @@ public class MainMenu : UICanvas
         //Data
         this.SetCoinText(SaveLoadManager.Ins.UserData.Coin);
         this.SetEmail(SaveLoadManager.Ins.UserData.email);
+        this.SetNamePlaceHold(SaveLoadManager.Ins.UserData.userName);
         this.SetCurrentLevel(SaveLoadManager.Ins.UserData.currentLevel + 1);
         this.SetCountKill(SaveLoadManager.Ins.UserData.countKill);
-        placeholder.text = SaveLoadManager.Ins.UserData.UserName;
     }
 
     public override void CloseDirectly()
@@ -128,8 +146,8 @@ public class MainMenu : UICanvas
 
     private void OnMyLogoutButtonClickHandle()
     {
-        AuthFirebase.Ins.LogOut();
-
+        //AuthFirebase.Ins.LogOut();
+        panelLogout.SetActive(true);
         //LoadingMenuManager.Ins.SwitchToScene(0);
     }
 
@@ -141,6 +159,11 @@ public class MainMenu : UICanvas
     public void SetEmail(string email)
     {
         emailName.text = email;
+    }
+
+    public void SetNamePlaceHold(string name)
+    {
+        placeholder.text = name;
     }
 
     public void SetCountKill(int kill)
@@ -155,6 +178,7 @@ public class MainMenu : UICanvas
 
     public void ChangeName(string name)
     {
+        Debug.Log(name);
         nameText.text = name;
         placeholder.text = nameText.text;
         SaveLoadManager.Ins.UserData.UserName = nameText.text;

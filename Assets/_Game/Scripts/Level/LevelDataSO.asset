@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   listLevelItems:
   - levelIndex: 1
-    map: {fileID: 5286696269574756341, guid: 061be3562f7f0494cafe80bc05f8978f, type: 3}
-    navMeshData: {fileID: 0}
+    map: {fileID: 9128860555932994466, guid: ffddf5be2bbe9b14686f88b09d209cef, type: 3}
+    navMeshData: {fileID: 23800000, guid: 943e3b5c05aa8624f91ca4f97fd041aa, type: 2}
     aliveCount: 50
-    botCount: 6
+    botCount: 8
   - levelIndex: 2
-    map: {fileID: 9025497132270776254, guid: feca6a9b4ebc85c45a716c432b40d60d, type: 3}
-    navMeshData: {fileID: 23800000, guid: e0c9ac33b0daf8543a9001adc5f24e28, type: 2}
-    aliveCount: 50
+    map: {fileID: 3067769433875433262, guid: feca6a9b4ebc85c45a716c432b40d60d, type: 3}
+    navMeshData: {fileID: 23800000, guid: e2d826e43cb263445ba05f2fafd403de, type: 2}
+    aliveCount: 25
+    botCount: 3
+  - levelIndex: 3
+    map: {fileID: 92067221111231747, guid: f16b3d64fbbf22c4e972dae488a14aed, type: 3}
+    navMeshData: {fileID: 23800000, guid: 02bb569c5c76c7e479de676240b726a4, type: 2}
+    aliveCount: 35
     botCount: 5

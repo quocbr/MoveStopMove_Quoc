@@ -23,22 +23,51 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 56cd60e0555bc444ea3e8dfff06d895c, type: 2}
     - {fileID: 2100000, guid: 458c4f259dd94d24cb9dad733df8a562, type: 2}
     image: {fileID: 0}
-    buff: 2
-    value: 5
+    buff: 1
+    value: 1
     cost: 100
-  - id: 2
-    name: Candy 2
+  - id: 1
+    name: Lollopop
     description: Ba dao
     equipmenyType: 0
-    poolType: 6
+    poolType: 8
     setType: 0
     materials:
-    - {fileID: 2100000, guid: 54156973c98a8344ebb9a134325edd98, type: 2}
-    - {fileID: 2100000, guid: ccc75aa0bea8a724e8c504faceba1e25, type: 2}
+    - {fileID: 2100000, guid: 3b818c3f692edaf40aa25c60ad076e96, type: 2}
+    - {fileID: 2100000, guid: 1a619f40f894de64eb66dbb9f5480be4, type: 2}
     image: {fileID: 0}
     buff: 1
     value: 5
-    cost: 10
+    cost: 200
+  - id: 2
+    name: Knife
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 3
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 5dfd3db96e726eb468fd4419aa19ac89, type: 2}
+    - {fileID: 2100000, guid: abcf4a36e25a3af4fbebbd18df69ffe9, type: 2}
+    image: {fileID: 0}
+    buff: 2
+    value: 5
+    cost: 300
+  - id: 8
+    name: Candy Cane
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 9
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 4c8c169b176f3f548a7fc192d36d9571, type: 2}
+    - {fileID: 2100000, guid: 11b403b458eeb1a43a5c72a887ebcec1, type: 2}
+    - {fileID: 2100000, guid: 87a07de9ec5c1004b8fac0aead93802f, type: 2}
+    - {fileID: 2100000, guid: 6a0e95c786db7d14e9fab002add9022c, type: 2}
+    - {fileID: 2100000, guid: 3742c97a0921f984f8897faffd3a8c4a, type: 2}
+    image: {fileID: 0}
+    buff: 2
+    value: 10
+    cost: 500
   - id: 3
     name: Bommerang
     description: Ba dao
@@ -49,9 +78,22 @@ MonoBehaviour:
     - {fileID: 2100000, guid: ec8f8b93276268544ae07bda6c3793bc, type: 2}
     - {fileID: 2100000, guid: dc4b177504dfba349b8bb9777c9e3911, type: 2}
     image: {fileID: 0}
-    buff: 0
-    value: 20
-    cost: 0
+    buff: 1
+    value: 10
+    cost: 700
+  - id: 8
+    name: Swirly Pop
+    description: Ba dao
+    equipmenyType: 0
+    poolType: 10
+    setType: 0
+    materials:
+    - {fileID: 2100000, guid: 20cdc54be16796a4fb3a7db9d74082ee, type: 2}
+    - {fileID: 2100000, guid: b1b53fe5c7ca5bd4792fecd0c8175d56, type: 2}
+    image: {fileID: 0}
+    buff: 1
+    value: 15
+    cost: 1000
   - id: 4
     name: Axe
     description: Ba dao
@@ -64,66 +106,24 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 3b350d61cab570444adbb1e3e3e74a3f, type: 2}
     - {fileID: 2100000, guid: a8b1963f18d6da04b964ecd9e5f19973, type: 2}
     image: {fileID: 0}
-    buff: 0
+    buff: 1
     value: 20
-    cost: 0
+    cost: 1400
   - id: 2
-    name: Knife
+    name: Ice-cream cone
     description: Ba dao
     equipmenyType: 0
-    poolType: 3
+    poolType: 6
     setType: 0
     materials:
-    - {fileID: 2100000, guid: 5dfd3db96e726eb468fd4419aa19ac89, type: 2}
-    - {fileID: 2100000, guid: abcf4a36e25a3af4fbebbd18df69ffe9, type: 2}
+    - {fileID: 2100000, guid: 54156973c98a8344ebb9a134325edd98, type: 2}
+    - {fileID: 2100000, guid: ccc75aa0bea8a724e8c504faceba1e25, type: 2}
     image: {fileID: 0}
-    buff: 0
-    value: 20
-    cost: 0
-  - id: 7
-    name: Candy 0
-    description: Ba dao
-    equipmenyType: 0
-    poolType: 8
-    setType: 0
-    materials:
-    - {fileID: 2100000, guid: 3b818c3f692edaf40aa25c60ad076e96, type: 2}
-    - {fileID: 2100000, guid: 1a619f40f894de64eb66dbb9f5480be4, type: 2}
-    image: {fileID: 0}
-    buff: 0
-    value: 20
-    cost: 0
+    buff: 2
+    value: 15
+    cost: 1700
   - id: 8
-    name: Candy 4
-    description: Ba dao
-    equipmenyType: 0
-    poolType: 10
-    setType: 0
-    materials:
-    - {fileID: 2100000, guid: 20cdc54be16796a4fb3a7db9d74082ee, type: 2}
-    - {fileID: 2100000, guid: b1b53fe5c7ca5bd4792fecd0c8175d56, type: 2}
-    image: {fileID: 0}
-    buff: 0
-    value: 20
-    cost: 0
-  - id: 8
-    name: Candy 1
-    description: Ba dao
-    equipmenyType: 0
-    poolType: 9
-    setType: 0
-    materials:
-    - {fileID: 2100000, guid: 4c8c169b176f3f548a7fc192d36d9571, type: 2}
-    - {fileID: 2100000, guid: 11b403b458eeb1a43a5c72a887ebcec1, type: 2}
-    - {fileID: 2100000, guid: 87a07de9ec5c1004b8fac0aead93802f, type: 2}
-    - {fileID: 2100000, guid: 6a0e95c786db7d14e9fab002add9022c, type: 2}
-    - {fileID: 2100000, guid: 3742c97a0921f984f8897faffd3a8c4a, type: 2}
-    image: {fileID: 0}
-    buff: 0
-    value: 20
-    cost: 0
-  - id: 8
-    name: Axe 1
+    name: Battle Axe
     description: Ba dao
     equipmenyType: 0
     poolType: 11
@@ -132,9 +132,9 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 3b350d61cab570444adbb1e3e3e74a3f, type: 2}
     - {fileID: 2100000, guid: a8b1963f18d6da04b964ecd9e5f19973, type: 2}
     image: {fileID: 0}
-    buff: 0
+    buff: 2
     value: 20
-    cost: 0
+    cost: 2000
   eHead:
   - id: 1
     name: Cowboy
@@ -145,8 +145,8 @@ MonoBehaviour:
     materials: []
     image: {fileID: 2800000, guid: e18f18b183a01424f8c20f088905e355, type: 3}
     buff: 1
-    value: 10
-    cost: 1
+    value: 5
+    cost: 500
   - id: 2
     name: Arrow
     description: Dep
@@ -155,9 +155,9 @@ MonoBehaviour:
     setType: 0
     materials: []
     image: {fileID: 2800000, guid: eb69cff6254433d4e9c38084ef04f590, type: 3}
-    buff: 2
-    value: 10
-    cost: 100
+    buff: 1
+    value: 5
+    cost: 500
   - id: 3
     name: Crown
     description: Dep
@@ -166,9 +166,9 @@ MonoBehaviour:
     setType: 0
     materials: []
     image: {fileID: 2800000, guid: 5c06bab390a79764d8d0539b57b1cf45, type: 3}
-    buff: 3
+    buff: 2
     value: 10
-    cost: 100
+    cost: 700
   - id: 4
     name: Ear
     description: Dep
@@ -179,7 +179,7 @@ MonoBehaviour:
     image: {fileID: 2800000, guid: da18f161bc01907449ffa4e6f5b50614, type: 3}
     buff: 4
     value: 10
-    cost: 110
+    cost: 600
   - id: 5
     name: Hat
     description: Dep
@@ -188,9 +188,9 @@ MonoBehaviour:
     setType: 0
     materials: []
     image: {fileID: 2800000, guid: 1cbb565e6302e234e82c3d5766667afd, type: 3}
-    buff: 0
-    value: 10
-    cost: 150
+    buff: 1
+    value: 5
+    cost: 500
   - id: 7
     name: Hat Cap
     description: Dep
@@ -199,9 +199,9 @@ MonoBehaviour:
     setType: 0
     materials: []
     image: {fileID: 2800000, guid: 618234528de04654db5493d4d04dbbf2, type: 3}
-    buff: 0
+    buff: 3
     value: 10
-    cost: 200
+    cost: 1000
   - id: 9
     name: Hat Yellow
     description: Dep
@@ -210,9 +210,9 @@ MonoBehaviour:
     setType: 0
     materials: []
     image: {fileID: 2800000, guid: 578c1840f64bd634bad62c6f60eba249, type: 3}
-    buff: 0
-    value: 10
-    cost: 300
+    buff: 1
+    value: 5
+    cost: 500
   - id: 11
     name: Hat Phone
     description: Dep
@@ -221,9 +221,9 @@ MonoBehaviour:
     setType: 0
     materials: []
     image: {fileID: 2800000, guid: 703801d9a7f60c244a3ee076f49edb23, type: 3}
-    buff: 0
+    buff: 4
     value: 10
-    cost: 200
+    cost: 500
   - id: 11
     name: Horn
     description: Dep
@@ -301,9 +301,9 @@ MonoBehaviour:
     materials:
     - {fileID: 2100000, guid: 430fb514104c27d429668eec9f9e5457, type: 2}
     image: {fileID: 2800000, guid: 1f7e9eb236c8768498ad5d8078d2533d, type: 3}
-    buff: 2
+    buff: 3
     value: 5
-    cost: 100
+    cost: 800
   - id: 0
     name: Cham bi
     description: 
@@ -313,9 +313,9 @@ MonoBehaviour:
     materials:
     - {fileID: 2100000, guid: 195b18787e870804eaabdc6efea37f75, type: 2}
     image: {fileID: 2800000, guid: 3ddbc9e0f3f883a46b1ba9635f87c222, type: 3}
-    buff: 1
+    buff: 3
     value: 5
-    cost: 100
+    cost: 800
   - id: 0
     name: Comy
     description: 
@@ -325,9 +325,9 @@ MonoBehaviour:
     materials:
     - {fileID: 2100000, guid: 412b5af210ac68a498bdb7fb8786b369, type: 2}
     image: {fileID: 2800000, guid: 2652851e5f7772041add8ebe7d548f2b, type: 3}
-    buff: 4
-    value: 0
-    cost: 100
+    buff: 3
+    value: 5
+    cost: 800
   - id: 0
     name: Da bao
     description: 
@@ -337,9 +337,9 @@ MonoBehaviour:
     materials:
     - {fileID: 2100000, guid: 83a5ae426c0f7e241ac90fe22a3d5418, type: 2}
     image: {fileID: 2800000, guid: ae9d58ecee0e3f848b8fedb3f2c67648, type: 3}
-    buff: 0
-    value: 0
-    cost: 110
+    buff: 3
+    value: 5
+    cost: 800
   - id: 0
     name: Onion
     description: 
@@ -349,9 +349,9 @@ MonoBehaviour:
     materials:
     - {fileID: 2100000, guid: 6d1acf6c357698645a65123ec8355bd5, type: 2}
     image: {fileID: 2800000, guid: 5433d4b044040c44487399b59f52e2b4, type: 3}
-    buff: 0
-    value: 0
-    cost: 150
+    buff: 3
+    value: 5
+    cost: 800
   - id: 0
     name: Pokemon
     description: 
@@ -361,9 +361,9 @@ MonoBehaviour:
     materials:
     - {fileID: 2100000, guid: 92125267aac0e3e4fa11f4a9dad99f7a, type: 2}
     image: {fileID: 2800000, guid: ea8161e4ed231be438fe9e968bc8752c, type: 3}
-    buff: 0
-    value: 0
-    cost: 200
+    buff: 3
+    value: 5
+    cost: 800
   - id: 0
     name: Rainbow
     description: 
@@ -373,9 +373,9 @@ MonoBehaviour:
     materials:
     - {fileID: 2100000, guid: 45971febe8017dc4bac9ead8264a3d71, type: 2}
     image: {fileID: 2800000, guid: 4d6b3cb74098a8640b03cd004d1dcdbb, type: 3}
-    buff: 0
-    value: 0
-    cost: 202
+    buff: 3
+    value: 5
+    cost: 800
   - id: 0
     name: Skull
     description: 
@@ -385,9 +385,9 @@ MonoBehaviour:
     materials:
     - {fileID: 2100000, guid: 887080aaa454d0742bb7e3b141affffe, type: 2}
     image: {fileID: 2800000, guid: a39a74b87842b704ab4bc6eec7e6c287, type: 3}
-    buff: 0
-    value: 0
-    cost: 300
+    buff: 3
+    value: 5
+    cost: 800
   - id: 0
     name: Van Tim
     description: 
@@ -397,9 +397,9 @@ MonoBehaviour:
     materials:
     - {fileID: 2100000, guid: 9d752b9df5ad735498fa48c7aded57c8, type: 2}
     image: {fileID: 2800000, guid: 343f00cc518f2c34090d54d64a12c62e, type: 3}
-    buff: 0
-    value: 0
-    cost: 300
+    buff: 3
+    value: 5
+    cost: 800
   - id: 0
     name: Davil
     description: 
@@ -479,8 +479,8 @@ MonoBehaviour:
     materials: []
     image: {fileID: 2800000, guid: 5033499010ad59241ad2cbdc6b1f9694, type: 3}
     buff: 4
-    value: 10
-    cost: 400
+    value: 30
+    cost: 1000
   - id: 5
     name: Shield
     description: Da
@@ -489,9 +489,9 @@ MonoBehaviour:
     setType: 0
     materials: []
     image: {fileID: 2800000, guid: 3dedbea6f56343249805bb0aee8693f9, type: 3}
-    buff: 0
-    value: 0
-    cost: 400
+    buff: 4
+    value: 30
+    cost: 1000
   eSet:
   - id: 0
     name: Set None
@@ -501,8 +501,8 @@ MonoBehaviour:
     setType: 0
     materials: []
     image: {fileID: 2800000, guid: 5a372bbeec787a54d92c4a484eda34b4, type: 3}
-    buff: 0
-    value: 0
+    buff: 4
+    value: 1
     cost: 0
   - id: 1
     name: Set 1
@@ -512,9 +512,9 @@ MonoBehaviour:
     setType: 1
     materials: []
     image: {fileID: 2800000, guid: 10f805f9a39668441b0d858a53a90087, type: 3}
-    buff: 0
-    value: 0
-    cost: 1500
+    buff: 1
+    value: 10
+    cost: 2500
   - id: 2
     name: Set 2
     description: Set 2
@@ -523,9 +523,9 @@ MonoBehaviour:
     setType: 2
     materials: []
     image: {fileID: 2800000, guid: 47489d63e5926ef478fda009b5f7b683, type: 3}
-    buff: 0
-    value: 0
-    cost: 1400
+    buff: 3
+    value: 11
+    cost: 2500
   - id: 3
     name: Set 3
     description: Set 3
@@ -534,9 +534,9 @@ MonoBehaviour:
     setType: 3
     materials: []
     image: {fileID: 2800000, guid: cf2c2f0409a120d4084268be4362625f, type: 3}
-    buff: 0
-    value: 0
-    cost: 1000
+    buff: 4
+    value: 50
+    cost: 2500
   - id: 4
     name: Set 4
     description: Set 4
@@ -545,9 +545,9 @@ MonoBehaviour:
     setType: 4
     materials: []
     image: {fileID: 2800000, guid: 8f00f4e5c6662634d9d6fb1e2e2b01ce, type: 3}
-    buff: 0
-    value: 0
-    cost: 1500
+    buff: 1
+    value: 15
+    cost: 5000
   - id: 5
     name: Set 5
     description: Set 5
@@ -556,6 +556,6 @@ MonoBehaviour:
     setType: 5
     materials: []
     image: {fileID: 2800000, guid: 74f22cae5f11d6049b5ad45d2c791d6d, type: 3}
-    buff: 0
-    value: 0
-    cost: 1500
+    buff: 4
+    value: 150
+    cost: 9999
