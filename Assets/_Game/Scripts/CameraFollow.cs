@@ -31,10 +31,6 @@ public class CameraFollowe : Singleton<CameraFollowe>
     {
         Camera = Camera.main;
     }
-    //private void Start()
-    //{
-        
-    //}
 
     public void Init()
     {

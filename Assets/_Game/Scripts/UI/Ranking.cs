@@ -40,12 +40,14 @@ public class Ranking : UICanvas
 
     private void OnMyHomeButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         UIManager.Ins.OpenUI<MainMenu>();
         Close(0);
     }
 
     private void OnMyBackButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         UIManager.Ins.OpenUI<MainMenu>();
         Close(0);
     }
@@ -80,7 +82,7 @@ public class Ranking : UICanvas
                 rankingElements[index].OnInit(email, kills);
                 
                 index++;
-                Debug.Log($"{email} {kills} {currentLevel}");
+                Debug.Log(index);
             }
 
             //Go to scoareboard screen

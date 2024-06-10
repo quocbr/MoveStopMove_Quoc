@@ -13,9 +13,7 @@ public class Bot : Character
 
     private CounterTime counter = new CounterTime();
     public CounterTime Counter => counter;
-
     private Vector3 destination;
-
 
     public float range;
     public Transform centrePoint;
@@ -39,7 +37,6 @@ public class Bot : Character
 
         NameChar = NameUtilities.GetRandomName();
         indicator.SetName(NameChar);
-        //indicator.SetColor(SpawnManager.Ins.GetColorSkin(CurrentColor).color);
     }
 
     public override void WearClothes()

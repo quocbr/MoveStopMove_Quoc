@@ -21,8 +21,6 @@ public class Setting : UICanvas
         soundOffButton.onClick.AddListener(OnSoundOffButtonClickHandle);
         vibOnButton.onClick.AddListener (OnVibOnButtonClickHandle);
         vibOffButton.onClick.AddListener(OnVibOffButtonClickHandle);
-
-        soundOffButton.onClick.Invoke();
     }
 
     public override void Open()
@@ -37,6 +35,16 @@ public class Setting : UICanvas
         {
             soundOnButton.gameObject.SetActive(false);
             soundOffButton.gameObject.SetActive(true);
+        } 
+        if (SoundManager.Ins.isOffVibrate == true)
+        {
+            vibOnButton.gameObject.SetActive(true);
+            vibOffButton.gameObject.SetActive(false);
+        }
+        else 
+        {
+            vibOnButton.gameObject.SetActive(false);
+            vibOffButton.gameObject.SetActive(true);
         } 
     }
 
@@ -74,14 +82,15 @@ public class Setting : UICanvas
     private void OnVibOnButtonClickHandle()
     {
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
+        SoundManager.Ins.isOffVibrate = false;
         vibOnButton.gameObject.SetActive(false);
         vibOffButton.gameObject.SetActive(true);
-        //Handheld.Vibrate();
     }
 
     private void OnVibOffButtonClickHandle()
     {
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
+        SoundManager.Ins.isOffVibrate = true;
         vibOnButton.gameObject.SetActive(true);
         vibOffButton.gameObject.SetActive(false);
     }

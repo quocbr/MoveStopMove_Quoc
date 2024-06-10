@@ -8,6 +8,7 @@ TagManager:
   - Target
   - Bullet
   - ShowWeaponCamera
+  - Block
   layers:
   - Default
   - TransparentFX

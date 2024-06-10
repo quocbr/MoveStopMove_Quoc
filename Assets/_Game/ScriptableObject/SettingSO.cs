@@ -6,4 +6,5 @@ using UnityEngine;
 public class SettingSO : ScriptableObject
 {
     public bool isMuteMusicAndSound;
+    public bool isOffVibrate;
 }

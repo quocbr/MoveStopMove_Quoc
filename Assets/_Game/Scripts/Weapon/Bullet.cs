@@ -66,7 +66,7 @@ public class Bullet : GameUnit
             //{
             //    return;
             //}
-            if (victim != null && victim != attacker && !victim.IsDead)
+            if (victim != null && victim != attacker && !victim.IsDead && !attacker.IsDead)
             {
                 ParticlePool.Play(ParticleType.BulletTrigger,this.TF.position,Quaternion.identity);
                 onHit?.Invoke(attacker, victim);
@@ -80,10 +80,10 @@ public class Bullet : GameUnit
             //OnDespawn();
         }
 
-        //if (other.CompareTag(Constant.TAG_BLOCK))
-        //{
-        //    OnStop();
-        //}
+        if (other.gameObject.layer ==  Layer.OBTACLE || other.gameObject.layer == Layer.WALL)
+        {
+            OnStop();
+        }
     }
     protected void ChangeMaterial(Material material)
     {

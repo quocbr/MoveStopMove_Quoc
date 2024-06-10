@@ -16,15 +16,20 @@ MonoBehaviour:
   - levelIndex: 1
     map: {fileID: 9128860555932994466, guid: ffddf5be2bbe9b14686f88b09d209cef, type: 3}
     navMeshData: {fileID: 23800000, guid: 943e3b5c05aa8624f91ca4f97fd041aa, type: 2}
-    aliveCount: 50
-    botCount: 8
+    aliveCount: 20
+    botCount: 2
   - levelIndex: 2
     map: {fileID: 3067769433875433262, guid: feca6a9b4ebc85c45a716c432b40d60d, type: 3}
     navMeshData: {fileID: 23800000, guid: e2d826e43cb263445ba05f2fafd403de, type: 2}
-    aliveCount: 25
+    aliveCount: 40
     botCount: 3
   - levelIndex: 3
     map: {fileID: 92067221111231747, guid: f16b3d64fbbf22c4e972dae488a14aed, type: 3}
     navMeshData: {fileID: 23800000, guid: 02bb569c5c76c7e479de676240b726a4, type: 2}
-    aliveCount: 35
+    aliveCount: 60
+    botCount: 4
+  - levelIndex: 4
+    map: {fileID: 7015050022972287952, guid: a926e789310d5924f8595f79b2b00fa0, type: 3}
+    navMeshData: {fileID: 23800000, guid: c246a91f80a2a324c8859a796fd93f43, type: 2}
+    aliveCount: 80
     botCount: 5

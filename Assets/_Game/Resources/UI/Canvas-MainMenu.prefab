@@ -1686,6 +1686,7 @@ RectTransform:
   - {fileID: 1501431751359720059}
   - {fileID: 5898054564967207436}
   - {fileID: 1501431751651639544}
+  - {fileID: 5537542184827963301}
   m_Father: {fileID: 1501431753100046521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2882,17 +2883,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1762891813887514213}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7480809300089028487}
+  m_Father: {fileID: 1501431753180884486}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 74, y: 711}
-  m_SizeDelta: {x: 80, y: 80}
+  m_AnchoredPosition: {x: 176.56, y: -36}
+  m_SizeDelta: {x: 69.114, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &529250605261815471
 CanvasRenderer:
@@ -3675,7 +3676,6 @@ RectTransform:
   m_Children:
   - {fileID: 1256282144756845367}
   - {fileID: 1501431753100046521}
-  - {fileID: 5537542184827963301}
   - {fileID: 7583658740375045412}
   - {fileID: 8777182701547784849}
   - {fileID: 4667154169469386745}
@@ -7047,6 +7047,7 @@ MonoBehaviour:
   yesButton: {fileID: 1565220148279953979}
   noButton: {fileID: 1565220148882228910}
   sFXToggle: {fileID: 8212761423308966188}
+  vibrate: {fileID: 1527542241481630473}
 --- !u!223 &1963116750310154473
 Canvas:
   m_ObjectHideFlags: 0

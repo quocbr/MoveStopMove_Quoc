@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -34,7 +35,7 @@ public class LoadingMenuManager : Singleton<LoadingMenuManager>
         while(!asyncLoad.isDone)
         {
             processBar.value = asyncLoad.progress;
-            text.text = $"{processBar.value * 100f}%";
+            text.text = $"{Math.Round(processBar.value * 100f, 2)}%";
             yield return null;
         }
 

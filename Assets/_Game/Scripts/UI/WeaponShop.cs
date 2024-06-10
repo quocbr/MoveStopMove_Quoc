@@ -48,18 +48,15 @@ public class WeaponShop : UICanvas
 
         listWeapon = EquipmentController.Ins.GetEquipment(EquipmentType.Weapon);
     }
-
     private void OnCloseButtonClickHandle()
     {
         UIManager.Ins.OpenUI<MainMenu>();
         Close(0);
     }
-
     protected override void OnInit()
     {
         base.OnInit();
     }
-
     public void SetPageInformation(int page)
     {
         if (weaponShow != null)
@@ -143,7 +140,6 @@ public class WeaponShop : UICanvas
         //weaponAttribute.text = "+" + attribute.ToString() + nameBuff;
         weaponAttribute.text = $"+{value}% {nameBuff}";
     }
-
     public override void Open()
     {
         base.Open();
@@ -153,7 +149,6 @@ public class WeaponShop : UICanvas
         SetPageInformation(page);
         
     }
-
     public override void Close(float delayTime)
     {
         base.Close(delayTime); 
@@ -164,13 +159,11 @@ public class WeaponShop : UICanvas
         }
         LevelManager.Ins.Player.gameObject.SetActive(true);
     }
-
     public void HomeButton()
     {
         UIManager.Ins.OpenUI<MainMenu>();
         Close(0.5f);
     }
-
     public void OnEquipButtoClickHandle()
     {
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
@@ -185,7 +178,6 @@ public class WeaponShop : UICanvas
             Close(0);
         }
     }
-
     public void OnBuyButtonClickHandle()
     {
         if (dataWeapon.cost <= SaveLoadManager.Ins.UserData.Coin)
@@ -225,7 +217,6 @@ public class WeaponShop : UICanvas
         page--;
         SetPageInformation(page);
     }
-
     private void SpawnItem(PoolType type,Material material,int index)
     {
         SkinWeaponUI itemUi = Instantiate(buttonPrefab, parentPosition);
@@ -242,7 +233,6 @@ public class WeaponShop : UICanvas
         listSkinWeapon.Add(x);
         listSkinWeaponUI.Add(itemUi);
     }
-
     private void OnItemUIClickHandle(Material material)
     {
         (weaponShow as Weapon).ChangeMaterial(material);
@@ -257,7 +247,6 @@ public class WeaponShop : UICanvas
         }
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
     }
-
     public void SpawnItemList(PoolType type,List<Material> listMaterialSkin)
     {
         ClearSkinListWeapon();
@@ -271,7 +260,6 @@ public class WeaponShop : UICanvas
             listSkinWeaponUI[0].SelectButton.onClick.Invoke();
         }
     }
-
     private void ClearSkinListWeapon()
     {
         for (int i = 0; i < listSkinWeaponUI.Count; i++)
@@ -286,7 +274,6 @@ public class WeaponShop : UICanvas
         listSkinWeaponUI.Clear();
         listSkinWeapon.Clear();
     }
-
     public void SetCoinText(int coin)
     {
         coinText.text = coin.ToString();

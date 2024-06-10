@@ -19,18 +19,14 @@ public class AuthFirebase : Singleton<AuthFirebase>
     public FirebaseAuth auth;
     public FirebaseUser User;
     public DatabaseReference DBreference;
-
-
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
     }
-
     private void Start()
     {
         StartCoroutine(CheckAndFixDependenciesAsync());
     }
-
     private IEnumerator CheckAndFixDependenciesAsync()
     {
         var dependencyTask = FirebaseApp.CheckAndFixDependenciesAsync();
@@ -51,7 +47,6 @@ public class AuthFirebase : Singleton<AuthFirebase>
             Debug.LogError("Could not resolve all Firebase dependencies: " + dependencyStatus);
         }
     }
-
     private void InitializeFirebase()
     {
         Debug.Log("Setting up Firebase Auth");
@@ -62,13 +57,11 @@ public class AuthFirebase : Singleton<AuthFirebase>
         auth.StateChanged += AuthStateChanged;
         AuthStateChanged(this, null);
     }
-
     void OnDestroy()
     {
         auth.StateChanged -= AuthStateChanged;
         auth = null;
     }
-
     private IEnumerator CheckForAutoLogin()
     {
         if(User != null)
@@ -80,10 +73,10 @@ public class AuthFirebase : Singleton<AuthFirebase>
         }
         else{
             //LoginBackButton();
-            UILogin.Ins.LoginBackButton();
+            //UILogin.Ins.LoginBackButton();
+            UILogin.Ins.StartBackButton();
         }
     }
-
     private void AutoLogin()
     {
         if(User != null)
@@ -104,7 +97,6 @@ public class AuthFirebase : Singleton<AuthFirebase>
             UILogin.Ins.LoginBackButton();
         }
     }
-
     void AuthStateChanged(object state, System.EventArgs eventArgs)
     {
         if (auth.CurrentUser != null) 
@@ -124,25 +116,21 @@ public class AuthFirebase : Singleton<AuthFirebase>
             }
         }
     }
-
     public void LoginButton()
     {
         //Call the login coroutine passing the email and password
         StartCoroutine(Login(UILogin.Ins.emailLoginField.text, UILogin.Ins.passwordLoginField.text));
     }
-
     public void RegisterButton()
     {
         //Call the register coroutine passing the email, password, and username
         StartCoroutine(Register(UILogin.Ins.emailRegisterField.text, UILogin.Ins.passwordRegisterField.text, UILogin.Ins.usernameRegisterField.text));
     }
-
     public void ForgetButton()
     {
         //Call the register coroutine passing the email, password, and username
         StartCoroutine(ForgetPassword(UILogin.Ins.emailForgetPassword.text));
     }
-
     public void OnShowEmail(bool isVer, string email, string error)
     {
         if (isVer)
@@ -161,13 +149,10 @@ public class AuthFirebase : Singleton<AuthFirebase>
 
         UILogin.Ins.SendEmailPanel.SetActive(true);
     }
-
-
     public void ScoreboardButton()
     {
         StartCoroutine(LoadScoreboardData());
     }
-
     public void LogOut()
     {
         if(auth != null && User!=null)
@@ -177,8 +162,6 @@ public class AuthFirebase : Singleton<AuthFirebase>
             LoadingMenuManager.Ins.SwitchToScene(0);
         }
     }
-
-
     private IEnumerator Login(string _email, string _password)
     {
         //Call the Firebase auth signin function passing the email and password
@@ -241,7 +224,6 @@ public class AuthFirebase : Singleton<AuthFirebase>
 
         }
     }
-
     private IEnumerator Register(string _email, string _password, string _username)
     {
         if (_username == "")
@@ -333,13 +315,11 @@ public class AuthFirebase : Singleton<AuthFirebase>
             }
         }
     }
-
     public void SendEmailVerification()
     {
         //Call the register coroutine passing the email, password, and username
         StartCoroutine(SendEmailVerificationAsync());
     }
-
     private IEnumerator SendEmailVerificationAsync()
     {
         //Call the Firebase auth signin function passing the email and password
@@ -387,7 +367,6 @@ public class AuthFirebase : Singleton<AuthFirebase>
                 OnShowEmail(true, User.Email, null);
             }
     }
-
     private IEnumerator ForgetPassword(string _email)
     {
         //Call the Firebase auth signin function passing the email and password
@@ -416,7 +395,6 @@ public class AuthFirebase : Singleton<AuthFirebase>
             UILogin.Ins.comForgetPasswordText.text = "Password reset email sent successfully.";
         }
     }
-
     private IEnumerator LoadScoreboardData()
     {
         //Get all the users data ordered by kills amount
@@ -450,7 +428,6 @@ public class AuthFirebase : Singleton<AuthFirebase>
             //UIManager.Ins.ScoreboardScreen();
         }
     }
-
     public void OpenGameScene()
     {
         LoadingMenuManager.Ins.SwitchToScene(1);

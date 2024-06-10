@@ -24,7 +24,7 @@ public class FPS : MonoBehaviour
         Application.targetFrameRate = TargetFrameRate;
 
     }
-
+#if UNITY_EDITOR
     private void Start()
     {
         timeLeft = updateInterval;
@@ -53,6 +53,6 @@ public class FPS : MonoBehaviour
     {
         GUI.Label(new Rect(5, 5, 100, 25), fps.ToString("F2") + " FPS", textStyle);
     }
-
+#endif
 }
 

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: SettingSO
   m_EditorClassIdentifier: 
   isMuteMusicAndSound: 0
+  isOffVibrate: 0

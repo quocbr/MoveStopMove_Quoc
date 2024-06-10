@@ -29,7 +29,7 @@ public class AdsManager : Singleton<AdsManager>
     BannerView bannerView;
     InterstitialAd interstitialAd;
     RewardedAd rewardedAd;
-    //NativeAd nativeAd;
+
     private void Start()
     {
         MobileAds.RaiseAdEventsOnUnityMainThread = true;

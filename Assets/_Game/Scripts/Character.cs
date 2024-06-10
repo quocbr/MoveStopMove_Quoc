@@ -32,12 +32,10 @@ public class Character : GameUnit
     [SerializeField] private Transform weaponPos;
     [SerializeField] private SkinnedMeshRenderer pantType;
     [SerializeField]protected ParticleSystem buffGiftParticleSystem;
-    
 
     [SerializeField] private AudioSource sFXSource;
 
     [SerializeField] private AnimationEvent animEvent;
-    //[SerializeField] private float maxScale = 2.5f;
 
     [SerializeField]protected Transform indicatorPoint;
     protected TargetIndicator indicator;
@@ -57,7 +55,6 @@ public class Character : GameUnit
     protected Vector3 targetPoint;
 
     protected float timer = 0;
-
 
     private GameUnit currentHead;
     private PoolType currentPant;

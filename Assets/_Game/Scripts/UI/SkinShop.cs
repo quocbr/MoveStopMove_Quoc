@@ -13,25 +13,20 @@ public class SkinShop : UICanvas
     [SerializeField] private Button setButton;
     [SerializeField] private Button buyButton;
     [SerializeField] private Button equipButton;
-
     [SerializeField] private Button closeButton;
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private TextMeshProUGUI costText;
     [SerializeField] private TextMeshProUGUI equipText;
     [SerializeField] private TextMeshProUGUI equipBuffText;
-
     [SerializeField] private ItemSelectionUi itemSelectionUi;
-
     private ButtonSelection selectionButton;
     private EquipmentData currentEquipmentData;
     public EqItemUI currentItem;
     public EqItemUI itemEquied;
-
     public ButtonSelection SelectionButton { get => selectionButton; }
     public Button BuyButton { get => buyButton; }
     public Button EquipButton { get => equipButton; }
     public EquipmentData CurrentEquipmentData { get => currentEquipmentData; set => currentEquipmentData = value; }
-
     private void Awake()
     {
         closeButton.onClick.AddListener(OnCloseButtonClickHandle);
@@ -43,7 +38,6 @@ public class SkinShop : UICanvas
         buyButton.onClick.AddListener(OnBuyButtonClickHandle);
         equipButton.onClick.AddListener(OnEquipButtonClickHandle);
     }
-
     private void OnSetButtonClickhandle()
     {
         itemEquied = null;
@@ -61,7 +55,6 @@ public class SkinShop : UICanvas
         selectionButton = ButtonSelection.Set;
         itemSelectionUi.SpawnItemList(EquipmentType.Set);
     }
-
     private void OnShieldButtonClickhandle()
     {
         itemEquied = null;
@@ -79,7 +72,6 @@ public class SkinShop : UICanvas
         selectionButton = ButtonSelection.Shield;
         itemSelectionUi.SpawnItemList(EquipmentType.Shield);
     }
-
     private void OnPantButtonClickhandle()
     {
         itemEquied = null;
@@ -98,7 +90,6 @@ public class SkinShop : UICanvas
         selectionButton = ButtonSelection.Pant;
         itemSelectionUi.SpawnItemList(EquipmentType.Pant);
     }
-
     private void OnHeadButtonClickhandle()
     {
         itemEquied = null;
@@ -117,7 +108,6 @@ public class SkinShop : UICanvas
         selectionButton = ButtonSelection.Head;
         itemSelectionUi.SpawnItemList(EquipmentType.Head);
     }
-
     private void OnCloseButtonClickHandle()
     {
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
@@ -125,7 +115,6 @@ public class SkinShop : UICanvas
         LevelManager.Ins.Player.ResetEQ(SaveLoadManager.Ins.UserData);
         Close(0);
     }
-
     public void OnBuyButtonClickHandle()
     {
         int currentCoin = SaveLoadManager.Ins.UserData.Coin;
@@ -161,7 +150,6 @@ public class SkinShop : UICanvas
             SoundManager.Ins.PlaySFX(Constant.SFXSound.DEBUTTON_CLICK);
         }
     }
-
     public void OnEquipButtonClickHandle()
     {
         SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
@@ -204,7 +192,6 @@ public class SkinShop : UICanvas
 
         SaveLoadManager.Ins.SaveTofile();
     }
-
     public override void Open()
     {
         base.Open();
@@ -215,29 +202,24 @@ public class SkinShop : UICanvas
 
         OnHeadButtonClickhandle();
     }
-
     public override void Close(float delayTime)
     {
 
         LevelManager.Ins.Player.ChangeAnim(Anim.IDLE);
         base.Close(delayTime);
     }
-
     public void SetEquipText(string equip)
     {
         equipText.text = equip;
     }
-
     public void SetCostText(int cost)
     {
         costText.text = cost.ToString();
     }
-
     public void SetCoinText(int coin)
     {
         coinText.text = coin.ToString();
     }
-
     public void SetEquipBuffText(EquipBuffType buffType, int value)
     {
         if (buffType == EquipBuffType.None) return;

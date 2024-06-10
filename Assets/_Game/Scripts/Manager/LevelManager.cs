@@ -13,33 +13,19 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] private LevelSO levelSO;
     [SerializeField] private NavMeshSurface navMeshSurface;
     [SerializeField] private Transform mapParent;
-
     private Character player;
     private List<Character> bots = new List<Character>();
     private LevelItemData currentLevel;
-    private NavMeshData currentNavMeshData;
     private int alive;
     private int numBot;
     private int remainBot;
     private MapControler currentMapControler;
-    //private List<Transform> l_SpawnPos = new List<Transform>();
     private int levelIndex;
-
     private bool isRevive;
-
-    //public List<Transform> L_SpawnPos { get => l_SpawnPos; set => l_SpawnPos = value; }
     public int Alive { get => alive; set => alive = value; }
     public int NumBot { get => numBot; set => numBot = value; }
     public int RemainBot { get => remainBot; set => remainBot = value; }
     public Character Player { get => player; set => player = value; }
-
-    private void Start()
-    {
-        //levelIndex = SaveLoadManager.Ins.UserData.CurrentLevel;
-        //LoadLevel(levelIndex);
-        //UIManager.Ins.OpenUI<MainMenu>();
-    }
-
     public void Init()
     {
         levelIndex = SaveLoadManager.Ins.UserData.CurrentLevel;
@@ -47,11 +33,8 @@ public class LevelManager : Singleton<LevelManager>
         CameraFollowe.Ins.Init();
         UIManager.Ins.OpenUI<MainMenu>();
     }
-
     private void OnInit()
     {
-        //NavMesh.RemoveAllNavMeshData();
-        //NavMesh.AddNavMeshData(currentLevel.navMeshData);
         isRevive = false;
 
         Alive = currentLevel.aliveCount;
@@ -64,7 +47,6 @@ public class LevelManager : Singleton<LevelManager>
 
         SetTargetIndicatorAlpha(0);
     }
-
     private void GeneralMap(MapControler map, NavMeshData navMeshData)
     {
         currentMapControler = Instantiate(map);
@@ -75,33 +57,26 @@ public class LevelManager : Singleton<LevelManager>
 
         //l_SpawnPos = currentMapControler.L_SpawnPos;
     }
-
     private void RemoveCurrentLevel()
     {
         Destroy(currentMapControler.gameObject);
     }
-
-    [ContextMenu("Win")]
     public void Victory()
     {
         UIManager.Ins.CloseAll();
         UIManager.Ins.OpenUI<Win>().SetCoinText(player.Point);
         player.ChangeAnim(Anim.WIN);
     }
-
     public void Fail(float timeDeley = 0f)
     {
         StartCoroutine(OnFail(timeDeley));
     }
-
     IEnumerator OnFail(float time)
     {
         yield return new WaitForSeconds(time);
         UIManager.Ins.CloseAll();
         UIManager.Ins.OpenUI<Lose>().SetCoinText(player.Point);
     }
-
-
     public void LoadLevel(int level)
     {
         if (currentLevel != null)
@@ -118,7 +93,6 @@ public class LevelManager : Singleton<LevelManager>
             //TODO: level vuot qua limit
         }
     }
-
     public void OnStartGame()
     {
         for (int i = 0; i < bots.Count; i++)
@@ -127,7 +101,6 @@ public class LevelManager : Singleton<LevelManager>
             bots[i].ChangeState(new PatrolState());
         }
     }
-
     public void OnFinishGame()
     {
         for (int i = 0; i < bots.Count; i++)
@@ -136,7 +109,6 @@ public class LevelManager : Singleton<LevelManager>
             bots[i].StopMoving();
         }
     }
-
     public void OnReset()
     {
         //HBPool.CollectAll();
@@ -155,14 +127,12 @@ public class LevelManager : Singleton<LevelManager>
         HBPool.CollectAll();
         RemoveCurrentLevel();
     }
-
     internal void OnRetry()
     {
         OnReset();
         LoadLevel(levelIndex);
         UIManager.Ins.OpenUI<MainMenu>();
     }
-
     public void OnRevive()
     {
         player.TF.position = RandomPoint();

@@ -34,6 +34,7 @@ public class MainMenu : UICanvas
 
 
     [SerializeField] private Toggle sFXToggle;
+    [SerializeField] private Toggle vibrate;
 
     private void Awake()
     {
@@ -46,14 +47,17 @@ public class MainMenu : UICanvas
         
         inputNameText.onEndEdit.AddListener(ChangeName);
         sFXToggle.onValueChanged.AddListener(ToggleValueChanged);
+        vibrate.onValueChanged.AddListener(ToggleVibrateValueChanged);
         
         yesButton.onClick.AddListener(() =>
         {
+            SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
             panelLogout.SetActive(false);
             AuthFirebase.Ins.LogOut();
         });
         noButton.onClick.AddListener(() =>
         {
+            SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
             panelLogout.SetActive(false);
         });
 
@@ -73,6 +77,10 @@ public class MainMenu : UICanvas
         }
 
     }
+    private void ToggleVibrateValueChanged(bool isOn)
+    {
+        SoundManager.Ins.isOffVibrate = !isOn;
+    }
 
     private void OnMyShinShopButtonClickHandle()
     {
@@ -83,6 +91,7 @@ public class MainMenu : UICanvas
 
     private void OnMyAddFreeCoinButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         AdsManager.Ins.onUserEarnedRewardCallback = () =>
         {
             SaveLoadManager.Ins.UserData.Coin += 20;
@@ -108,6 +117,15 @@ public class MainMenu : UICanvas
         {
             sFXToggle.isOn = true;
         }
+        vibrate.isOn = !SoundManager.Ins.isOffVibrate;
+        //if (SoundManager.Ins.isOffVibrate == true)
+        //{
+        //    vibrate.isOn = true;
+        //}
+        //else
+        //{
+        //    vibrate.isOn = false;
+        //}
         //Data
         this.SetCoinText(SaveLoadManager.Ins.UserData.Coin);
         this.SetEmail(SaveLoadManager.Ins.UserData.email);
@@ -124,6 +142,7 @@ public class MainMenu : UICanvas
 
     public void OnMyPlayButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         LevelManager.Ins.OnStartGame();
         //CameraFollow.Ins.ZoomOut();
         CameraFollowe.Ins.ChangeState(CameraFollowe.State.Gameplay);
@@ -140,12 +159,14 @@ public class MainMenu : UICanvas
 
     private void OnMyScoreboardButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         UIManager.Ins.OpenUI<Ranking>();
         Close(0);
     }
 
     private void OnMyLogoutButtonClickHandle()
     {
+        SoundManager.Ins.PlaySFX(Constant.SFXSound.BUTTON_CLICK);
         //AuthFirebase.Ins.LogOut();
         panelLogout.SetActive(true);
         //LoadingMenuManager.Ins.SwitchToScene(0);

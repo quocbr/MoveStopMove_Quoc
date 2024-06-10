@@ -45,8 +45,8 @@ public class Layer
     public const int WATER = 4;
     public const int PLAYER = 7;
     public const int BOT = 8;
-    public const int BRICK = 10;
-    public const int BRIDGE = 11;
+    public const int OBTACLE = 10;
+    public const int WALL = 11;
     public const int DOOR = 12;
     public const int FINISHBOX = 13;
     

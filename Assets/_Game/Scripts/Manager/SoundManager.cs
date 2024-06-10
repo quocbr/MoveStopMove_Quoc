@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class SoundManager : Singleton<SoundManager>
 {
@@ -22,10 +21,21 @@ public class SoundManager : Singleton<SoundManager>
         }
     }
 
+    public bool isOffVibrate
+    {
+        get { return settingSO.isOffVibrate; }
+        set
+        {
+            settingSO.isOffVibrate = value;
+        }
+    }
+
     public void Awake()
     {
         musicSource.mute = settingSO.isMuteMusicAndSound;
         sFXSource.mute = settingSO.isMuteMusicAndSound;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     public void PlayMusic(string name,bool isLoop = false)
@@ -101,18 +111,27 @@ public class SoundManager : Singleton<SoundManager>
         return clip;
     }
 
-    [ContextMenu("on")]
+
     public void SoundFXOn()
     {
         settingSO.isMuteMusicAndSound = false;
         musicSource.mute = false;
         sFXSource.mute = false;
     }
-    [ContextMenu("of")]
+
     public void SoundFXOff()
     {
         settingSO.isMuteMusicAndSound = true;
         musicSource.mute = true;
         sFXSource.mute = true;
+    }
+
+    public void PlayVibrate()
+    {
+        if(isOffVibrate == false)
+        {
+            Debug.Log("Rung");
+            Handheld.Vibrate();
+        }
     }
 }

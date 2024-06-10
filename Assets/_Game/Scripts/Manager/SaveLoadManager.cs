@@ -9,7 +9,7 @@ using Firebase;
 using Proyecto26;
 using System.Threading.Tasks;
 
-public class SaveLoadManager : MonoBehaviour//Singleton<SaveLoadManager>
+public class SaveLoadManager : MonoBehaviour
 {
     public static SaveLoadManager Ins;
     [SerializeField] private bool loadOnStart = true;
@@ -25,16 +25,27 @@ public class SaveLoadManager : MonoBehaviour//Singleton<SaveLoadManager>
 
     private void Awake()
     {
-        if(Ins != null)
+        if (Ins != null)
         {
             Destroy(gameObject);
         }
         else
         {
             Ins = this;
-DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
         }
-          
+
+    }
+
+    public void SaveTofile()
+    {
+        FireBaseSetting.Ins.PutToDatabase(userData);
+    }
+
+
+    public void LoadToFile(UserData userData)
+    {
+        this.userData = userData;
     }
 
     private static string Generate256BitKey()
@@ -97,21 +108,6 @@ DontDestroyOnLoad(gameObject);
         return plaintext;
     }
 
-    public void OnInit()
-    {
-        //access_token = SaveSystem.GetString("access_token");
-        
-        //saveFilePath = Path.Combine(Application.persistentDataPath, saveFileName);
-        //formatter = new BinaryFormatter();
-        //if (loadOnStart)
-        //{
-        //    Load();
-        //}
-
-
-       //access_token = PlayerPrefs.GetString(Constant.ACCESS_TOKEN);
-       // FireBaseSetting.Ins.GetToDatabase(access_token);
-    }
 
     public void Load1()
     {
@@ -198,19 +194,5 @@ DontDestroyOnLoad(gameObject);
             SaveTofile();
         }
     }
-
-    public void SaveTofile()
-    {
-        FireBaseSetting.Ins.PutToDatabase(userData);
-    }
-
-    //public void SaveToFile()
-    //{
-        
-    //}
-
-    public void LoadToFile(UserData userData)
-    {
-        this.userData = userData;
-    }
+    
 }

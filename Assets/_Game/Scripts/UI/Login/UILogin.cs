@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Drawing;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UILogin : MonoBehaviour
 {
     public static UILogin Ins;
-    //Login variables
+    [Header("Panel Begin")]
+    public GameObject beginPanel;
     [Header("Login")]
     public GameObject LoginPanel;
     public TMP_InputField emailLoginField;
     public TMP_InputField passwordLoginField;
     public TMP_Text warningLoginText;
     public TMP_Text confirmLoginText;
-
-    //Register variables
     [Header("Register")]
     public GameObject RegisterPanel;
     public TMP_InputField usernameRegisterField;
@@ -23,23 +23,19 @@ public class UILogin : MonoBehaviour
     public TMP_InputField passwordRegisterField;
     public TMP_InputField passwordRegisterVerifyField;
     public TMP_Text warningRegisterText;
-
     [Header("Forget Password")]
     public GameObject ForgetPasswordPanel;
     public TMP_InputField emailForgetPassword;
     public GameObject infor;
     public TMP_Text warForgetPasswordText;
     public TMP_Text comForgetPasswordText;
-
     [Header("Send Email")]
     public GameObject SendEmailPanel;
     public TMP_Text tileText;
     public TMP_Text inforText;
-
     [Header("Logut")]
     public GameObject LogoutPanel;
     public TMP_Text inforGameText;
-
     private void Awake()
     {
         if (Ins != null)
@@ -59,8 +55,8 @@ public class UILogin : MonoBehaviour
         ForgetPasswordPanel.SetActive(false);
         SendEmailPanel.SetActive(false);
         LogoutPanel.SetActive(false);
+        beginPanel.SetActive(false);
     }
-
     private void ResetAttibutes()
     {
         emailLoginField.text = "";
@@ -78,7 +74,22 @@ public class UILogin : MonoBehaviour
         inforGameText.text = "";
         infor.SetActive(false);
     }
-
+    public void StartBackButton()
+    {
+        //LoginBackButton();
+        ResetUI();
+        beginPanel.SetActive(true);
+    } 
+    public void ExitButton()
+    {
+    #if UNITY_ANDROID
+        Application.Quit();
+    #endif
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+    #endif
+        //Application.Quit();
+    }
     public void LoginBackButton()
     {
         ResetAttibutes();

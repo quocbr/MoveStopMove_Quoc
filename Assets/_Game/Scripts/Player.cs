@@ -1,6 +1,4 @@
 
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -36,21 +34,6 @@ public class Player : Character
             joystick = GameManager.Ins.Joystick;
             Moving();
         }
-
-        //if(IsDead) return;
-
-        //if (GameManager.Ins.IsState(GameState.Gameplay) == false)
-        //{
-        //    return;
-        //}
-        //else
-        //{
-        //    joystick = GameManager.Ins.Joystick;
-        //}
-
-        //Moving();
-
-        //Attack();
     }
 
     protected override void SetSize(float size)
@@ -279,5 +262,18 @@ public class Player : Character
         indicator.SetColor(SpawnManager.Ins.GetColorSkin(CurrentColor).color);
         indicator.SetName(NameChar);
         //reviveVFX.Play();
+    }
+
+    public override void DoDead(string name = null)
+    {
+        base.DoDead(name);
+        SoundManager.Ins.PlayVibrate();
+
+    }
+
+    protected override void AddPoint(int point = 1)
+    {
+        base.AddPoint(point);
+        SoundManager.Ins.PlayVibrate();
     }
 }
